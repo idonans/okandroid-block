@@ -17,7 +17,7 @@ public class AppInit {
     }
 
     if (context == null) {
-      return;
+      throw new IllegalStateException("context is null");
     }
 
     if (context instanceof ContextWrapper) {
