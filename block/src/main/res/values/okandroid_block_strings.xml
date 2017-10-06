@@ -1,0 +1,8 @@
+<resources>
+  <string name="okandroid_block_app_name">okandroid-block</string>
+  <string name="okandroid_block_log_tag"/>
+  <string name="okandroid_block_log_level"/>
+  <string name="okandroid_block_sub_dir_name"/>
+  <bool name="okandroid_block_fresco_enable">true</bool>
+  <bool name="okandroid_block_fresco_565_config">true</bool>
+</resources>
