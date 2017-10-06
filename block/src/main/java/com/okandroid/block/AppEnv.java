@@ -5,7 +5,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import com.okandroid.block.data.AppIDManager;
+import com.okandroid.block.data.CookiesManager;
 import com.okandroid.block.data.FrescoManager;
+import com.okandroid.block.data.OkHttpManager;
+import com.okandroid.block.data.ProcessManager;
+import com.okandroid.block.data.StorageManager;
+import com.okandroid.block.data.TmpFileManager;
 import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
 import java.util.HashMap;
@@ -109,9 +115,15 @@ public class AppEnv {
   }
 
   private static void initLocalData() {
+    AppIDManager.getInstance();
+    CookiesManager.getInstance();
     if (sFrescoEnable) {
       FrescoManager.getInstance();
     }
+    OkHttpManager.getInstance();
+    ProcessManager.getInstance();
+    StorageManager.getInstance();
+    TmpFileManager.getInstance();
   }
 
   public static String getLogTag() {
