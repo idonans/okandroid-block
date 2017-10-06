@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
+    defaultConfig {
+        applicationId "com.okandroid.demo.block"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        minSdkVersion rootProject.ext.androidBuild.minSdkVersion
+        targetSdkVersion rootProject.ext.androidBuild.targetSdkVersion
+        versionCode rootProject.ext.androidBuild.versionCode
+        versionName rootProject.ext.androidBuild.versionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':block')
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+}
