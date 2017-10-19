@@ -20,6 +20,10 @@ public class WeakAvailable implements Available {
   }
 
   public Object getObject() {
-    return mWeakReference.get();
+    Object object = mWeakReference.get();
+    if (AvailableUtil.isAvailable(object)) {
+      return object;
+    }
+    return null;
   }
 }

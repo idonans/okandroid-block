@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import com.okandroid.block.data.ActivityLifecycleManager;
 import com.okandroid.block.data.AppIDManager;
 import com.okandroid.block.data.CookiesManager;
 import com.okandroid.block.data.FrescoManager;
@@ -115,6 +116,7 @@ public class AppEnv {
   }
 
   private static void initLocalData() {
+    ActivityLifecycleManager.getInstance();
     AppIDManager.getInstance();
     CookiesManager.getInstance();
     if (sFrescoEnable) {
