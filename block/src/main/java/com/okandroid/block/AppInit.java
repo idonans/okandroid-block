@@ -1,7 +1,6 @@
 package com.okandroid.block;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import com.okandroid.block.util.ContextUtil;
 
 public class AppInit {
@@ -20,12 +19,10 @@ public class AppInit {
       throw new IllegalStateException("context is null");
     }
 
-    if (context instanceof ContextWrapper) {
-      context = ((ContextWrapper) context).getBaseContext();
+    context = context.getApplicationContext();
 
-      if (context == null) {
-        throw new IllegalStateException("context is null");
-      }
+    if (context == null) {
+      throw new IllegalStateException("context is null");
     }
 
     ContextUtil.setContext(context);
