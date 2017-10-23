@@ -48,6 +48,9 @@ public class CookiesManager {
     mCookieManager.setAcceptCookie(true);
     mCookieManager.removeExpiredCookie();
     CookieSyncManager.getInstance().sync();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      mCookieManager.flush();
+    }
 
     mOkHttp3CookieJar = new OkHttp3CookieJar();
   }
@@ -81,6 +84,9 @@ public class CookiesManager {
           }
         }
         CookieSyncManager.getInstance().sync();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          mCookieManager.flush();
+        }
       }
     }
 
