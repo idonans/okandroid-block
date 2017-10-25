@@ -18,8 +18,5 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity
-        android:name="com.okandroid.demo.block.OtherProcessActivity"
-        android:process=":other"/>
   </application>
 </manifest>
