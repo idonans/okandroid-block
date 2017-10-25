@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
   compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
   buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
+
   defaultConfig {
     applicationId "com.okandroid.demo.block"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -12,6 +13,7 @@ android {
     versionCode rootProject.ext.androidBuild.versionCode
     versionName rootProject.ext.androidBuild.versionName
   }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -26,8 +28,9 @@ android {
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   compile project(':block')
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
+  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
   compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }
