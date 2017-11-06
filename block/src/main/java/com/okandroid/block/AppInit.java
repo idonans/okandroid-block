@@ -8,7 +8,7 @@ import com.okandroid.block.lang.BlockFileProvider;
 import com.okandroid.block.util.ContextUtil;
 
 /**
- * call {@link AppInit#init(Context)} on {@link Application#attachBaseContext(Context)},
+ * call {@link AppInit#init(Context)} on {@link Application#onCreate()},
  * {@link ContentProvider#attachInfo(Context, ProviderInfo)}
  *
  * @see BlockFileProvider#attachInfo(Context, ProviderInfo)
