@@ -12,7 +12,7 @@
         android:grantUriPermissions="true">
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/okandroid_block_fileProvider"/>
+          android:resource="@xml/okandroid_block_file_provider"/>
     </provider>
   </application>
 </manifest>
