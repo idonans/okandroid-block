@@ -1,6 +1,6 @@
 package com.okandroid.demo.block;
 
-import android.app.Application;
+import com.okandroid.block.BlockApplication;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -8,7 +8,7 @@ import com.squareup.leakcanary.RefWatcher;
  * Created by idonans on 2017/10/25.
  */
 
-public class MainApplication extends Application {
+public class MainApplication extends BlockApplication {
 
   @Override public void onCreate() {
     super.onCreate();
