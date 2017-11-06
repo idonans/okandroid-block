@@ -1,5 +1,6 @@
 package com.okandroid.block.util;
 
+import android.app.Application;
 import android.content.Context;
 
 public class ContextUtil {
@@ -22,7 +23,15 @@ public class ContextUtil {
    */
   public static void setContext(Context context) {
     if (sContext == null) {
-      sContext = context.getApplicationContext();
+      Context originalContext = context;
+      if (!(context instanceof Application)) {
+        context = context.getApplicationContext();
+      }
+
+      if (!(context instanceof Application)) {
+        throw new IllegalArgumentException("application not found " + originalContext);
+      }
+      sContext = context;
     } else {
       new IllegalStateException("already set context").printStackTrace();
     }

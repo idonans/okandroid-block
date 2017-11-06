@@ -10,7 +10,7 @@ import android.content.Context;
 public class BlockApplication extends Application {
 
   @Override protected void attachBaseContext(Context base) {
-    AppInit.init(base);
     super.attachBaseContext(base);
+    AppInit.init(this);
   }
 }
