@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.okandroid.block"
-    >
+    package="com.okandroid.block">
 
   <application
       android:allowBackup="true"
@@ -13,7 +12,7 @@
         android:grantUriPermissions="true">
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/okandroid_block_provider"/>
+          android:resource="@xml/okandroid_block_fileProvider"/>
     </provider>
   </application>
 </manifest>
