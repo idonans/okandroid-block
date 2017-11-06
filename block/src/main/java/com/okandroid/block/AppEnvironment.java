@@ -129,7 +129,7 @@ public class AppEnvironment {
           throw new IllegalStateException(
               "error log level[" + logLevel + "], only VERBOSE DEBUG INFO WARN ERROR support");
         }
-        Log.v(CLASS_NAME, "load property", key, logLevelInt);
+        Log.v(CLASS_NAME, "load property", key, logLevelInt, logLevel);
         mProperties.put(key, logLevelInt);
       }
       return logLevelInt;
