@@ -42,6 +42,8 @@ public class AppEnvironment {
     }
     sInit = true;
 
+    Log.v(TAG, "init");
+
     Application application = (Application) ContextUtil.getContext();
     application.registerActivityLifecycleCallbacks(sInternalApplicationCallbacks);
     application.registerComponentCallbacks(sInternalApplicationCallbacks);
@@ -97,7 +99,7 @@ public class AppEnvironment {
       String logTag = (String) mProperties.get(key);
       if (logTag == null) {
         logTag = ContextUtil.getContext().getString(R.string.okandroid_block_log_tag);
-        if (logTag == null) {
+        if (TextUtils.isEmpty(logTag)) {
           logTag = getAppLabel();
         }
         Log.v(CLASS_NAME, "load property", key, logTag);
