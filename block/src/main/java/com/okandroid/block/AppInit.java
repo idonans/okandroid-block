@@ -12,7 +12,7 @@ import com.okandroid.block.util.ContextUtil;
  * {@link ContentProvider#attachInfo(Context, ProviderInfo)}
  *
  * @see BlockFileProvider#attachInfo(Context, ProviderInfo)
- * @see BlockApplication#attachBaseContext(Context)
+ * @see BlockApplication#onCreate()
  */
 public class AppInit {
 
