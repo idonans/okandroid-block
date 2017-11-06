@@ -24,9 +24,8 @@ public class ContextUtil {
   public static void setContext(Context context) {
     if (sContext == null) {
       Context originalContext = context;
-      if (!(context instanceof Application)) {
-        context = context.getApplicationContext();
-      }
+
+      context = context.getApplicationContext();
 
       if (!(context instanceof Application)) {
         throw new IllegalArgumentException("application not found " + originalContext);
