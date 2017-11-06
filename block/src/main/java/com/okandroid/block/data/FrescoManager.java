@@ -7,7 +7,7 @@ import com.facebook.common.logging.FLogDefaultLoggingDelegate;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.okandroid.block.AppEnv;
+import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
@@ -47,11 +47,12 @@ public class FrescoManager {
 
     FLogDefaultLoggingDelegate fLogDefaultLoggingDelegate =
         FLogDefaultLoggingDelegate.getInstance();
-    fLogDefaultLoggingDelegate.setApplicationTag(AppEnv.getLogTag());
-    fLogDefaultLoggingDelegate.setMinimumLoggingLevel(AppEnv.getLogLevelInt());
+    fLogDefaultLoggingDelegate.setApplicationTag(AppEnvironment.getAppProperties().getLogTag());
+    fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
+        AppEnvironment.getAppProperties().getLogLevel());
 
     Bitmap.Config config = Bitmap.Config.ARGB_8888;
-    if (AppEnv.isFresco565Config()) {
+    if (AppEnvironment.getAppProperties().isFresco565Config()) {
       config = Bitmap.Config.RGB_565;
     }
 

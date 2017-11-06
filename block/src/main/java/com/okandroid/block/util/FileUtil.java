@@ -6,9 +6,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.CheckResult;
 import android.text.TextUtils;
-import com.okandroid.block.AppEnv;
+import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.data.ProcessManager;
-import com.okandroid.block.lang.BlockProvider;
+import com.okandroid.block.lang.BlockFileProvider;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -128,7 +128,7 @@ public class FileUtil {
       return null;
     }
 
-    File appEnvDir = new File(envDir, AppEnv.getSubDirName());
+    File appEnvDir = new File(envDir, AppEnvironment.getAppProperties().getSubDirName());
     if (createDir(appEnvDir)) {
       return appEnvDir;
     }
@@ -347,7 +347,7 @@ public class FileUtil {
   public static Uri getFileUri(File file) {
     Uri targetUri;
     if (Build.VERSION.SDK_INT >= 24) {
-      targetUri = BlockProvider.getUriForFile(file);
+      targetUri = BlockFileProvider.getUriForFile(file);
     } else {
       targetUri = Uri.fromFile(file);
     }

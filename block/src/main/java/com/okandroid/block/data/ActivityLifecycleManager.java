@@ -1,12 +1,11 @@
 package com.okandroid.block.data;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
+import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 import com.okandroid.block.lang.WeakAvailable;
-import com.okandroid.block.util.ContextUtil;
 
 /**
  * Activity 生命周期监听. 如可判断当前进程是否有正在显示的 Activity etc.
@@ -33,8 +32,7 @@ public class ActivityLifecycleManager {
 
   private ActivityLifecycleManager() {
     Log.v(CLASS_NAME, "init");
-    ((Application) ContextUtil.getContext()).registerActivityLifecycleCallbacks(
-        mActivityLifecycleCallbacks);
+    AppEnvironment.addApplicationCallbacks(mActivityLifecycleCallbacks);
   }
 
   public Activity getTopActivity() {
@@ -48,7 +46,7 @@ public class ActivityLifecycleManager {
   private final ActivityLifecycleCallbacksImpl mActivityLifecycleCallbacks =
       new ActivityLifecycleCallbacksImpl();
 
-  private class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks {
+  private class ActivityLifecycleCallbacksImpl extends AppEnvironment.SimpleApplicationCallbacks {
 
     private WeakAvailable mCreatedActivityRef = new WeakAvailable(null);
     private WeakAvailable mStartedActivityRef = new WeakAvailable(null);
@@ -78,9 +76,6 @@ public class ActivityLifecycleManager {
       if (startedActivity == activity) {
         mStartedActivityRef.setObject(null);
       }
-    }
-
-    @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
     }
 
     @Override public void onActivityDestroyed(Activity activity) {

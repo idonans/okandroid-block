@@ -10,10 +10,21 @@ public class ContextUtil {
   }
 
   public static Context getContext() {
+    if (sContext == null) {
+      throw new IllegalAccessError(
+          "context not found, need call AppInit.init(Context) on application start");
+    }
     return sContext;
   }
 
+  /**
+   * do not call this method direct, and use AppInit.init(Context) instead.
+   */
   public static void setContext(Context context) {
-    sContext = context;
+    if (sContext == null) {
+      sContext = context.getApplicationContext();
+    } else {
+      new IllegalStateException("already set context").printStackTrace();
+    }
   }
 }

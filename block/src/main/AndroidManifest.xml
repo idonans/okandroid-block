@@ -7,8 +7,8 @@
       android:label="@string/okandroid_block_app_name"
       android:supportsRtl="true">
     <provider
-        android:name="com.okandroid.block.lang.BlockProvider"
-        android:authorities="${applicationId}.okandroid.block.provider"
+        android:name="com.okandroid.block.lang.BlockFileProvider"
+        android:authorities="${applicationId}.okandroid.block.fileProvider"
         android:exported="false"
         android:grantUriPermissions="true">
       <meta-data

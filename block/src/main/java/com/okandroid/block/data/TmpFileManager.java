@@ -8,7 +8,8 @@ import com.okandroid.block.util.FileUtil;
 import java.io.File;
 
 /**
- * 临时文件管理器, 当进程重启时, 临时文件会被删除.
+ * 临时文件管理器, 当 app 启动时(非恢复的情况), 应当调用 clear 方法以清除遗留的临时文件.
+ * 通常, 在 Splash#onCreate(savedInstanceState == null) 时, 调用 #clear().
  */
 public class TmpFileManager {
 
@@ -35,7 +36,6 @@ public class TmpFileManager {
 
   private TmpFileManager() {
     Log.v(CLASS_NAME, "init");
-    clear();
   }
 
   @CheckResult public File createNewTmpFileQuietly(String prefix, String suffix) {
@@ -60,7 +60,10 @@ public class TmpFileManager {
     return new File(FileUtil.getExternalCacheDir(), TMP_DIR_REMOVED);
   }
 
-  private void clear() {
+  /**
+   * 清除临时文件
+   */
+  public void clear() {
     File tmpFileDir = getTmpFileDir();
     if (tmpFileDir == null || !tmpFileDir.exists()) {
       Log.v(CLASS_NAME, "clear tmp file dir not found", tmpFileDir);

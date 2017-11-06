@@ -8,7 +8,7 @@ import com.okandroid.block.AppInit;
 import com.okandroid.block.util.ContextUtil;
 import java.io.File;
 
-public class BlockProvider extends FileProvider {
+public class BlockFileProvider extends FileProvider {
   @Override public void attachInfo(Context context, ProviderInfo info) {
     AppInit.init(context);
     super.attachInfo(context, info);
@@ -16,7 +16,7 @@ public class BlockProvider extends FileProvider {
 
   public static Uri getUriForFile(File file) {
     Context context = ContextUtil.getContext();
-    final String authority = context.getPackageName() + ".okandroid.block.provider";
+    final String authority = context.getPackageName() + ".okandroid.block.fileProvider";
     return FileProvider.getUriForFile(context, authority, file);
   }
 }

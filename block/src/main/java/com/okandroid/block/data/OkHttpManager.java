@@ -1,7 +1,7 @@
 package com.okandroid.block.data;
 
 import android.text.TextUtils;
-import com.okandroid.block.AppEnv;
+import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class OkHttpManager {
       }
     };
 
-    boolean debug = AppEnv.getLogLevelInt() <= android.util.Log.DEBUG;
+    boolean debug = AppEnvironment.getAppProperties().getLogLevel() <= android.util.Log.DEBUG;
     if (debug) {
       Log.d(CLASS_NAME, "in debug mode, config OkHttpClient.");
 
