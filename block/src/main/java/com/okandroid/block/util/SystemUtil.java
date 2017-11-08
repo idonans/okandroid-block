@@ -170,12 +170,6 @@ public class SystemUtil {
         view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
   }
 
-  public static void setLayoutFullscreen(View view) {
-    view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-  }
-
   /**
    * 将指定文件添加到系统媒体库，如将一张图片添加到系统媒体库，使得在 Gallery 中能够显示.
    */
