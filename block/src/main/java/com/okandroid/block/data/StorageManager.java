@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.okandroid.block.db.SimpleDB;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
-import com.okandroid.block.thread.ThreadPool;
+import com.okandroid.block.thread.Threads;
 
 /**
  * 数据存储服务
@@ -42,11 +42,16 @@ public class StorageManager {
     mDBSetting = new SimpleDB("setting");
     mDBCache = new SimpleDB("cache");
 
-    // 数据库启动时, 做一次 trim 操作.
-    int settingTrimSize = mDBSetting.trim(5000);
-    Log.d(CLASS_NAME, "setting trim size:", settingTrimSize);
-    int cacheTrimSize = mDBCache.trim(5000);
-    Log.d(CLASS_NAME, "cache trim size:" + cacheTrimSize);
+    // 异步处理
+    Threads.postBackground(new Runnable() {
+      @Override public void run() {
+        // 数据库启动时, 做一次 trim 操作.
+        int settingTrimSize = mDBSetting.trim(5000);
+        Log.d(CLASS_NAME, "setting trim size:", settingTrimSize);
+        int cacheTrimSize = mDBCache.trim(5000);
+        Log.d(CLASS_NAME, "cache trim size:" + cacheTrimSize);
+      }
+    });
   }
 
   public void setSetting(@Nullable String key, @Nullable String value) {
@@ -57,7 +62,7 @@ public class StorageManager {
     String value = mDBSetting.get(key);
     if (!TextUtils.isEmpty(value)) {
       // 异步处理
-      ThreadPool.getInstance().post(new Runnable() {
+      Threads.postBackground(new Runnable() {
         @Override public void run() {
           mDBSetting.touch(key);
         }
@@ -74,7 +79,7 @@ public class StorageManager {
     String value = mDBCache.get(key);
     if (!TextUtils.isEmpty(value)) {
       // 异步处理
-      ThreadPool.getInstance().post(new Runnable() {
+      Threads.postBackground(new Runnable() {
         @Override public void run() {
           mDBCache.touch(key);
         }
