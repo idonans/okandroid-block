@@ -19,6 +19,7 @@ public class AppInit {
   private AppInit() {
   }
 
+  private static final boolean DEBUG = true;
   private static boolean sInit;
 
   public synchronized static void init(Context context) {
@@ -26,6 +27,10 @@ public class AppInit {
       return;
     }
     sInit = true;
+
+    if (DEBUG) {
+      new RuntimeException("(DEBUG) AppInit stack").printStackTrace();
+    }
 
     if (context == null) {
       throw new IllegalArgumentException("context is null");
