@@ -221,14 +221,21 @@ public class SystemUtil {
     return System.getProperty("http.agent");
   }
 
+  private static String sSystemWebViewUserAgent;
+
   /**
    * 获取系统 webview 默认 user-agent
    */
   public static String getSystemWebViewUserAgent() {
-    if (Build.VERSION.SDK_INT >= 17) {
-      return WebSettings.getDefaultUserAgent(ContextUtil.getContext());
-    } else {
-      return new WebView(ContextUtil.getContext()).getSettings().getUserAgentString();
+    if (sSystemWebViewUserAgent != null) {
+      return sSystemWebViewUserAgent;
     }
+    if (Build.VERSION.SDK_INT >= 17) {
+      sSystemWebViewUserAgent = WebSettings.getDefaultUserAgent(ContextUtil.getContext());
+    } else {
+      sSystemWebViewUserAgent =
+          new WebView(ContextUtil.getContext()).getSettings().getUserAgentString();
+    }
+    return sSystemWebViewUserAgent;
   }
 }

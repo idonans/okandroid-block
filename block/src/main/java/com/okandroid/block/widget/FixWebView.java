@@ -64,7 +64,7 @@ public class FixWebView extends WebView {
     settings.setDomStorageEnabled(true);
     settings.setDatabaseEnabled(true);
     settings.setSupportZoom(true);
-    settings.setUserAgentString(settings.getUserAgentString() + " zcool");
+    settings.setUserAgentString(settings.getUserAgentString() + " Block/0.1");
     settings.setUseWideViewPort(true);
     settings.setLoadWithOverviewMode(true);
     settings.setPluginState(WebSettings.PluginState.ON);
