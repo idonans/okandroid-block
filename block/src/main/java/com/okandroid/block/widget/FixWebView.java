@@ -111,7 +111,7 @@ public class FixWebView extends WebView {
     }
   }
 
-  private class WebChromeClientImpl extends WebChromeClient {
+  public static class WebChromeClientImpl extends WebChromeClient {
 
     protected final String CLASS_NAME = ClassName.valueOf(this);
     public final WebView mWebView;
