@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
   @BindView(R.id.item_content) TextView mItemContent;
   @BindView(R.id.fullscreen_toggle) TextView mFullscreenToggle;
+  @BindView(R.id.start_browser) View mStartBrowser;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     {
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
             } else {
               requestFullscreen();
             }
+          }
+        });
+
+    RxView.clicks(mStartBrowser)
+        .throttleFirst(1, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            startActivity(BrowserActivity.startIntent(MainActivity.this));
           }
         });
   }
