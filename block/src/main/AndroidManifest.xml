@@ -14,5 +14,11 @@
           android:name="android.support.FILE_PROVIDER_PATHS"
           android:resource="@xml/okandroid_block_file_provider"/>
     </provider>
+    <provider
+        android:name="com.okandroid.block.lang.StorageDatabaseProvider"
+        android:authorities="${applicationId}.okandroid.block.storageDatabaseProvider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+    </provider>
   </application>
 </manifest>

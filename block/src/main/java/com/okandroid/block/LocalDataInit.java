@@ -14,7 +14,9 @@ public class LocalDataInit {
 
   public static void touch() {
     touchWithBlock();
-    Threads.postBackground(new Runnable() {
+
+    // 确保至少延迟到下一个 ui 循环之后
+    Threads.postBackgroundAfterLooper(new Runnable() {
       @Override public void run() {
         touchOnBackground();
       }

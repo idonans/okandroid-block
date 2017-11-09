@@ -33,6 +33,14 @@ public class Threads {
     sHandlerUi.postDelayed(runnable, delayMillis);
   }
 
+  public static void postBackgroundAfterLooper(final Runnable runnable) {
+    postUi(new Runnable() {
+      @Override public void run() {
+        postBackground(runnable);
+      }
+    });
+  }
+
   public static void postBackground(Runnable runnable) {
     ThreadPool.getInstance().post(runnable);
   }

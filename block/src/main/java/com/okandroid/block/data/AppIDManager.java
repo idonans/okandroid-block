@@ -7,8 +7,7 @@ import java.util.UUID;
 
 /**
  * 在 app 运行期间的唯一标识，即使程序重启，也不会丢失。该标识在程序第一次运行时初始化。
- * 注意：不同的进程间的标识不同，如果用户清除了程序数据，则会在程序下一次运行时重新初始化，
- * 但此种情况下初始化的值与之前的不同。
+ * 支持跨进程.
  */
 public class AppIDManager {
 
@@ -41,10 +40,6 @@ public class AppIDManager {
     }
 
     Log.d(CLASS_NAME, "AppID:", mAppID);
-    if (!ProcessManager.getInstance().isMainProcess()) {
-      Log.e(CLASS_NAME, "AppID:", mAppID,
-          "should be call from main process, different process will get different AppID.");
-    }
   }
 
   public String getAppID() {
