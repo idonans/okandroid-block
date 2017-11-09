@@ -126,7 +126,7 @@ public class StorageManager {
 
     Uri uri = StorageDatabaseProvider.getCacheUri(context);
 
-    contentResolver.update(uri, null, null, null);
+    contentResolver.update(uri, new ContentValues(), null, null);
   }
 
   /**
@@ -138,7 +138,7 @@ public class StorageManager {
 
     Uri uri = StorageDatabaseProvider.getSettingUri(context);
 
-    contentResolver.update(uri, null, null, null);
+    contentResolver.update(uri, new ContentValues(), null, null);
   }
 }
 
