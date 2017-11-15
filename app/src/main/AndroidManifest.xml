@@ -18,7 +18,9 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name="com.okandroid.demo.block.BrowserActivity"/>
+    <activity
+        android:name="com.okandroid.demo.block.BrowserActivity"
+        android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
 
     <service
         android:name="com.okandroid.demo.block.TaskService"
