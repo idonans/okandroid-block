@@ -1,12 +1,16 @@
 package com.okandroid.block.widget;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -18,9 +22,7 @@ import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 
 /**
- * Created by idonans on 2017/10/26.
  */
-
 public class FixWebView extends WebView {
 
   protected final String CLASS_NAME = ClassName.valueOf(this);
@@ -53,6 +55,8 @@ public class FixWebView extends WebView {
     init();
   }
 
+  private CustomViewer mCustomViewer;
+
   private void init() {
     CookiesManager.getInstance().enableCookie(this);
 
@@ -75,18 +79,13 @@ public class FixWebView extends WebView {
       settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
     }
 
-    setWebViewClient(new WebViewClientImpl(this));
-    setWebChromeClient(new WebChromeClientImpl(this));
+    setWebViewClient(new WebViewClientImpl());
+    setWebChromeClient(new WebChromeClientImpl());
   }
 
-  public static class WebViewClientImpl extends WebViewClient {
+  public class WebViewClientImpl extends WebViewClient {
 
     protected final String CLASS_NAME = ClassName.valueOf(this);
-    public final WebView mWebView;
-
-    public WebViewClientImpl(WebView webView) {
-      mWebView = webView;
-    }
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -111,13 +110,11 @@ public class FixWebView extends WebView {
     }
   }
 
-  public static class WebChromeClientImpl extends WebChromeClient {
+  public class WebChromeClientImpl extends WebChromeClient {
 
     protected final String CLASS_NAME = ClassName.valueOf(this);
-    public final WebView mWebView;
 
-    public WebChromeClientImpl(WebView webView) {
-      mWebView = webView;
+    public WebChromeClientImpl() {
     }
 
     @Override public void onReceivedTitle(WebView view, String title) {
@@ -126,21 +123,22 @@ public class FixWebView extends WebView {
 
     @Override public void onShowCustomView(View view, CustomViewCallback callback) {
       Log.v(CLASS_NAME, "onShowCustomView");
-      // TODO
-      // mCustomViewer.showCustomView(view, callback);
+      if (mCustomViewer != null) {
+        mCustomViewer.show(view, callback);
+      }
     }
 
     @Override
     public void onShowCustomView(View view, int requestedOrientation, CustomViewCallback callback) {
       Log.v(CLASS_NAME, "onShowCustomView requestedOrientation", requestedOrientation);
-      // TODO
-      // mCustomViewer.showCustomView(view, callback);
+      onShowCustomView(view, callback);
     }
 
     @Override public void onHideCustomView() {
       Log.v(CLASS_NAME, "onHideCustomView");
-      // TODO
-      // mCustomViewer.hideLastCustomView();
+      if (mCustomViewer != null) {
+        mCustomViewer.hide();
+      }
     }
 
     @Override public void onGeolocationPermissionsShowPrompt(String origin,
@@ -150,11 +148,99 @@ public class FixWebView extends WebView {
     }
   }
 
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+
+    try {
+      if (mCustomViewer != null) {
+        mCustomViewer.hide();
+      }
+    } catch (Throwable e) {
+      e.printStackTrace();
+    }
+  }
+
   public boolean dispatchBackPressed() {
     if (canGoBack()) {
       goBack();
       return true;
     }
     return false;
+  }
+
+  public void setCustomViewer(CustomViewer customViewer) {
+    if (mCustomViewer != null) {
+      throw new IllegalAccessError("already set custom viewer");
+    }
+    mCustomViewer = customViewer;
+  }
+
+  public static class CustomViewer {
+
+    private final String CLASS_NAME = ClassName.valueOf(this);
+
+    private final Activity mActivity;
+    private final ViewGroup mParent;
+    private final boolean mIgnoreFullscreen;
+
+    private View mView;
+    private WebChromeClient.CustomViewCallback mCallback;
+
+    public CustomViewer(Activity activity, ViewGroup parent) {
+      this(activity, parent, false);
+    }
+
+    public CustomViewer(Activity activity, ViewGroup parent, boolean ignoreFullscreen) {
+      mActivity = activity;
+      mParent = parent;
+      mIgnoreFullscreen = ignoreFullscreen;
+    }
+
+    public void show(View view, WebChromeClient.CustomViewCallback callback) {
+      if (view == null) {
+        Log.e(CLASS_NAME, "view is null");
+        return;
+      }
+
+      if (mView != null) {
+        Log.e(CLASS_NAME, "already exist custom view", mView);
+        return;
+      }
+
+      mView = view;
+      mCallback = callback;
+
+      mParent.addView(mView);
+      if (!mIgnoreFullscreen) {
+        requestFullscreen();
+      }
+    }
+
+    public void hide() {
+      if (mView == null) {
+        return;
+      }
+
+      mParent.removeView(mView);
+      mView = null;
+      if (mCallback != null) {
+        mCallback.onCustomViewHidden();
+      }
+      if (!mIgnoreFullscreen) {
+        requestExitFullscreen();
+      }
+    }
+
+    public void requestFullscreen() {
+      mActivity.getWindow()
+          .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+              WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    }
+
+    public void requestExitFullscreen() {
+      mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+    }
   }
 }

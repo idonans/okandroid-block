@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +39,8 @@ public class BrowserActivity extends AppCompatActivity {
     setContentView(R.layout.activity_browser);
     ButterKnife.bind(this);
 
+    mWebView.setCustomViewer(
+        new FixWebView.CustomViewer(this, (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT)));
     mWebView.loadUrl("http://www.baidu.com");
   }
 

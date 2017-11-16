@@ -20,6 +20,7 @@
     </activity>
     <activity
         android:name="com.okandroid.demo.block.BrowserActivity"
+        android:configChanges="orientation|screenSize|screenLayout"
         android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
 
     <service
