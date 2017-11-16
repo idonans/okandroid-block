@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.okandroid.block.util.IOUtil;
 import com.okandroid.block.widget.FixWebView;
 
 /**
@@ -50,5 +51,10 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     super.onBackPressed();
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    IOUtil.closeQuietly(mWebView);
   }
 }

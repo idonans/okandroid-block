@@ -3,6 +3,7 @@ package com.okandroid.block.util;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteClosable;
 import android.graphics.BitmapRegionDecoder;
+import android.webkit.WebView;
 import com.okandroid.block.lang.Available;
 import com.okandroid.block.lang.Charsets;
 import com.okandroid.block.lang.Progress;
@@ -27,6 +28,18 @@ import java.util.List;
 public final class IOUtil {
 
   private IOUtil() {
+  }
+
+  public static void closeQuietly(WebView webView) {
+    if (webView != null) {
+      try {
+        webView.stopLoading();
+        webView.clearHistory();
+        webView.loadUrl("about:blank");
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
