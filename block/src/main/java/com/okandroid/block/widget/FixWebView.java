@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.http.SslError;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import com.okandroid.block.data.CookiesManager;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
@@ -207,13 +209,24 @@ public class FixWebView extends WebView {
         return;
       }
 
-      mView = view;
+      mView = createDecorView(view);
       mCallback = callback;
 
       mParent.addView(mView);
       if (!mIgnoreFullscreen) {
         requestFullscreen();
       }
+    }
+
+    public View createDecorView(View view) {
+      FrameLayout decorView = new FrameLayout(view.getContext());
+      decorView.setBackgroundColor(Color.BLACK);
+      ViewGroup.LayoutParams decorViewLayoutParams =
+          new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+              ViewGroup.LayoutParams.MATCH_PARENT);
+      decorView.setLayoutParams(decorViewLayoutParams);
+      decorView.addView(view);
+      return decorView;
     }
 
     public void hide() {
