@@ -21,6 +21,7 @@
     <activity
         android:name="com.okandroid.demo.block.BrowserActivity"
         android:configChanges="orientation|screenSize|screenLayout"
+        android:theme="@style/AppTheme.Splash"
         android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
 
     <service
