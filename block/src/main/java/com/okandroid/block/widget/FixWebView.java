@@ -245,11 +245,15 @@ public class FixWebView extends WebView {
 
     public void requestFullscreen() {
       if (mView != null) {
-        mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+        int systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+          systemUiVisibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+        mView.setSystemUiVisibility(systemUiVisibility);
       }
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
