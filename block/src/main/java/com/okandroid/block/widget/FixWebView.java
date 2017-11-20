@@ -243,25 +243,55 @@ public class FixWebView extends WebView {
       }
     }
 
+    private Runnable mRequestSystemUiRunnable;
+
+    protected void requestSystemUiFullscreen(final View view) {
+      int systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+          | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+          | View.SYSTEM_UI_FLAG_LOW_PROFILE
+          | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        systemUiVisibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+      }
+
+      final int originalSystemUiVisibility = systemUiVisibility;
+      final int normalSystemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+      view.setSystemUiVisibility(systemUiVisibility);
+      view.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
+        @Override public void onSystemUiVisibilityChange(int visibility) {
+          Log.v(CLASS_NAME, "requestSystemUiFullscreen onSystemUiVisibilityChange", visibility);
+
+          mRequestSystemUiRunnable = new Runnable() {
+            @Override public void run() {
+              if (mRequestSystemUiRunnable != this) {
+                return;
+              }
+
+              view.setSystemUiVisibility(originalSystemUiVisibility);
+            }
+          };
+
+          if (visibility == View.SYSTEM_UI_FLAG_VISIBLE) {
+            view.setSystemUiVisibility(normalSystemUiVisibility);
+          }
+          view.postDelayed(mRequestSystemUiRunnable, 2200L);
+        }
+      });
+    }
+
     public void requestFullscreen() {
       if (mView != null) {
-        int systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-          systemUiVisibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        }
-        mView.setSystemUiVisibility(systemUiVisibility);
+        requestSystemUiFullscreen(mView);
       }
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
 
     public void requestExitFullscreen() {
-      if (mView != null) {
-        mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-      }
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
     }
   }
