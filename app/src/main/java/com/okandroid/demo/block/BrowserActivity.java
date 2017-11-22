@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +42,12 @@ public class BrowserActivity extends AppCompatActivity {
     setContentView(R.layout.activity_browser);
     ButterKnife.bind(this);
 
+    mWebView.setWebChromeClient(new FixWebView.WebChromeClientImpl(mWebView) {
+      @Override public void onReceivedTitle(WebView view, String title) {
+        super.onReceivedTitle(view, title);
+        mTitle.setText(title);
+      }
+    });
     mWebView.setCustomViewer(
         new FixWebView.CustomViewer(this, (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT)));
     mWebView.loadUrl("http://www.baidu.com");

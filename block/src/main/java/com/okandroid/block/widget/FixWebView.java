@@ -80,13 +80,18 @@ public class FixWebView extends WebView {
       settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
     }
 
-    setWebViewClient(new WebViewClientImpl());
-    setWebChromeClient(new WebChromeClientImpl());
+    setWebViewClient(new WebViewClientImpl(this));
+    setWebChromeClient(new WebChromeClientImpl(this));
   }
 
-  public class WebViewClientImpl extends WebViewClient {
+  public static class WebViewClientImpl extends WebViewClient {
 
     protected final String CLASS_NAME = ClassName.valueOf(this);
+    protected final FixWebView mFixWebView;
+
+    public WebViewClientImpl(FixWebView fixWebView) {
+      mFixWebView = fixWebView;
+    }
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -111,11 +116,13 @@ public class FixWebView extends WebView {
     }
   }
 
-  public class WebChromeClientImpl extends WebChromeClient {
+  public static class WebChromeClientImpl extends WebChromeClient {
 
     protected final String CLASS_NAME = ClassName.valueOf(this);
+    protected final FixWebView mFixWebView;
 
-    public WebChromeClientImpl() {
+    public WebChromeClientImpl(FixWebView fixWebView) {
+      mFixWebView = fixWebView;
     }
 
     @Override public void onReceivedTitle(WebView view, String title) {
@@ -124,8 +131,8 @@ public class FixWebView extends WebView {
 
     @Override public void onShowCustomView(View view, CustomViewCallback callback) {
       Log.v(CLASS_NAME, "onShowCustomView");
-      if (mCustomViewer != null) {
-        mCustomViewer.show(view, callback);
+      if (mFixWebView.mCustomViewer != null) {
+        mFixWebView.mCustomViewer.show(view, callback);
       }
     }
 
@@ -137,8 +144,8 @@ public class FixWebView extends WebView {
 
     @Override public void onHideCustomView() {
       Log.v(CLASS_NAME, "onHideCustomView");
-      if (mCustomViewer != null) {
-        mCustomViewer.hide();
+      if (mFixWebView.mCustomViewer != null) {
+        mFixWebView.mCustomViewer.hide();
       }
     }
 
@@ -283,7 +290,7 @@ public class FixWebView extends WebView {
           if (visibility == View.SYSTEM_UI_FLAG_VISIBLE) {
             view.setSystemUiVisibility(normalSystemUiVisibility);
           }
-          view.postDelayed(mRequestSystemUiRunnable, 2200L);
+          view.postDelayed(mRequestSystemUiRunnable, 1800L);
         }
       });
     }
