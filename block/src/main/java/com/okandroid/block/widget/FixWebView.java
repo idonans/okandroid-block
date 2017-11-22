@@ -181,6 +181,7 @@ public class FixWebView extends WebView {
     private final String CLASS_NAME = ClassName.valueOf(this);
 
     private final Activity mActivity;
+    private final int mOriginalRequestOrientation;
     private final ViewGroup mParent;
     private final boolean mIgnoreFullscreen;
 
@@ -193,8 +194,11 @@ public class FixWebView extends WebView {
 
     public CustomViewer(Activity activity, ViewGroup parent, boolean ignoreFullscreen) {
       mActivity = activity;
+      mOriginalRequestOrientation = mActivity.getRequestedOrientation();
       mParent = parent;
       mIgnoreFullscreen = ignoreFullscreen;
+
+      Log.v(CLASS_NAME, "original request orientation", mOriginalRequestOrientation);
     }
 
     public void show(View view, WebChromeClient.CustomViewCallback callback) {
@@ -292,7 +296,7 @@ public class FixWebView extends WebView {
     }
 
     public void requestExitFullscreen() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+      mActivity.setRequestedOrientation(mOriginalRequestOrientation);
     }
   }
 }
