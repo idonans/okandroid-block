@@ -15,54 +15,61 @@ import butterknife.ButterKnife;
 import com.okandroid.block.util.IOUtil;
 import com.okandroid.block.widget.FixWebView;
 
-/**
- * Created by idonans on 2017/11/9.
- */
-
+/** Created by idonans on 2017/11/9. */
 public class BrowserActivity extends AppCompatActivity {
 
-  public static Intent startIntent(Context context) {
-    Intent starter = new Intent(context, BrowserActivity.class);
-    return starter;
-  }
-
-  @BindView(R.id.title) TextView mTitle;
-  @BindView(R.id.webview) FixWebView mWebView;
-
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    {
-      View decorView = getWindow().getDecorView();
-      decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    public static Intent startIntent(Context context) {
+        Intent starter = new Intent(context, BrowserActivity.class);
+        return starter;
     }
 
-    super.onCreate(savedInstanceState);
+    @BindView(R.id.title)
+    TextView mTitle;
 
-    setContentView(R.layout.activity_browser);
-    ButterKnife.bind(this);
+    @BindView(R.id.webview)
+    FixWebView mWebView;
 
-    mWebView.setWebChromeClient(new FixWebView.WebChromeClientImpl(mWebView) {
-      @Override public void onReceivedTitle(WebView view, String title) {
-        super.onReceivedTitle(view, title);
-        mTitle.setText(title);
-      }
-    });
-    mWebView.setCustomViewer(
-        new FixWebView.CustomViewer(this, (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT)));
-    mWebView.loadUrl("http://www.baidu.com");
-  }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
 
-  @Override public void onBackPressed() {
-    if (mWebView.dispatchBackPressed()) {
-      return;
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_browser);
+        ButterKnife.bind(this);
+
+        mWebView.setWebChromeClient(
+                new FixWebView.WebChromeClientImpl(mWebView) {
+                    @Override
+                    public void onReceivedTitle(WebView view, String title) {
+                        super.onReceivedTitle(view, title);
+                        mTitle.setText(title);
+                    }
+                });
+        mWebView.setCustomViewer(
+                new FixWebView.CustomViewer(
+                        this, (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT)));
+        mWebView.loadUrl("http://www.baidu.com");
     }
 
-    super.onBackPressed();
-  }
+    @Override
+    public void onBackPressed() {
+        if (mWebView.dispatchBackPressed()) {
+            return;
+        }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    IOUtil.closeQuietly(mWebView);
-  }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        IOUtil.closeQuietly(mWebView);
+    }
 }

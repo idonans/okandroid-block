@@ -1,4 +1,3 @@
 package com.okandroid.block;
 
-public class Block {
-}
+public class Block {}

@@ -2,38 +2,38 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
-  compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
-  buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
+    compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
 
-  defaultConfig {
-    applicationId "com.okandroid.demo.block"
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    defaultConfig {
+        applicationId "com.okandroid.demo.block"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-    minSdkVersion rootProject.ext.androidBuild.minSdkVersion
-    targetSdkVersion rootProject.ext.androidBuild.targetSdkVersion
-    versionCode rootProject.ext.androidBuild.versionCode
-    versionName rootProject.ext.androidBuild.versionName
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        minSdkVersion rootProject.ext.androidBuild.minSdkVersion
+        targetSdkVersion rootProject.ext.androidBuild.targetSdkVersion
+        versionCode rootProject.ext.androidBuild.versionCode
+        versionName rootProject.ext.androidBuild.versionName
     }
-    debug {
-      resValue("string", "okandroid_block_log_level", "VERBOSE")
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            resValue("string", "okandroid_block_log_level", "VERBOSE")
+        }
     }
-  }
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar'], dir: 'libs')
-  compile project(':block')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':block')
 
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-  compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -12,31 +12,33 @@ import com.okandroid.block.thread.Threads;
 
 public class LocalDataInit {
 
-  public static void touch() {
-    touchWithBlock();
+    public static void touch() {
+        touchWithBlock();
 
-    // 确保至少延迟到下一个 ui 循环之后
-    Threads.postBackgroundAfterLooper(new Runnable() {
-      @Override public void run() {
-        touchOnBackground();
-      }
-    });
-  }
-
-  private static void touchWithBlock() {
-    ActivityLifecycleManager.getInstance();
-
-    if (AppEnvironment.getAppProperties().isFrescoEnable()) {
-      FrescoManager.getInstance();
+        // 确保至少延迟到下一个 ui 循环之后
+        Threads.postBackgroundAfterLooper(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        touchOnBackground();
+                    }
+                });
     }
-  }
 
-  private static void touchOnBackground() {
-    AppIDManager.getInstance();
-    CookiesManager.getInstance();
-    OkHttpManager.getInstance();
-    ProcessManager.getInstance();
-    StorageManager.getInstance();
-    TmpFileManager.getInstance();
-  }
+    private static void touchWithBlock() {
+        ActivityLifecycleManager.getInstance();
+
+        if (AppEnvironment.getAppProperties().isFrescoEnable()) {
+            FrescoManager.getInstance();
+        }
+    }
+
+    private static void touchOnBackground() {
+        AppIDManager.getInstance();
+        CookiesManager.getInstance();
+        OkHttpManager.getInstance();
+        ProcessManager.getInstance();
+        StorageManager.getInstance();
+        TmpFileManager.getInstance();
+    }
 }

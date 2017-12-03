@@ -9,15 +9,16 @@ import java.io.File;
 
 public class BlockFileProvider extends FileProvider {
 
-  @Override public boolean onCreate() {
-    super.onCreate();
-    AppInit.init(getContext());
-    return true;
-  }
+    @Override
+    public boolean onCreate() {
+        super.onCreate();
+        AppInit.init(getContext());
+        return true;
+    }
 
-  public static Uri getUriForFile(File file) {
-    Context context = ContextUtil.getContext();
-    final String authority = context.getPackageName() + ".okandroid.block.fileProvider";
-    return FileProvider.getUriForFile(context, authority, file);
-  }
+    public static Uri getUriForFile(File file) {
+        Context context = ContextUtil.getContext();
+        final String authority = context.getPackageName() + ".okandroid.block.fileProvider";
+        return FileProvider.getUriForFile(context, authority, file);
+    }
 }

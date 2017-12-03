@@ -13,60 +13,71 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-  @BindView(R.id.item_content) TextView mItemContent;
-  @BindView(R.id.fullscreen_toggle) TextView mFullscreenToggle;
-  @BindView(R.id.start_browser) View mStartBrowser;
+    @BindView(R.id.item_content)
+    TextView mItemContent;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    {
-      View decorView = getWindow().getDecorView();
-      decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    @BindView(R.id.fullscreen_toggle)
+    TextView mFullscreenToggle;
+
+    @BindView(R.id.start_browser)
+    View mStartBrowser;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        mItemContent.setText("hello, butter knife");
+        RxView.clicks(mFullscreenToggle)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<Object>() {
+                            @Override
+                            public void accept(Object o) throws Exception {
+                                if (mFullscreen) {
+                                    requestExitFullscreen();
+                                } else {
+                                    requestFullscreen();
+                                }
+                            }
+                        });
+
+        RxView.clicks(mStartBrowser)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<Object>() {
+                            @Override
+                            public void accept(Object o) throws Exception {
+                                startActivity(BrowserActivity.startIntent(MainActivity.this));
+                            }
+                        });
     }
 
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
+    private boolean mFullscreen;
 
-    mItemContent.setText("hello, butter knife");
-    RxView.clicks(mFullscreenToggle)
-        .throttleFirst(1, TimeUnit.SECONDS)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (mFullscreen) {
-              requestExitFullscreen();
-            } else {
-              requestFullscreen();
-            }
-          }
-        });
+    private void requestFullscreen() {
+        mFullscreen = true;
 
-    RxView.clicks(mStartBrowser)
-        .throttleFirst(1, TimeUnit.SECONDS)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            startActivity(BrowserActivity.startIntent(MainActivity.this));
-          }
-        });
-  }
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+    }
 
-  private boolean mFullscreen;
+    private void requestExitFullscreen() {
+        mFullscreen = false;
 
-  private void requestFullscreen() {
-    mFullscreen = true;
-
-    View decorView = getWindow().getDecorView();
-    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-  }
-
-  private void requestExitFullscreen() {
-    mFullscreen = false;
-
-    View decorView = getWindow().getDecorView();
-    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-  }
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
 }

@@ -1,28 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.okandroid.block">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-  <application
-      android:allowBackup="true"
-      android:label="@string/okandroid_block_app_name"
-      android:supportsRtl="true">
-    <provider
-        android:name="com.okandroid.block.lang.BlockFileProvider"
-        android:authorities="${applicationId}.okandroid.block.fileProvider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-      <meta-data
-          android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/okandroid_block_file_provider"/>
-    </provider>
-    <provider
-        android:name="com.okandroid.block.lang.StorageDatabaseProvider"
-        android:authorities="${applicationId}.okandroid.block.storageDatabaseProvider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-    </provider>
-  </application>
+    <application
+        android:allowBackup="true"
+        android:label="@string/okandroid_block_app_name"
+        android:supportsRtl="true">
+        <provider
+            android:name="com.okandroid.block.lang.BlockFileProvider"
+            android:authorities="${applicationId}.okandroid.block.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/okandroid_block_file_provider" />
+        </provider>
+        <provider
+            android:name="com.okandroid.block.lang.StorageDatabaseProvider"
+            android:authorities="${applicationId}.okandroid.block.storageDatabaseProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"></provider>
+    </application>
 </manifest>

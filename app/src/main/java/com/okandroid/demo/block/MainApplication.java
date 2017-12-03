@@ -7,31 +7,31 @@ import com.okandroid.block.thread.Threads;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-/**
- * Created by idonans on 2017/10/25.
- */
-
+/** Created by idonans on 2017/10/25. */
 public class MainApplication extends BlockApplication {
 
-  @Override public void onCreate() {
-    super.onCreate();
-    setupLeakCanary();
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        setupLeakCanary();
 
-    startService(new Intent(this, TaskService.class));
+        startService(new Intent(this, TaskService.class));
 
-    // DEBUG
-    Threads.postBackground(new Runnable() {
-      @Override public void run() {
-        StorageManager.getInstance().printCacheContent();
-        StorageManager.getInstance().printSettingContent();
-      }
-    });
-  }
-
-  protected RefWatcher setupLeakCanary() {
-    if (LeakCanary.isInAnalyzerProcess(this)) {
-      return RefWatcher.DISABLED;
+        // DEBUG
+        Threads.postBackground(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        StorageManager.getInstance().printCacheContent();
+                        StorageManager.getInstance().printSettingContent();
+                    }
+                });
     }
-    return LeakCanary.install(this);
-  }
+
+    protected RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
+    }
 }

@@ -22,288 +22,307 @@ import com.okandroid.block.data.CookiesManager;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 
-/**
- */
+/** */
 public class FixWebView extends WebView {
 
-  protected final String CLASS_NAME = ClassName.valueOf(this);
-
-  public FixWebView(Context context) {
-    super(context);
-    init();
-  }
-
-  public FixWebView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init();
-  }
-
-  public FixWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    init();
-  }
-
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public FixWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr, defStyleRes);
-    init();
-  }
-
-  @SuppressWarnings("deprecation")
-  public FixWebView(Context context, AttributeSet attrs, int defStyleAttr,
-      boolean privateBrowsing) {
-    super(context, attrs, defStyleAttr, privateBrowsing);
-    init();
-  }
-
-  private CustomViewer mCustomViewer;
-
-  private void init() {
-    CookiesManager.getInstance().enableCookie(this);
-
-    WebSettings settings = getSettings();
-    settings.setJavaScriptEnabled(true);
-    settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-    settings.setAllowFileAccess(true);
-    settings.setAppCacheEnabled(true);
-    settings.setDomStorageEnabled(true);
-    settings.setDatabaseEnabled(true);
-    settings.setSupportZoom(true);
-    settings.setUserAgentString(settings.getUserAgentString() + " Block/0.1");
-    settings.setUseWideViewPort(true);
-    settings.setLoadWithOverviewMode(true);
-    settings.setPluginState(WebSettings.PluginState.ON);
-    settings.setLoadsImagesAutomatically(true);
-    settings.setGeolocationEnabled(true);
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-    }
-
-    setWebViewClient(new WebViewClientImpl(this));
-    setWebChromeClient(new WebChromeClientImpl(this));
-  }
-
-  public static class WebViewClientImpl extends WebViewClient {
-
     protected final String CLASS_NAME = ClassName.valueOf(this);
-    protected final FixWebView mFixWebView;
 
-    public WebViewClientImpl(FixWebView fixWebView) {
-      mFixWebView = fixWebView;
+    public FixWebView(Context context) {
+        super(context);
+        init();
     }
 
-    @Override
-    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-      handler.proceed();
+    public FixWebView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
     }
 
-    @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      Log.v(CLASS_NAME, "shouldOverrideUrlLoading", url);
-      return false;
+    public FixWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
     }
 
-    @Override public void onPageStarted(WebView view, String url, Bitmap favicon) {
-      Log.v(CLASS_NAME, "onPageStarted", url, "webview url", view.getUrl());
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public FixWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
     }
 
-    @Override public void onPageCommitVisible(WebView view, String url) {
-      Log.v(CLASS_NAME, "onPageCommitVisible", url);
+    @SuppressWarnings("deprecation")
+    public FixWebView(
+            Context context, AttributeSet attrs, int defStyleAttr, boolean privateBrowsing) {
+        super(context, attrs, defStyleAttr, privateBrowsing);
+        init();
     }
 
-    @Override public void onPageFinished(WebView view, String url) {
-      Log.v(CLASS_NAME, "onPageFinished", url, "webview url", view.getUrl());
-    }
-  }
+    private CustomViewer mCustomViewer;
 
-  public static class WebChromeClientImpl extends WebChromeClient {
+    private void init() {
+        CookiesManager.getInstance().enableCookie(this);
 
-    protected final String CLASS_NAME = ClassName.valueOf(this);
-    protected final FixWebView mFixWebView;
+        WebSettings settings = getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setAllowFileAccess(true);
+        settings.setAppCacheEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setUserAgentString(settings.getUserAgentString() + " Block/0.1");
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setPluginState(WebSettings.PluginState.ON);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setGeolocationEnabled(true);
 
-    public WebChromeClientImpl(FixWebView fixWebView) {
-      mFixWebView = fixWebView;
-    }
-
-    @Override public void onReceivedTitle(WebView view, String title) {
-      Log.v(CLASS_NAME, "onReceivedTitle", title);
-    }
-
-    @Override public void onShowCustomView(View view, CustomViewCallback callback) {
-      Log.v(CLASS_NAME, "onShowCustomView");
-      if (mFixWebView.mCustomViewer != null) {
-        mFixWebView.mCustomViewer.show(view, callback);
-      }
-    }
-
-    @Override
-    public void onShowCustomView(View view, int requestedOrientation, CustomViewCallback callback) {
-      Log.v(CLASS_NAME, "onShowCustomView requestedOrientation", requestedOrientation);
-      onShowCustomView(view, callback);
-    }
-
-    @Override public void onHideCustomView() {
-      Log.v(CLASS_NAME, "onHideCustomView");
-      if (mFixWebView.mCustomViewer != null) {
-        mFixWebView.mCustomViewer.hide();
-      }
-    }
-
-    @Override public void onGeolocationPermissionsShowPrompt(String origin,
-        GeolocationPermissions.Callback callback) {
-      callback.invoke(origin, true, true);
-      super.onGeolocationPermissionsShowPrompt(origin, callback);
-    }
-  }
-
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-
-    try {
-      if (mCustomViewer != null) {
-        mCustomViewer.hide();
-      }
-    } catch (Throwable e) {
-      e.printStackTrace();
-    }
-  }
-
-  public boolean dispatchBackPressed() {
-    if (canGoBack()) {
-      goBack();
-      return true;
-    }
-    return false;
-  }
-
-  public void setCustomViewer(CustomViewer customViewer) {
-    if (mCustomViewer != null) {
-      throw new IllegalAccessError("already set custom viewer");
-    }
-    mCustomViewer = customViewer;
-  }
-
-  public static class CustomViewer {
-
-    private final String CLASS_NAME = ClassName.valueOf(this);
-
-    private final Activity mActivity;
-    private final int mOriginalRequestOrientation;
-    private final ViewGroup mParent;
-    private final boolean mIgnoreFullscreen;
-
-    private View mView;
-    private WebChromeClient.CustomViewCallback mCallback;
-
-    public CustomViewer(Activity activity, ViewGroup parent) {
-      this(activity, parent, false);
-    }
-
-    public CustomViewer(Activity activity, ViewGroup parent, boolean ignoreFullscreen) {
-      mActivity = activity;
-      mOriginalRequestOrientation = mActivity.getRequestedOrientation();
-      mParent = parent;
-      mIgnoreFullscreen = ignoreFullscreen;
-
-      Log.v(CLASS_NAME, "original request orientation", mOriginalRequestOrientation);
-    }
-
-    public void show(View view, WebChromeClient.CustomViewCallback callback) {
-      if (view == null) {
-        Log.e(CLASS_NAME, "view is null");
-        return;
-      }
-
-      if (mView != null) {
-        Log.e(CLASS_NAME, "already exist custom view", mView);
-        return;
-      }
-
-      mView = createDecorView(view);
-      mCallback = callback;
-
-      mParent.addView(mView);
-      if (!mIgnoreFullscreen) {
-        requestFullscreen();
-      }
-    }
-
-    public View createDecorView(View view) {
-      FrameLayout decorView = new FrameLayout(view.getContext());
-      decorView.setBackgroundColor(Color.BLACK);
-      ViewGroup.LayoutParams decorViewLayoutParams =
-          new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-              ViewGroup.LayoutParams.MATCH_PARENT);
-      decorView.setLayoutParams(decorViewLayoutParams);
-      decorView.addView(view);
-      return decorView;
-    }
-
-    public void hide() {
-      if (mView == null) {
-        return;
-      }
-
-      mParent.removeView(mView);
-      mView = null;
-      if (mCallback != null) {
-        mCallback.onCustomViewHidden();
-      }
-      if (!mIgnoreFullscreen) {
-        requestExitFullscreen();
-      }
-    }
-
-    private Runnable mRequestSystemUiRunnable;
-
-    protected void requestSystemUiFullscreen(final View view) {
-      int systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-          | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-          | View.SYSTEM_UI_FLAG_LOW_PROFILE
-          | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        systemUiVisibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-      }
-
-      final int originalSystemUiVisibility = systemUiVisibility;
-      final int normalSystemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-      view.setSystemUiVisibility(systemUiVisibility);
-      view.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
-        @Override public void onSystemUiVisibilityChange(int visibility) {
-          Log.v(CLASS_NAME, "requestSystemUiFullscreen onSystemUiVisibilityChange", visibility);
-
-          mRequestSystemUiRunnable = new Runnable() {
-            @Override public void run() {
-              if (mRequestSystemUiRunnable != this) {
-                return;
-              }
-
-              view.setSystemUiVisibility(originalSystemUiVisibility);
-            }
-          };
-
-          if (visibility == View.SYSTEM_UI_FLAG_VISIBLE) {
-            view.setSystemUiVisibility(normalSystemUiVisibility);
-          }
-          view.postDelayed(mRequestSystemUiRunnable, 1800L);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-      });
+
+        setWebViewClient(new WebViewClientImpl(this));
+        setWebChromeClient(new WebChromeClientImpl(this));
     }
 
-    public void requestFullscreen() {
-      if (mView != null) {
-        requestSystemUiFullscreen(mView);
-      }
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    public static class WebViewClientImpl extends WebViewClient {
+
+        protected final String CLASS_NAME = ClassName.valueOf(this);
+        protected final FixWebView mFixWebView;
+
+        public WebViewClientImpl(FixWebView fixWebView) {
+            mFixWebView = fixWebView;
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.v(CLASS_NAME, "shouldOverrideUrlLoading", url);
+            return false;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.v(CLASS_NAME, "onPageStarted", url, "webview url", view.getUrl());
+        }
+
+        @Override
+        public void onPageCommitVisible(WebView view, String url) {
+            Log.v(CLASS_NAME, "onPageCommitVisible", url);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            Log.v(CLASS_NAME, "onPageFinished", url, "webview url", view.getUrl());
+        }
     }
 
-    public void requestExitFullscreen() {
-      mActivity.setRequestedOrientation(mOriginalRequestOrientation);
+    public static class WebChromeClientImpl extends WebChromeClient {
+
+        protected final String CLASS_NAME = ClassName.valueOf(this);
+        protected final FixWebView mFixWebView;
+
+        public WebChromeClientImpl(FixWebView fixWebView) {
+            mFixWebView = fixWebView;
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            Log.v(CLASS_NAME, "onReceivedTitle", title);
+        }
+
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            Log.v(CLASS_NAME, "onShowCustomView");
+            if (mFixWebView.mCustomViewer != null) {
+                mFixWebView.mCustomViewer.show(view, callback);
+            }
+        }
+
+        @Override
+        public void onShowCustomView(
+                View view, int requestedOrientation, CustomViewCallback callback) {
+            Log.v(CLASS_NAME, "onShowCustomView requestedOrientation", requestedOrientation);
+            onShowCustomView(view, callback);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            Log.v(CLASS_NAME, "onHideCustomView");
+            if (mFixWebView.mCustomViewer != null) {
+                mFixWebView.mCustomViewer.hide();
+            }
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(
+                String origin, GeolocationPermissions.Callback callback) {
+            callback.invoke(origin, true, true);
+            super.onGeolocationPermissionsShowPrompt(origin, callback);
+        }
     }
-  }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        try {
+            if (mCustomViewer != null) {
+                mCustomViewer.hide();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean dispatchBackPressed() {
+        if (canGoBack()) {
+            goBack();
+            return true;
+        }
+        return false;
+    }
+
+    public void setCustomViewer(CustomViewer customViewer) {
+        if (mCustomViewer != null) {
+            throw new IllegalAccessError("already set custom viewer");
+        }
+        mCustomViewer = customViewer;
+    }
+
+    public static class CustomViewer {
+
+        private final String CLASS_NAME = ClassName.valueOf(this);
+
+        private final Activity mActivity;
+        private final int mOriginalRequestOrientation;
+        private final ViewGroup mParent;
+        private final boolean mIgnoreFullscreen;
+
+        private View mView;
+        private WebChromeClient.CustomViewCallback mCallback;
+
+        public CustomViewer(Activity activity, ViewGroup parent) {
+            this(activity, parent, false);
+        }
+
+        public CustomViewer(Activity activity, ViewGroup parent, boolean ignoreFullscreen) {
+            mActivity = activity;
+            mOriginalRequestOrientation = mActivity.getRequestedOrientation();
+            mParent = parent;
+            mIgnoreFullscreen = ignoreFullscreen;
+
+            Log.v(CLASS_NAME, "original request orientation", mOriginalRequestOrientation);
+        }
+
+        public void show(View view, WebChromeClient.CustomViewCallback callback) {
+            if (view == null) {
+                Log.e(CLASS_NAME, "view is null");
+                return;
+            }
+
+            if (mView != null) {
+                Log.e(CLASS_NAME, "already exist custom view", mView);
+                return;
+            }
+
+            mView = createDecorView(view);
+            mCallback = callback;
+
+            mParent.addView(mView);
+            if (!mIgnoreFullscreen) {
+                requestFullscreen();
+            }
+        }
+
+        public View createDecorView(View view) {
+            FrameLayout decorView = new FrameLayout(view.getContext());
+            decorView.setBackgroundColor(Color.BLACK);
+            ViewGroup.LayoutParams decorViewLayoutParams =
+                    new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+            decorView.setLayoutParams(decorViewLayoutParams);
+            decorView.addView(view);
+            return decorView;
+        }
+
+        public void hide() {
+            if (mView == null) {
+                return;
+            }
+
+            mParent.removeView(mView);
+            mView = null;
+            if (mCallback != null) {
+                mCallback.onCustomViewHidden();
+            }
+            if (!mIgnoreFullscreen) {
+                requestExitFullscreen();
+            }
+        }
+
+        private Runnable mRequestSystemUiRunnable;
+
+        protected void requestSystemUiFullscreen(final View view) {
+            int systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                systemUiVisibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            }
+
+            final int originalSystemUiVisibility = systemUiVisibility;
+            final int normalSystemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+            view.setSystemUiVisibility(systemUiVisibility);
+            view.setOnSystemUiVisibilityChangeListener(
+                    new OnSystemUiVisibilityChangeListener() {
+                        @Override
+                        public void onSystemUiVisibilityChange(int visibility) {
+                            Log.v(
+                                    CLASS_NAME,
+                                    "requestSystemUiFullscreen onSystemUiVisibilityChange",
+                                    visibility);
+
+                            mRequestSystemUiRunnable =
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mRequestSystemUiRunnable != this) {
+                                                return;
+                                            }
+
+                                            view.setSystemUiVisibility(originalSystemUiVisibility);
+                                        }
+                                    };
+
+                            if (visibility == View.SYSTEM_UI_FLAG_VISIBLE) {
+                                view.setSystemUiVisibility(normalSystemUiVisibility);
+                            }
+                            view.postDelayed(mRequestSystemUiRunnable, 1800L);
+                        }
+                    });
+        }
+
+        public void requestFullscreen() {
+            if (mView != null) {
+                requestSystemUiFullscreen(mView);
+            }
+            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        }
+
+        public void requestExitFullscreen() {
+            mActivity.setRequestedOrientation(mOriginalRequestOrientation);
+        }
+    }
 }

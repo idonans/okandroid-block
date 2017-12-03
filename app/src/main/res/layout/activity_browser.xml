@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-  <com.okandroid.demo.block.FitUntopInsetsToParent
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      />
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="#ffa10000"
-      android:fitsSystemWindows="true"
-      >
+    android:orientation="vertical">
+
+    <com.okandroid.demo.block.FitUntopInsetsToParent
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
     <FrameLayout
-        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        >
-      <TextView
-          android:id="@+id/title"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:gravity="center"
-          android:includeFontPadding="false"
-          android:maxLines="1"
-          android:singleLine="true"
-          />
+        android:layout_height="wrap_content"
+        android:background="#ffa10000"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </FrameLayout>
     </FrameLayout>
-  </FrameLayout>
-  <com.okandroid.block.widget.FixWebView
-      android:id="@+id/webview"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      />
+
+    <com.okandroid.block.widget.FixWebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.okandroid.block.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.logging.FLogDefaultLoggingDelegate;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -12,66 +13,74 @@ import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.FileUtil;
+
 import java.io.File;
 
-/**
- * fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。
- */
+/** fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。 */
 public class FrescoManager {
 
-  private static class InstanceHolder {
+    private static class InstanceHolder {
 
-    private static final FrescoManager sInstance = new FrescoManager();
-  }
-
-  private static boolean sInit;
-
-  public static FrescoManager getInstance() {
-    FrescoManager instance = InstanceHolder.sInstance;
-    sInit = true;
-    return instance;
-  }
-
-  public static boolean isInit() {
-    return sInit;
-  }
-
-  private final String CLASS_NAME = ClassName.valueOf(this);
-
-  private FrescoManager() {
-    Log.v(CLASS_NAME, "init");
-    File frescoCacheBaseDir = FileUtil.getExternalCacheDir();
-    if (frescoCacheBaseDir == null) {
-      frescoCacheBaseDir = FileUtil.getCacheDir();
+        private static final FrescoManager sInstance = new FrescoManager();
     }
 
-    FLogDefaultLoggingDelegate fLogDefaultLoggingDelegate =
-        FLogDefaultLoggingDelegate.getInstance();
-    fLogDefaultLoggingDelegate.setApplicationTag(AppEnvironment.getAppProperties().getLogTag());
-    fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
-        AppEnvironment.getAppProperties().getLogLevel());
+    private static boolean sInit;
 
-    Bitmap.Config config = Bitmap.Config.ARGB_8888;
-    if (AppEnvironment.getAppProperties().isFresco565Config()) {
-      config = Bitmap.Config.RGB_565;
+    public static FrescoManager getInstance() {
+        FrescoManager instance = InstanceHolder.sInstance;
+        sInit = true;
+        return instance;
     }
 
-    Context context = ContextUtil.getContext();
-    ImagePipelineConfig.Builder imagePipelineConfigBuilder = ImagePipelineConfig.newBuilder(context)
-        .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(context)
-            .setBaseDirectoryPath(frescoCacheBaseDir)
-            .setBaseDirectoryName(
-                "fresco_main_disk_" + ProcessManager.getInstance().getProcessTag())
-            .build())
-        .setSmallImageDiskCacheConfig(DiskCacheConfig.newBuilder(context)
-            .setBaseDirectoryPath(frescoCacheBaseDir)
-            .setBaseDirectoryName(
-                "fresco_small_disk_" + ProcessManager.getInstance().getProcessTag())
-            .build())
-        .setNetworkFetcher(new OkHttpNetworkFetcher(OkHttpManager.getInstance().getOkHttpClient()))
-        .setDownsampleEnabled(true)
-        .setBitmapsConfig(config);
+    public static boolean isInit() {
+        return sInit;
+    }
 
-    Fresco.initialize(context, imagePipelineConfigBuilder.build());
-  }
+    private final String CLASS_NAME = ClassName.valueOf(this);
+
+    private FrescoManager() {
+        Log.v(CLASS_NAME, "init");
+        File frescoCacheBaseDir = FileUtil.getExternalCacheDir();
+        if (frescoCacheBaseDir == null) {
+            frescoCacheBaseDir = FileUtil.getCacheDir();
+        }
+
+        FLogDefaultLoggingDelegate fLogDefaultLoggingDelegate =
+                FLogDefaultLoggingDelegate.getInstance();
+        fLogDefaultLoggingDelegate.setApplicationTag(AppEnvironment.getAppProperties().getLogTag());
+        fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
+                AppEnvironment.getAppProperties().getLogLevel());
+
+        Bitmap.Config config = Bitmap.Config.ARGB_8888;
+        if (AppEnvironment.getAppProperties().isFresco565Config()) {
+            config = Bitmap.Config.RGB_565;
+        }
+
+        Context context = ContextUtil.getContext();
+        ImagePipelineConfig.Builder imagePipelineConfigBuilder =
+                ImagePipelineConfig.newBuilder(context)
+                        .setMainDiskCacheConfig(
+                                DiskCacheConfig.newBuilder(context)
+                                        .setBaseDirectoryPath(frescoCacheBaseDir)
+                                        .setBaseDirectoryName(
+                                                "fresco_main_disk_"
+                                                        + ProcessManager.getInstance()
+                                                                .getProcessTag())
+                                        .build())
+                        .setSmallImageDiskCacheConfig(
+                                DiskCacheConfig.newBuilder(context)
+                                        .setBaseDirectoryPath(frescoCacheBaseDir)
+                                        .setBaseDirectoryName(
+                                                "fresco_small_disk_"
+                                                        + ProcessManager.getInstance()
+                                                                .getProcessTag())
+                                        .build())
+                        .setNetworkFetcher(
+                                new OkHttpNetworkFetcher(
+                                        OkHttpManager.getInstance().getOkHttpClient()))
+                        .setDownsampleEnabled(true)
+                        .setBitmapsConfig(config);
+
+        Fresco.initialize(context, imagePipelineConfigBuilder.build());
+    }
 }
