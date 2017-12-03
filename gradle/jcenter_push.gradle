@@ -38,7 +38,7 @@ task androidJavadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('charset', 'UTF-8');
+    options.addStringOption('charset', 'UTF-8')
     failOnError false
 }
 task androidJavadocJar(type: Jar, dependsOn: androidJavadoc) {
