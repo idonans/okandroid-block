@@ -10,9 +10,11 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -108,7 +110,7 @@ public class AppEnvironment {
             return logTag;
         }
 
-        public Integer getLogLevel() {
+        public int getLogLevel() {
             final String key = "prop.logLevel";
             Integer logLevelInt = (Integer) mProperties.get(key);
             if (logLevelInt == null) {
@@ -152,7 +154,7 @@ public class AppEnvironment {
             return subDirName;
         }
 
-        public Boolean isFrescoEnable() {
+        public boolean isFrescoEnable() {
             final String key = "prop.frescoEnable";
             Boolean frescoEnable = (Boolean) mProperties.get(key);
             if (frescoEnable == null) {
