@@ -19,7 +19,7 @@ public class GBKLengthInputFilter implements InputFilter {
 
     public CharSequence filter(
             CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        Log.d(CLASS_NAME, source, start, end, dend, dstart, dend);
+        Log.d(CLASS_NAME, source, start, end, dest, dstart, dend);
 
         try {
 
