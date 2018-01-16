@@ -2,14 +2,20 @@ package com.okandroid.demo.block;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.jakewharton.rxbinding2.view.RxView;
+import com.okandroid.block.lang.GBKLengthInputFilter;
+
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.jakewharton.rxbinding2.view.RxView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.start_browser)
     View mStartBrowser;
+
+    @BindView(R.id.editText)
+    EditText mEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(BrowserActivity.startIntent(MainActivity.this));
                             }
                         });
+
+        mEditText.setFilters(new InputFilter[] {new GBKLengthInputFilter(10, true)});
     }
 
     private boolean mFullscreen;
