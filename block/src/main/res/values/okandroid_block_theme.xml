@@ -1,9 +1,6 @@
 <resources>
-
     <style name="OKAndroidBlock.Base.Theme" parent="Theme.AppCompat.Light.NoActionBar"></style>
-
     <style name="OKAndroidBlock.Base.Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar"></style>
-
     <style name="OKAndroidBlock.Theme" parent="OKAndroidBlock.Base.Theme">
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -13,7 +10,6 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsFloating">false</item>
     </style>
-
     <style name="OKAndroidBlock.Theme.Splash" parent="OKAndroidBlock.Base.Theme.Splash">
         <item name="android:windowBackground">@android:color/white</item>
     </style>
