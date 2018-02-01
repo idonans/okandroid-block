@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.okandroid.demo.block.FitUntopInsetsToParent
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-
+    <com.okandroid.block.widget.FitInsetsSpace
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff00ff"
+        app:systemInsetMaxBottom="8dp"
+        app:systemInsetMaxLeft="2dp"
+        app:systemInsetMaxRight="6dp"
+        app:systemInsetMaxTop="4dp"
+        app:systemInsetMinBottom="7dp"
+        app:systemInsetMinLeft="1dp"
+        app:systemInsetMinRight="5dp"
+        app:systemInsetMinTop="3dp" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffa10000"
         android:fitsSystemWindows="true">
-
         <FrameLayout
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="45dp">
-
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -29,7 +35,6 @@
                 android:singleLine="true" />
         </FrameLayout>
     </FrameLayout>
-
     <com.okandroid.block.widget.FixWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"

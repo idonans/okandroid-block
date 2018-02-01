@@ -48,45 +48,32 @@ public class FitInsetsSpace extends Space {
 
     protected void init(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         final TypedArray a =
-                context.obtainStyledAttributes(
-                        attrs, R.styleable.OKAndroidBlockFitInsetsSpace, defStyleAttr, 0);
+                context.obtainStyledAttributes(attrs, R.styleable.FitInsetsSpace, defStyleAttr, 0);
 
         mFitInsetSpaceMaxLeft =
                 a.getLayoutDimension(
-                        R.styleable.OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMaxLeft,
-                        mFitInsetSpaceMaxLeft);
+                        R.styleable.FitInsetsSpace_systemInsetMaxLeft, mFitInsetSpaceMaxLeft);
         mFitInsetSpaceMinLeft =
                 a.getLayoutDimension(
-                        R.styleable.OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMinLeft,
-                        mFitInsetSpaceMinLeft);
+                        R.styleable.FitInsetsSpace_systemInsetMinLeft, mFitInsetSpaceMinLeft);
         mFitInsetSpaceMaxTop =
                 a.getLayoutDimension(
-                        R.styleable.OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMaxTop,
-                        mFitInsetSpaceMaxTop);
+                        R.styleable.FitInsetsSpace_systemInsetMaxTop, mFitInsetSpaceMaxTop);
         mFitInsetSpaceMinTop =
                 a.getLayoutDimension(
-                        R.styleable.OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMinTop,
-                        mFitInsetSpaceMinTop);
+                        R.styleable.FitInsetsSpace_systemInsetMinTop, mFitInsetSpaceMinTop);
         mFitInsetSpaceMaxRight =
                 a.getLayoutDimension(
-                        R.styleable
-                                .OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMaxRight,
-                        mFitInsetSpaceMaxRight);
+                        R.styleable.FitInsetsSpace_systemInsetMaxRight, mFitInsetSpaceMaxRight);
         mFitInsetSpaceMinRight =
                 a.getLayoutDimension(
-                        R.styleable
-                                .OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMinRight,
-                        mFitInsetSpaceMinRight);
+                        R.styleable.FitInsetsSpace_systemInsetMinRight, mFitInsetSpaceMinRight);
         mFitInsetSpaceMaxBottom =
                 a.getLayoutDimension(
-                        R.styleable
-                                .OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMaxBottom,
-                        mFitInsetSpaceMaxBottom);
+                        R.styleable.FitInsetsSpace_systemInsetMaxBottom, mFitInsetSpaceMaxBottom);
         mFitInsetSpaceMinBottom =
                 a.getLayoutDimension(
-                        R.styleable
-                                .OKAndroidBlockFitInsetsSpace_okandroid_block_systemInsetMinBottom,
-                        mFitInsetSpaceMinBottom);
+                        R.styleable.FitInsetsSpace_systemInsetMinBottom, mFitInsetSpaceMinBottom);
 
         a.recycle();
 

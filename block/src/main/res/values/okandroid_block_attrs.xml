@@ -1,36 +1,44 @@
-<resources>
-    <declare-styleable name="OKAndroidBlockFitInsetsSpace">
-        <attr name="okandroid_block_systemInsetMaxLeft" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMinLeft" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMaxTop" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMinTop" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMaxRight" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMinRight" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMaxBottom" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
-        <attr name="okandroid_block_systemInsetMinBottom" format="reference|dimension|enum">
-            <enum name="none" value="-1" />
-            <enum name="all" value="-2" />
-        </attr>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <attr name="systemInsetMaxLeft" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMinLeft" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMaxTop" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMinTop" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMaxRight" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMinRight" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMaxBottom" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <attr name="systemInsetMinBottom" format="reference|dimension|enum" tools:ignore="ResourceName">
+        <enum name="none" value="-1" />
+        <enum name="all" value="-2" />
+    </attr>
+    <declare-styleable name="FitInsetsSpace" tools:ignore="ResourceName">
+        <attr name="systemInsetMaxLeft" />
+        <attr name="systemInsetMinLeft" />
+        <attr name="systemInsetMaxTop" />
+        <attr name="systemInsetMinTop" />
+        <attr name="systemInsetMaxRight" />
+        <attr name="systemInsetMinRight" />
+        <attr name="systemInsetMaxBottom" />
+        <attr name="systemInsetMinBottom" />
     </declare-styleable>
 </resources>
