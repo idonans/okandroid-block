@@ -26,7 +26,7 @@ public class FitInsetsSpace extends Space {
     }
 
     public FitInsetsSpace(Context context, AttributeSet attrs) {
-        this(context, null, 0);
+        this(context, attrs, 0);
     }
 
     public FitInsetsSpace(Context context, AttributeSet attrs, int defStyleAttr) {
