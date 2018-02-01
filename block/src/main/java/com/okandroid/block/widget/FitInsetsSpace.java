@@ -162,14 +162,13 @@ public class FitInsetsSpace extends Space {
                 calculateInsetPaddingValueConsumed(
                         left, mFitInsetSpaceMinLeft, mFitInsetSpaceMaxLeft);
         insetsPadding.top =
-                calculateInsetPaddingValueConsumed(
-                        left, mFitInsetSpaceMinTop, mFitInsetSpaceMaxTop);
+                calculateInsetPaddingValueConsumed(top, mFitInsetSpaceMinTop, mFitInsetSpaceMaxTop);
         insetsPadding.right =
                 calculateInsetPaddingValueConsumed(
-                        left, mFitInsetSpaceMinRight, mFitInsetSpaceMaxRight);
+                        right, mFitInsetSpaceMinRight, mFitInsetSpaceMaxRight);
         insetsPadding.bottom =
                 calculateInsetPaddingValueConsumed(
-                        left, mFitInsetSpaceMinBottom, mFitInsetSpaceMaxBottom);
+                        bottom, mFitInsetSpaceMinBottom, mFitInsetSpaceMaxBottom);
 
         if (!insetsPadding.equals(
                 new Rect(
