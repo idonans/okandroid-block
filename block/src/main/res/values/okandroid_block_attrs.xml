@@ -1,1 +1,36 @@
-<resources></resources>
+<resources>
+    <declare-styleable name="OKAndroidBlockFitInsetsSpace">
+        <attr name="okandroid_block_systemInsetMaxLeft" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMinLeft" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMaxTop" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMinTop" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMaxRight" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMinRight" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMaxBottom" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+        <attr name="okandroid_block_systemInsetMinBottom" format="reference|dimension|enum">
+            <enum name="none" value="-1" />
+            <enum name="all" value="-2" />
+        </attr>
+    </declare-styleable>
+</resources>
