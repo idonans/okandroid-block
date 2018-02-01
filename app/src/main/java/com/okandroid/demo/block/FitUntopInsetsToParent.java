@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
-import com.okandroid.block.widget.FitInsetsSpace;
+import com.okandroid.block.widget.FitInsetsLayout;
 
-public class FitUntopInsetsToParent extends FitInsetsSpace {
+public class FitUntopInsetsToParent extends FitInsetsLayout {
     public FitUntopInsetsToParent(Context context) {
         super(context);
     }

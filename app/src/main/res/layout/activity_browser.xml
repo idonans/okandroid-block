@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.okandroid.block.widget.FitInsetsSpace
+    <com.okandroid.block.widget.FitInsetsLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ff00ff"
-        app:systemInsetMaxBottom="8dp"
-        app:systemInsetMaxLeft="2dp"
-        app:systemInsetMaxRight="6dp"
-        app:systemInsetMaxTop="4dp"
-        app:systemInsetMinBottom="7dp"
-        app:systemInsetMinLeft="1dp"
-        app:systemInsetMinRight="5dp"
-        app:systemInsetMinTop="3dp" />
+        app:systemInsetPaddingMaxBottom="8dp"
+        app:systemInsetPaddingMaxLeft="all"
+        app:systemInsetPaddingMaxRight="6dp"
+        app:systemInsetPaddingMaxTop="20dp"
+        app:systemInsetPaddingMinBottom="7dp"
+        app:systemInsetPaddingMinLeft="1dp"
+        app:systemInsetPaddingMinRight="5dp"
+        app:systemInsetPaddingMinTop="all" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

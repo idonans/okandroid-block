@@ -5,122 +5,143 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.Space;
 import android.util.AttributeSet;
 import android.view.WindowInsets;
+import android.widget.FrameLayout;
 
 import com.okandroid.block.R;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
 
 /** 辅助处理自定义 window insets, 屏蔽版本差异 {@link #onFitInsets(int, int, int, int)} */
-public class FitInsetsSpace extends Space {
+public class FitInsetsLayout extends FrameLayout {
 
     private static final boolean DEBUG = true;
     private final String CLASS_NAME = ClassName.valueOf(this);
 
-    public FitInsetsSpace(Context context) {
+    public FitInsetsLayout(Context context) {
         this(context, null);
     }
 
-    public FitInsetsSpace(Context context, AttributeSet attrs) {
+    public FitInsetsLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public FitInsetsSpace(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FitInsetsLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs, 0);
+        init(context, attrs, defStyleAttr, 0);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public FitInsetsLayout(
+            @NonNull Context context,
+            @Nullable AttributeSet attrs,
+            int defStyleAttr,
+            int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public static final int NONE = -1;
     public static final int ALL = -2;
 
-    private int mFitInsetSpaceMaxLeft = NONE;
-    private int mFitInsetSpaceMinLeft = NONE;
-    private int mFitInsetSpaceMaxTop = NONE;
-    private int mFitInsetSpaceMinTop = NONE;
-    private int mFitInsetSpaceMaxRight = NONE;
-    private int mFitInsetSpaceMinRight = NONE;
-    private int mFitInsetSpaceMaxBottom = NONE;
-    private int mFitInsetSpaceMinBottom = NONE;
+    private int mFitInsetPaddingMaxLeft = NONE;
+    private int mFitInsetPaddingMinLeft = NONE;
+    private int mFitInsetPaddingMaxTop = NONE;
+    private int mFitInsetPaddingMinTop = NONE;
+    private int mFitInsetPaddingMaxRight = NONE;
+    private int mFitInsetPaddingMinRight = NONE;
+    private int mFitInsetPaddingMaxBottom = NONE;
+    private int mFitInsetPaddingMinBottom = NONE;
 
-    protected void init(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    protected void init(
+            Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         final TypedArray a =
-                context.obtainStyledAttributes(attrs, R.styleable.FitInsetsSpace, defStyleAttr, 0);
+                context.obtainStyledAttributes(
+                        attrs, R.styleable.FitInsetsLayout, defStyleAttr, defStyleRes);
 
-        mFitInsetSpaceMaxLeft =
+        mFitInsetPaddingMaxLeft =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMaxLeft, mFitInsetSpaceMaxLeft);
-        mFitInsetSpaceMinLeft =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxLeft,
+                        mFitInsetPaddingMaxLeft);
+        mFitInsetPaddingMinLeft =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMinLeft, mFitInsetSpaceMinLeft);
-        mFitInsetSpaceMaxTop =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMinLeft,
+                        mFitInsetPaddingMinLeft);
+        mFitInsetPaddingMaxTop =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMaxTop, mFitInsetSpaceMaxTop);
-        mFitInsetSpaceMinTop =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxTop,
+                        mFitInsetPaddingMaxTop);
+        mFitInsetPaddingMinTop =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMinTop, mFitInsetSpaceMinTop);
-        mFitInsetSpaceMaxRight =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMinTop,
+                        mFitInsetPaddingMinTop);
+        mFitInsetPaddingMaxRight =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMaxRight, mFitInsetSpaceMaxRight);
-        mFitInsetSpaceMinRight =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxRight,
+                        mFitInsetPaddingMaxRight);
+        mFitInsetPaddingMinRight =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMinRight, mFitInsetSpaceMinRight);
-        mFitInsetSpaceMaxBottom =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMinRight,
+                        mFitInsetPaddingMinRight);
+        mFitInsetPaddingMaxBottom =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMaxBottom, mFitInsetSpaceMaxBottom);
-        mFitInsetSpaceMinBottom =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxBottom,
+                        mFitInsetPaddingMaxBottom);
+        mFitInsetPaddingMinBottom =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsSpace_systemInsetMinBottom, mFitInsetSpaceMinBottom);
+                        R.styleable.FitInsetsLayout_systemInsetPaddingMinBottom,
+                        mFitInsetPaddingMinBottom);
 
         a.recycle();
 
         if (DEBUG) {
-            Log.d(CLASS_NAME, "fit inset space max", getFitInsetSpaceMax());
-            Log.d(CLASS_NAME, "fit inset space min", getFitInsetSpaceMin());
+            Log.d(CLASS_NAME, "fit inset padding max", getFitInsetPaddingMax());
+            Log.d(CLASS_NAME, "fit inset padding min", getFitInsetPaddingMin());
         }
     }
 
-    public Rect getFitInsetSpaceMax() {
+    public Rect getFitInsetPaddingMax() {
         return new Rect(
-                mFitInsetSpaceMaxLeft,
-                mFitInsetSpaceMaxTop,
-                mFitInsetSpaceMaxRight,
-                mFitInsetSpaceMaxBottom);
+                mFitInsetPaddingMaxLeft,
+                mFitInsetPaddingMaxTop,
+                mFitInsetPaddingMaxRight,
+                mFitInsetPaddingMaxBottom);
     }
 
-    public void setFitInsetSpaceMax(int left, int top, int right, int bottom) {
-        if (mFitInsetSpaceMaxLeft != left
-                || mFitInsetSpaceMaxTop != top
-                || mFitInsetSpaceMaxRight != right
-                || mFitInsetSpaceMaxBottom != bottom) {
-            mFitInsetSpaceMaxLeft = left;
-            mFitInsetSpaceMaxTop = top;
-            mFitInsetSpaceMaxRight = right;
-            mFitInsetSpaceMaxBottom = bottom;
+    public void setFitInsetPaddingMax(int left, int top, int right, int bottom) {
+        if (mFitInsetPaddingMaxLeft != left
+                || mFitInsetPaddingMaxTop != top
+                || mFitInsetPaddingMaxRight != right
+                || mFitInsetPaddingMaxBottom != bottom) {
+            mFitInsetPaddingMaxLeft = left;
+            mFitInsetPaddingMaxTop = top;
+            mFitInsetPaddingMaxRight = right;
+            mFitInsetPaddingMaxBottom = bottom;
             ViewCompat.requestApplyInsets(this);
         }
     }
 
-    public Rect getFitInsetSpaceMin() {
+    public Rect getFitInsetPaddingMin() {
         return new Rect(
-                mFitInsetSpaceMinLeft,
-                mFitInsetSpaceMinTop,
-                mFitInsetSpaceMinRight,
-                mFitInsetSpaceMinBottom);
+                mFitInsetPaddingMinLeft,
+                mFitInsetPaddingMinTop,
+                mFitInsetPaddingMinRight,
+                mFitInsetPaddingMinBottom);
     }
 
-    public void setFitInsetSpaceMin(int left, int top, int right, int bottom) {
-        if (mFitInsetSpaceMinLeft != left
-                || mFitInsetSpaceMinTop != top
-                || mFitInsetSpaceMinRight != right
-                || mFitInsetSpaceMinBottom != bottom) {
-            mFitInsetSpaceMinLeft = left;
-            mFitInsetSpaceMinTop = top;
-            mFitInsetSpaceMinRight = right;
-            mFitInsetSpaceMinBottom = bottom;
+    public void setFitInsetPaddingMin(int left, int top, int right, int bottom) {
+        if (mFitInsetPaddingMinLeft != left
+                || mFitInsetPaddingMinTop != top
+                || mFitInsetPaddingMinRight != right
+                || mFitInsetPaddingMinBottom != bottom) {
+            mFitInsetPaddingMinLeft = left;
+            mFitInsetPaddingMinTop = top;
+            mFitInsetPaddingMinRight = right;
+            mFitInsetPaddingMinBottom = bottom;
             ViewCompat.requestApplyInsets(this);
         }
     }
@@ -160,28 +181,19 @@ public class FitInsetsSpace extends Space {
 
         insetsPadding.left =
                 calculateInsetPaddingValueConsumed(
-                        left, mFitInsetSpaceMinLeft, mFitInsetSpaceMaxLeft);
+                        left, mFitInsetPaddingMinLeft, mFitInsetPaddingMaxLeft);
         insetsPadding.top =
-                calculateInsetPaddingValueConsumed(top, mFitInsetSpaceMinTop, mFitInsetSpaceMaxTop);
+                calculateInsetPaddingValueConsumed(
+                        top, mFitInsetPaddingMinTop, mFitInsetPaddingMaxTop);
         insetsPadding.right =
                 calculateInsetPaddingValueConsumed(
-                        right, mFitInsetSpaceMinRight, mFitInsetSpaceMaxRight);
+                        right, mFitInsetPaddingMinRight, mFitInsetPaddingMaxRight);
         insetsPadding.bottom =
                 calculateInsetPaddingValueConsumed(
-                        bottom, mFitInsetSpaceMinBottom, mFitInsetSpaceMaxBottom);
+                        bottom, mFitInsetPaddingMinBottom, mFitInsetPaddingMaxBottom);
 
-        if (!insetsPadding.equals(
-                new Rect(
-                        getPaddingLeft(),
-                        getPaddingTop(),
-                        getPaddingRight(),
-                        getPaddingBottom()))) {
-            setPadding(
-                    insetsPadding.left,
-                    insetsPadding.top,
-                    insetsPadding.right,
-                    insetsPadding.bottom);
-        }
+        setPadding(
+                insetsPadding.left, insetsPadding.top, insetsPadding.right, insetsPadding.bottom);
 
         Rect remain =
                 new Rect(
@@ -201,9 +213,9 @@ public class FitInsetsSpace extends Space {
                     "remain:",
                     remain,
                     "min:",
-                    getFitInsetSpaceMin(),
+                    getFitInsetPaddingMin(),
                     "max:",
-                    getFitInsetSpaceMax());
+                    getFitInsetPaddingMax());
         }
 
         return remain;
