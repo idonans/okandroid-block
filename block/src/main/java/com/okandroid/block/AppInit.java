@@ -50,8 +50,9 @@ public class AppInit {
                         try {
                             os = new ByteArrayOutputStream(1024 * 8);
                             pw = new PrintWriter(os);
-                            pw.write("AppInit stack info");
+                            pw.write("AppInit stack info\n");
                             appInitStackInfo.printStackTrace(pw);
+                            pw.flush();
                             return os.toString();
                         } catch (Throwable e) {
                             e.printStackTrace();
