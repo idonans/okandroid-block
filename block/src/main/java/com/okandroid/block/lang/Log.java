@@ -54,7 +54,7 @@ public class Log {
 
         @Override
         public void print(int logLevel, Object... messages) {
-            if (isLoggable(logLevel)) {
+            if (isLoggable(mLogTag, logLevel)) {
                 android.util.Log.println(logLevel, mLogTag, formatLogMessages(messages));
             }
         }
@@ -74,8 +74,8 @@ public class Log {
             return builder.toString();
         }
 
-        private boolean isLoggable(int logLevel) {
-            return logLevel >= mLogLevel;
+        private boolean isLoggable(String tag, int logLevel) {
+            return logLevel >= mLogLevel || android.util.Log.isLoggable(tag, logLevel);
         }
 
         /** log tag 长度不能超过 23 */
