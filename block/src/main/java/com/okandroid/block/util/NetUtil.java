@@ -12,6 +12,9 @@ public class NetUtil {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager)
                         ContextUtil.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager == null) {
+            return false;
+        }
         return connectivityManager.getActiveNetworkInfo() != null;
     }
 
@@ -20,6 +23,9 @@ public class NetUtil {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager)
                         ContextUtil.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager == null) {
+            return false;
+        }
         return ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager);
     }
 }
