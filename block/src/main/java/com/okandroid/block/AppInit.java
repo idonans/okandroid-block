@@ -5,7 +5,6 @@ import android.content.ContentProvider;
 import android.content.Context;
 
 import com.okandroid.block.lang.BlockFileProvider;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.IOUtil;
 
@@ -32,15 +31,7 @@ public class AppInit {
         sInit = true;
 
         final Throwable appInitStackInfo = new Throwable("AppInit#init");
-
-        if (context == null) {
-            throw new IllegalArgumentException("context is null");
-        }
-
-        ContextUtil.setContext(context);
-        AppEnvironment.init();
-
-        Log.v(
+        DelayLog.v(
                 new Object() {
                     @Override
                     public String toString() {
@@ -63,6 +54,13 @@ public class AppInit {
                         return null;
                     }
                 });
+
+        if (context == null) {
+            throw new IllegalArgumentException("context is null");
+        }
+
+        ContextUtil.setContext(context);
+        AppEnvironment.init();
 
         LocalDataInit.touch();
     }

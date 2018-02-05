@@ -43,7 +43,7 @@ public class AppEnvironment {
         }
         sInit = true;
 
-        Log.v(TAG, "init");
+        DelayLog.v(TAG, "init");
 
         Application application = (Application) ContextUtil.getContext();
         application.registerActivityLifecycleCallbacks(sInternalApplicationCallbacks);
@@ -75,7 +75,7 @@ public class AppEnvironment {
 
         @Override
         public void onConfigurationChanged(Configuration newConfig) {
-            Log.v(CLASS_NAME, "onConfigurationChanged", "clear properties");
+            DelayLog.v(CLASS_NAME, "onConfigurationChanged", "clear properties");
             mProperties.clear();
 
             // set Log variable on configuration changed
@@ -90,7 +90,7 @@ public class AppEnvironment {
                 PackageManager pm = context.getPackageManager();
                 ApplicationInfo appInfo = context.getApplicationInfo();
                 appLabel = String.valueOf(appInfo.loadLabel(pm));
-                Log.v(CLASS_NAME, "load property", key, appLabel);
+                DelayLog.v(CLASS_NAME, "load property", key, appLabel);
                 mProperties.put(key, appLabel);
             }
             return appLabel;
@@ -104,7 +104,7 @@ public class AppEnvironment {
                 if (TextUtils.isEmpty(logTag)) {
                     logTag = getAppLabel();
                 }
-                Log.v(CLASS_NAME, "load property", key, logTag);
+                DelayLog.v(CLASS_NAME, "load property", key, logTag);
                 mProperties.put(key, logTag);
             }
             return logTag;
@@ -134,7 +134,7 @@ public class AppEnvironment {
                                     + logLevel
                                     + "], only VERBOSE DEBUG INFO WARN ERROR support");
                 }
-                Log.v(CLASS_NAME, "load property", key, logLevelInt, logLevel);
+                DelayLog.v(CLASS_NAME, "load property", key, logLevelInt, logLevel);
                 mProperties.put(key, logLevelInt);
             }
             return logLevelInt;
@@ -162,7 +162,7 @@ public class AppEnvironment {
                         ContextUtil.getContext()
                                 .getResources()
                                 .getBoolean(R.bool.okandroid_block_fresco_enable);
-                Log.v(CLASS_NAME, "load property", key, frescoEnable);
+                DelayLog.v(CLASS_NAME, "load property", key, frescoEnable);
                 mProperties.put(key, frescoEnable);
             }
             return frescoEnable;
@@ -176,7 +176,7 @@ public class AppEnvironment {
                         ContextUtil.getContext()
                                 .getResources()
                                 .getBoolean(R.bool.okandroid_block_fresco_565_config);
-                Log.v(CLASS_NAME, "load property", key, fresco565Config);
+                DelayLog.v(CLASS_NAME, "load property", key, fresco565Config);
                 mProperties.put(key, fresco565Config);
             }
             return fresco565Config;
