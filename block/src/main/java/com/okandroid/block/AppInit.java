@@ -3,8 +3,14 @@ package com.okandroid.block;
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.Context;
+
 import com.okandroid.block.lang.BlockFileProvider;
+import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
+import com.okandroid.block.util.IOUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 
 /**
  * call {@link AppInit#init(Context)} on {@link Application#onCreate()}, {@link
@@ -17,7 +23,6 @@ public class AppInit {
 
     private AppInit() {}
 
-    private static final boolean DEBUG = true;
     private static boolean sInit;
 
     public static synchronized void init(Context context) {
@@ -26,9 +31,7 @@ public class AppInit {
         }
         sInit = true;
 
-        if (DEBUG) {
-            new RuntimeException("(DEBUG) AppInit stack").printStackTrace();
-        }
+        final Throwable appInitStackInfo = new Throwable("AppInit#init");
 
         if (context == null) {
             throw new IllegalArgumentException("context is null");
@@ -36,6 +39,30 @@ public class AppInit {
 
         ContextUtil.setContext(context);
         AppEnvironment.init();
+
+        Log.v(
+                new Object() {
+                    @Override
+                    public String toString() {
+                        // delay print stack info
+                        ByteArrayOutputStream os = null;
+                        PrintWriter pw = null;
+                        try {
+                            os = new ByteArrayOutputStream(1024 * 8);
+                            pw = new PrintWriter(os);
+                            pw.write("AppInit stack info");
+                            appInitStackInfo.printStackTrace(pw);
+                            return os.toString();
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        } finally {
+                            IOUtil.closeQuietly(pw);
+                            IOUtil.closeQuietly(os);
+                        }
+                        return null;
+                    }
+                });
+
         LocalDataInit.touch();
     }
 }
