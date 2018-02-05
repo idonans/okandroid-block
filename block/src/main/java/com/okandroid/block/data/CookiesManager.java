@@ -108,6 +108,13 @@ public class CookiesManager {
             try {
                 String[] cookies = cookieString.split(";");
                 for (String cookie : cookies) {
+                    if (cookie != null) {
+                        cookie = cookie.trim();
+                    }
+                    if (TextUtils.isEmpty(cookie)) {
+                        continue;
+                    }
+
                     Cookie itemCookie = Cookie.parse(url, cookie);
                     if (itemCookie != null) {
                         cookieList.add(itemCookie);
