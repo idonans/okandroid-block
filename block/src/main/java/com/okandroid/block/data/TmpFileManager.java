@@ -4,6 +4,7 @@ import android.support.annotation.CheckResult;
 
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.thread.Threads;
 import com.okandroid.block.util.FileUtil;
 
@@ -15,15 +16,18 @@ import java.io.File;
  */
 public class TmpFileManager {
 
-    private static class InstanceHolder {
-
-        private static final TmpFileManager sInstance = new TmpFileManager();
-    }
+    private static final Singleton<TmpFileManager> sInstance =
+            new Singleton<TmpFileManager>() {
+                @Override
+                protected TmpFileManager create() {
+                    return new TmpFileManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static TmpFileManager getInstance() {
-        TmpFileManager instance = InstanceHolder.sInstance;
+        TmpFileManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
