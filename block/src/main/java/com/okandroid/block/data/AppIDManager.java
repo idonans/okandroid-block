@@ -4,20 +4,25 @@ import android.text.TextUtils;
 
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 
 import java.util.UUID;
 
 /** 在 app 运行期间的唯一标识，即使程序重启，也不会丢失。该标识在程序第一次运行时初始化。 支持跨进程. */
 public class AppIDManager {
 
-    private static class InstanceHolder {
-        private static final AppIDManager sInstance = new AppIDManager();
-    }
+    private static final Singleton<AppIDManager> sInstance =
+            new Singleton<AppIDManager>() {
+                @Override
+                protected AppIDManager create() {
+                    return new AppIDManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static AppIDManager getInstance() {
-        AppIDManager instance = InstanceHolder.sInstance;
+        AppIDManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
