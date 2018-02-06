@@ -83,7 +83,9 @@ public class Log {
             String tag = String.valueOf(logTag);
             int length = tag.length();
             if (length > 23) {
-                return tag.substring(0, 23);
+                // 保留最后 5 个, 中间由三个'.'缩略
+                // 15 + 3 + 5
+                return tag.substring(0, 15) + "..." + tag.substring(length - 5);
             } else {
                 return tag;
             }
