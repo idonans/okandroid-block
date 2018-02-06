@@ -1,10 +1,14 @@
 package com.okandroid.block.data;
 
 import android.text.TextUtils;
+
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
+
 import java.io.IOException;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,15 +18,18 @@ import okhttp3.logging.HttpLoggingInterceptor;
 /** okhttp3 */
 public class OkHttpManager {
 
-    private static class InstanceHolder {
-
-        private static final OkHttpManager sInstance = new OkHttpManager();
-    }
+    private static final Singleton<OkHttpManager> sInstance =
+            new Singleton<OkHttpManager>() {
+                @Override
+                protected OkHttpManager create() {
+                    return new OkHttpManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static OkHttpManager getInstance() {
-        OkHttpManager instance = InstanceHolder.sInstance;
+        OkHttpManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
