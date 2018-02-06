@@ -8,6 +8,7 @@ import android.webkit.WebView;
 
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
 
 import java.util.ArrayList;
@@ -20,15 +21,18 @@ import okhttp3.HttpUrl;
 /** 共享 cookie 管理, 链接 webview cookie, okhttp3 cookie, etc. */
 public class CookiesManager {
 
-    private static class InstanceHolder {
-
-        private static final CookiesManager sInstance = new CookiesManager();
-    }
+    private static final Singleton<CookiesManager> sInstance =
+            new Singleton<CookiesManager>() {
+                @Override
+                protected CookiesManager create() {
+                    return new CookiesManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static CookiesManager getInstance() {
-        CookiesManager instance = InstanceHolder.sInstance;
+        CookiesManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
