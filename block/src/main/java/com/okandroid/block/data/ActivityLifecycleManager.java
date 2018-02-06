@@ -6,19 +6,24 @@ import android.os.Bundle;
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.lang.WeakAvailable;
 
 /** Activity 生命周期监听. 如可判断当前进程是否有正在显示的 Activity etc. */
 public class ActivityLifecycleManager {
 
-    private static class InstanceHolder {
-        private static final ActivityLifecycleManager sInstance = new ActivityLifecycleManager();
-    }
+    private static final Singleton<ActivityLifecycleManager> sInstance =
+            new Singleton<ActivityLifecycleManager>() {
+                @Override
+                protected ActivityLifecycleManager create() {
+                    return new ActivityLifecycleManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static ActivityLifecycleManager getInstance() {
-        ActivityLifecycleManager instance = InstanceHolder.sInstance;
+        ActivityLifecycleManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
