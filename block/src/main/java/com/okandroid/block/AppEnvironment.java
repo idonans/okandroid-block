@@ -103,7 +103,7 @@ public class AppEnvironment {
             if (logTag == null) {
                 logTag = ContextUtil.getContext().getString(R.string.okandroid_block_log_tag);
                 if (TextUtils.isEmpty(logTag)) {
-                    logTag = getAppLabel();
+                    logTag = ContextUtil.getContext().getPackageName();
                 }
                 DelayLog.v(CLASS_NAME, "load property", key, logTag);
                 mProperties.put(key, logTag);
