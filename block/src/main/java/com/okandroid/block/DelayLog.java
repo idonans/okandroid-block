@@ -62,6 +62,7 @@ class DelayLog {
 
         if (list != null) {
             while (!list.isEmpty()) {
+                Log.v("[delay log]");
                 list.removeFirst().run();
             }
         }
