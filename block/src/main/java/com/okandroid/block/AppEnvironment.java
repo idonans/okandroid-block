@@ -56,6 +56,7 @@ public class AppEnvironment {
     private static void syncLogVariable() {
         Log.setLogLevel(getAppProperties().getLogLevel());
         Log.setLogTag(getAppProperties().getLogTag());
+        DelayLog.printAllDelayLog();
     }
 
     public static AppProperties getAppProperties() {
