@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
 
 import java.util.List;
@@ -13,15 +14,18 @@ import java.util.List;
 /** 记录进程信息，在 app 中可能存在多个进程，在处理如缓存路径时进程之间的应当不同，否则可能出现读写冲突。 */
 public class ProcessManager {
 
-    private static class InstanceHolder {
-
-        private static final ProcessManager sInstance = new ProcessManager();
-    }
+    private static final Singleton<ProcessManager> sInstance =
+            new Singleton<ProcessManager>() {
+                @Override
+                protected ProcessManager create() {
+                    return new ProcessManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static ProcessManager getInstance() {
-        ProcessManager instance = InstanceHolder.sInstance;
+        ProcessManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
