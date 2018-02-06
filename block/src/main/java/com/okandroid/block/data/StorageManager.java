@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.lang.StorageDatabaseProvider;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.IOUtil;
@@ -17,15 +18,18 @@ import com.okandroid.block.util.IOUtil;
 /** 数据存储服务, 对接 {@link StorageDatabaseProvider}. 支持跨进程 */
 public class StorageManager {
 
-    private static class InstanceHolder {
-
-        private static final StorageManager sInstance = new StorageManager();
-    }
+    private static final Singleton<StorageManager> sInstance =
+            new Singleton<StorageManager>() {
+                @Override
+                protected StorageManager create() {
+                    return new StorageManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static StorageManager getInstance() {
-        StorageManager instance = InstanceHolder.sInstance;
+        StorageManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
