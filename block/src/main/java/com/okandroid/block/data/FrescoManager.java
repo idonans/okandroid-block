@@ -11,6 +11,7 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.ClassName;
 import com.okandroid.block.lang.Log;
+import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.FileUtil;
 
@@ -19,15 +20,18 @@ import java.io.File;
 /** fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。 */
 public class FrescoManager {
 
-    private static class InstanceHolder {
-
-        private static final FrescoManager sInstance = new FrescoManager();
-    }
+    private static final Singleton<FrescoManager> sInstance =
+            new Singleton<FrescoManager>() {
+                @Override
+                protected FrescoManager create() {
+                    return new FrescoManager();
+                }
+            };
 
     private static boolean sInit;
 
     public static FrescoManager getInstance() {
-        FrescoManager instance = InstanceHolder.sInstance;
+        FrescoManager instance = sInstance.get();
         sInit = true;
         return instance;
     }
