@@ -6,6 +6,7 @@ publish {
     uploadName = 'okandroid-block'
     artifactId = 'block'
     publishVersion = rootProject.ext.bcfg.ver.versionName
+    desc = 'android common library'
     website = 'https://github.com/idonans/okandroid-block'
 
     Properties localProperties = new Properties()
