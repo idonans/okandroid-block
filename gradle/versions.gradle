@@ -1,0 +1,133 @@
+// build config
+def bcfg = [:]
+ext.bcfg = bcfg
+
+bcfg.ver = [:]
+bcfg.ver.min_sdk = 16
+bcfg.ver.target_sdk = 26
+bcfg.ver.build_tools = "27.0.3"
+bcfg.ver.android_gradle_plugin = "3.0.1"
+bcfg.ver.versionCode = this.createGitVersionCode()
+bcfg.ver.versionName = this.createGitVersionName()
+bcfg.ver.arch_core = "1.1.1"
+bcfg.ver.arch_room = "1.1.0-beta1"
+bcfg.ver.arch_lifecycle = "1.1.1"
+bcfg.ver.arch_paging = "1.0.0-alpha7"
+bcfg.ver.support = "27.1.0"
+bcfg.ver.support_constraint_layout = "1.1.0-beta3"
+bcfg.ver.support_espresso = "3.0.1"
+bcfg.ver.support_test_runner = "1.0.1"
+bcfg.ver.support_test_rules = "1.0.1"
+bcfg.ver.junit = "4.12"
+bcfg.ver.retrofit = "2.3.0"
+bcfg.ver.okhttp_logging_interceptor = "3.9.0"
+bcfg.ver.mockwebserver = "3.8.1"
+bcfg.ver.mockito_core = "2.7.19"
+bcfg.ver.mockito_all = "1.10.19"
+bcfg.ver.dexmaker = "2.2.0"
+bcfg.ver.timber = "4.5.1"
+bcfg.ver.rxjava2 = "2.1.3"
+bcfg.ver.rx_android = "2.0.1"
+bcfg.ver.hamcrest = "1.3"
+bcfg.ver.kotlin = "1.2.20"
+
+bcfg.deps = [:]
+bcfg.deps.android_gradle_plugin = "com.android.tools.build:gradle:$bcfg.ver.android_gradle_plugin"
+
+bcfg.deps.support_annotations = "com.android.support:support-annotations:$bcfg.ver.support"
+bcfg.deps.support_app_compat = "com.android.support:appcompat-v7:$bcfg.ver.support"
+bcfg.deps.support_recyclerview = "com.android.support:recyclerview-v7:$bcfg.ver.support"
+bcfg.deps.support_cardview = "com.android.support:cardview-v7:$bcfg.ver.support"
+bcfg.deps.support_design = "com.android.support:design:$bcfg.ver.support"
+bcfg.deps.support_gridlayout = "com.android.support:gridlayout-v7:$bcfg.ver.support"
+bcfg.deps.support_core_utils = "com.android.support:support-core-utils:$bcfg.ver.support"
+bcfg.deps.support_percent = "com.android.support:percent:$bcfg.ver.support"
+bcfg.deps.support_constraint_layout = "com.android.support.constraint:constraint-layout:$bcfg.ver.support_constraint_layout"
+bcfg.deps.support_espresso_core_test = "com.android.support.test.espresso:espresso-core:$bcfg.ver.support_espresso"
+bcfg.deps.support_espresso_contrib_test = "com.android.support.test.espresso:espresso-contrib:$bcfg.ver.support_espresso"
+bcfg.deps.support_espresso_intents_test = "com.android.support.test.espresso:espresso-intents:$bcfg.ver.support_espresso"
+bcfg.deps.support_test_runner_test = "com.android.support.test:runner:$bcfg.ver.support_test_runner"
+bcfg.deps.support_test_rules_test = "com.android.support.test:rules:$bcfg.ver.support_test_rules"
+
+bcfg.deps.arch_core_test = "android.arch.core:core-testing:$bcfg.ver.arch_core"
+bcfg.deps.arch_lifecycle_runtime = "android.arch.lifecycle:runtime:$bcfg.ver.arch_lifecycle"
+bcfg.deps.arch_lifecycle_extensions = "android.arch.lifecycle:extensions:$bcfg.ver.arch_lifecycle"
+bcfg.deps.arch_lifecycle_java8 = "android.arch.lifecycle:common-java8:$bcfg.ver.arch_lifecycle"
+bcfg.deps.arch_lifecycle_compiler = "android.arch.lifecycle:compiler:$bcfg.ver.arch_lifecycle"
+bcfg.deps.arch_paging = "android.arch.paging:runtime:$bcfg.ver.arch_paging"
+bcfg.deps.arch_room_runtime = "android.arch.persistence.room:runtime:$bcfg.ver.arch_room"
+bcfg.deps.arch_room_compiler = "android.arch.persistence.room:compiler:$bcfg.ver.arch_room"
+bcfg.deps.arch_room_rxjava2 = "android.arch.persistence.room:rxjava2:$bcfg.ver.arch_room"
+bcfg.deps.arch_room_test = "android.arch.persistence.room:testing:$bcfg.ver.arch_room"
+
+bcfg.deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:$bcfg.ver.okhttp_logging_interceptor"
+bcfg.deps.retrofit_runtime = "com.squareup.retrofit2:retrofit:$bcfg.ver.retrofit"
+bcfg.deps.retrofit_gson = "com.squareup.retrofit2:converter-gson:$bcfg.ver.retrofit"
+bcfg.deps.retrofit_mock = "com.squareup.retrofit2:retrofit-mock:$bcfg.ver.retrofit"
+
+bcfg.deps.mockito_core_test = "org.mockito:mockito-core:$bcfg.ver.mockito_core"
+bcfg.deps.mockito_all_test = "org.mockito:mockito-all:$bcfg.ver.mockito_all"
+
+bcfg.deps.kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:$bcfg.ver.kotlin"
+bcfg.deps.kotlin_test = "org.jetbrains.kotlin:kotlin-test-junit:$bcfg.ver.kotlin"
+bcfg.deps.kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$bcfg.ver.kotlin"
+
+bcfg.deps.dexmaker_test = "com.linkedin.dexmaker:dexmaker-mockito:$bcfg.ver.dexmaker"
+bcfg.deps.timber = "com.jakewharton.timber:timber:$bcfg.ver.timber"
+bcfg.deps.junit_test = "junit:junit:$bcfg.ver.junit"
+bcfg.deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$bcfg.ver.mockwebserver"
+bcfg.deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$bcfg.ver.rxjava2"
+bcfg.deps.rx_android = "io.reactivex.rxjava2:rxandroid:$bcfg.ver.rx_android"
+bcfg.deps.hamcrest_test = "org.hamcrest:hamcrest-all:$bcfg.ver.hamcrest"
+
+bcfg.addRepos = this.&addRepos
+
+def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    handler.maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
+    handler.maven { url 'https://dl.google.com/dl/android/maven2/' }
+}
+
+def createGitVersionCode() {
+    // 使用 git commit 总数作为 version code
+    def cmd = 'git rev-list HEAD --count'
+    def cmdResult = cmd.execute().text.trim().toInteger()
+    def versionCodeOffset = 200
+    def gitVersionCode = versionCodeOffset
+    if (cmdResult) {
+        gitVersionCode += cmdResult
+    }
+    return gitVersionCode
+}
+
+def createGitVersionName() {
+    // 使用距离最近的标签名 + '.' + 距离该标签的 commit 数量 作为版本名称, 通常标签使用如 1.0 命名方式
+    // 如果没有标签, 则使用 '0.0' 作为默认值
+    def cmd = 'git describe --tags'
+    def cmdResult = cmd.execute().text.trim()
+    def tagDesc = '0.0'
+    if (cmdResult) {
+        tagDesc = cmdResult
+    }
+
+    def pattern = '-(\\d+)-g'
+    def matcher = tagDesc =~ pattern
+
+    def tagName
+    def commitCount
+
+    if (matcher) {
+        tagName = tagDesc.substring(0, matcher.start())
+        commitCount = matcher[0][1]
+    } else {
+        tagName = tagDesc
+        commitCount = '0'
+    }
+
+    def gitVersionName = tagName + '.' + commitCount
+    return gitVersionName
+}
+
+

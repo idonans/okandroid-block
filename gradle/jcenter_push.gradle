@@ -4,7 +4,7 @@ apply plugin: 'com.jfrog.bintray'
 def siteUrl = 'https://github.com/idonans/okandroid-block'
 def gitUrl = 'https://github.com/idonans/okandroid-block.git'
 group = 'com.okandroid.block'
-version = rootProject.ext.versionName
+version = rootProject.ext.bcfg.ver.versionName
 install {
     repositories.mavenInstaller {
         pom {

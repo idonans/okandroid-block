@@ -1,15 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
-    buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
+    compileSdkVersion rootProject.ext.bcfg.ver.target_sdk
+    buildToolsVersion rootProject.ext.bcfg.ver.build_tools
 
     defaultConfig {
-        minSdkVersion rootProject.ext.androidBuild.minSdkVersion
-        targetSdkVersion rootProject.ext.androidBuild.targetSdkVersion
-        versionCode rootProject.ext.androidBuild.versionCode
-        versionName rootProject.ext.androidBuild.versionName
+        minSdkVersion rootProject.ext.bcfg.ver.min_sdk
+        targetSdkVersion rootProject.ext.bcfg.ver.target_sdk
+        versionCode rootProject.ext.bcfg.ver.versionCode
+        versionName rootProject.ext.bcfg.ver.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -25,36 +24,96 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile rootProject.ext.bcfg.deps.support_annotations
+    compile rootProject.ext.bcfg.deps.support_app_compat
+    compile rootProject.ext.bcfg.deps.support_recyclerview
+    compile rootProject.ext.bcfg.deps.support_cardview
+    compile rootProject.ext.bcfg.deps.support_design
+    compile rootProject.ext.bcfg.deps.support_gridlayout
+    compile rootProject.ext.bcfg.deps.support_core_utils
+    compile rootProject.ext.bcfg.deps.support_percent
+    compile rootProject.ext.bcfg.deps.support_constraint_layout
+    compile rootProject.ext.bcfg.deps.support_design
+
+    compile rootProject.ext.bcfg.deps.arch_lifecycle_runtime
+    compile rootProject.ext.bcfg.deps.arch_lifecycle_extensions
+    annotationProcessor rootProject.ext.bcfg.deps.arch_lifecycle_compiler
+    compile rootProject.ext.bcfg.deps.arch_room_runtime
+    annotationProcessor rootProject.ext.bcfg.deps.arch_room_compiler
+    compile rootProject.ext.bcfg.deps.arch_room_rxjava2
+    compile rootProject.ext.bcfg.deps.rx_android
+    compile rootProject.ext.bcfg.deps.rxjava2
+
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
+    compile 'com.journeyapps:zxing-android-embedded:3.0.1@aar'
+    compile 'com.google.zxing:core:3.2.0'
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // test
+    testCompile rootProject.ext.bcfg.deps.junit_test
+    testCompile rootProject.ext.bcfg.deps.hamcrest_test
+    testCompile rootProject.ext.bcfg.deps.arch_core_test
+    testCompile rootProject.ext.bcfg.deps.mockito_all_test
+
+    // android test
+    androidTestCompile rootProject.ext.bcfg.deps.support_test_runner_test
+    androidTestCompile rootProject.ext.bcfg.deps.support_test_rules_test
+    androidTestCompile rootProject.ext.bcfg.deps.arch_core_test
+    androidTestCompile rootProject.ext.bcfg.deps.arch_room_test
+
+    androidTestCompile rootProject.ext.bcfg.deps.junit_test
+    androidTestCompile rootProject.ext.bcfg.deps.mockito_core_test, {
+        exclude group: 'net.bytebuddy'
+    }
+    androidTestCompile rootProject.ext.bcfg.deps.dexmaker_test
+
+    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_core_test
+    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_contrib_test
+    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_intents_test
+
+    // other
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+
+
+
+
+
+
+
+
+
+
+
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testApi 'junit:junit:4.12'
-    api "com.android.support:appcompat-v7:$rootProject.ext.androidBuild.androidSupportLibraryVersion"
-    api "com.android.support:support-v13:$rootProject.ext.androidBuild.androidSupportLibraryVersion"
-    api "com.android.support:design:$rootProject.ext.androidBuild.androidSupportLibraryVersion"
-    api "com.android.support:recyclerview-v7:$rootProject.ext.androidBuild.androidSupportLibraryVersion"
-    api "com.android.support:percent:$rootProject.ext.androidBuild.androidSupportLibraryVersion"
 
-    api 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 
-    api 'com.squareup.okhttp3:okhttp:3.8.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-    api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    api 'io.reactivex.rxjava2:rxjava:2.1.5'
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    api 'com.facebook.fresco:fresco:1.5.0'
-    api 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
-    api 'com.facebook.fresco:animated-gif:1.5.0'
-    api 'com.facebook.fresco:animated-webp:1.5.0'
-    api 'com.facebook.fresco:webpsupport:1.5.0'
+    compile 'com.facebook.fresco:fresco:1.5.0'
+    compile 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
+    compile 'com.facebook.fresco:animated-gif:1.5.0'
+    compile 'com.facebook.fresco:animated-webp:1.5.0'
+    compile 'com.facebook.fresco:webpsupport:1.5.0'
 
-    api 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    api 'com.jakewharton:butterknife:8.8.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
 }
 
