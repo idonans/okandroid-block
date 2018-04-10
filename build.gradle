@@ -3,9 +3,7 @@ buildscript {
     rootProject.ext.bcfg.addRepos(repositories)
     dependencies {
         classpath rootProject.ext.bcfg.deps.android_gradle_plugin
-
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.novoda:bintray-release:0.8.1'
     }
 }
 

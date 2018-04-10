@@ -117,4 +117,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
 }
 
-apply from: rootProject.file('gradle/jcenter_push.gradle')
+apply from: rootProject.file('gradle/jcenter.gradle')
