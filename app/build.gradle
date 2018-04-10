@@ -26,36 +26,36 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':block')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':block')
 
     annotationProcessor rootProject.ext.bcfg.deps.arch_lifecycle_compiler
     annotationProcessor rootProject.ext.bcfg.deps.arch_room_compiler
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // test
-    testCompile rootProject.ext.bcfg.deps.junit_test
-    testCompile rootProject.ext.bcfg.deps.hamcrest_test
-    testCompile rootProject.ext.bcfg.deps.arch_core_test
-    testCompile rootProject.ext.bcfg.deps.mockito_all_test
+    testImplementation rootProject.ext.bcfg.deps.junit_test
+    testImplementation rootProject.ext.bcfg.deps.hamcrest_test
+    testImplementation rootProject.ext.bcfg.deps.arch_core_test
+    testImplementation rootProject.ext.bcfg.deps.mockito_all_test
 
     // android test
-    androidTestCompile rootProject.ext.bcfg.deps.support_test_runner_test
-    androidTestCompile rootProject.ext.bcfg.deps.support_test_rules_test
-    androidTestCompile rootProject.ext.bcfg.deps.arch_core_test
-    androidTestCompile rootProject.ext.bcfg.deps.arch_room_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_test_runner_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_test_rules_test
+    androidTestImplementation rootProject.ext.bcfg.deps.arch_core_test
+    androidTestImplementation rootProject.ext.bcfg.deps.arch_room_test
 
-    androidTestCompile rootProject.ext.bcfg.deps.junit_test
-    androidTestCompile rootProject.ext.bcfg.deps.mockito_core_test, {
+    androidTestImplementation rootProject.ext.bcfg.deps.junit_test
+    androidTestImplementation rootProject.ext.bcfg.deps.mockito_core_test, {
         exclude group: 'net.bytebuddy'
     }
-    androidTestCompile rootProject.ext.bcfg.deps.dexmaker_test
+    androidTestImplementation rootProject.ext.bcfg.deps.dexmaker_test
 
-    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_core_test
-    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_contrib_test
-    androidTestCompile rootProject.ext.bcfg.deps.support_espresso_intents_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_core_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_contrib_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_intents_test
 
     // other
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 }
