@@ -32,7 +32,6 @@ dependencies {
     api rootProject.ext.bcfg.deps.support_design
     api rootProject.ext.bcfg.deps.support_gridlayout
     api rootProject.ext.bcfg.deps.support_core_utils
-    api rootProject.ext.bcfg.deps.support_percent
     api rootProject.ext.bcfg.deps.support_constraint_layout
     api rootProject.ext.bcfg.deps.support_design
 
@@ -44,14 +43,27 @@ dependencies {
     api rootProject.ext.bcfg.deps.arch_room_rxjava2
     api rootProject.ext.bcfg.deps.rx_android
     api rootProject.ext.bcfg.deps.rxjava2
+    api rootProject.ext.bcfg.deps.rxbinding
+    api rootProject.ext.bcfg.deps.zxing
+    api rootProject.ext.bcfg.deps.zxing_embedded
+    api rootProject.ext.bcfg.deps.retrofit
+    api rootProject.ext.bcfg.deps.retrofit_gson
+    api rootProject.ext.bcfg.deps.retrofit_rxjava2
 
-    api 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    api rootProject.ext.bcfg.deps.butterknife
+    annotationProcessor rootProject.ext.bcfg.deps.butterknife_compiler
 
-    api 'com.journeyapps:zxing-android-embedded:3.0.1@aar'
-    api 'com.google.zxing:core:3.2.0'
+    releaseApi rootProject.ext.bcfg.deps.leakcanary_no_op
+    debugApi rootProject.ext.bcfg.deps.leakcanary
 
-    api 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    api rootProject.ext.bcfg.deps.gson
+    api rootProject.ext.bcfg.deps.okhttp_logging_interceptor
+
+    api rootProject.ext.bcfg.deps.fresco
+    api rootProject.ext.bcfg.deps.fresco_okhttp3
+    api rootProject.ext.bcfg.deps.fresco_animated_gif
+    api rootProject.ext.bcfg.deps.fresco_animated_webp
+    api rootProject.ext.bcfg.deps.fresco_webp_support
 
     // test
     testApi rootProject.ext.bcfg.deps.junit_test
@@ -74,41 +86,6 @@ dependencies {
     androidTestApi rootProject.ext.bcfg.deps.support_espresso_core_test
     androidTestApi rootProject.ext.bcfg.deps.support_espresso_contrib_test
     androidTestApi rootProject.ext.bcfg.deps.support_espresso_intents_test
-
-    // other
-    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-
-
-
-
-
-
-
-
-
-
-
-
-    api 'com.google.code.gson:gson:2.8.0'
-
-    api 'com.squareup.okhttp3:okhttp:3.8.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-    api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
-
-    api 'io.reactivex.rxjava2:rxjava:2.1.5'
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
-    api 'com.facebook.fresco:fresco:1.5.0'
-    api 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
-    api 'com.facebook.fresco:animated-gif:1.5.0'
-    api 'com.facebook.fresco:animated-webp:1.5.0'
-    api 'com.facebook.fresco:webpsupport:1.5.0'
-
-    api 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
 apply from: rootProject.file('gradle/jcenter.gradle')

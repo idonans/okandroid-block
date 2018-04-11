@@ -31,7 +31,7 @@ dependencies {
 
     annotationProcessor rootProject.ext.bcfg.deps.arch_lifecycle_compiler
     annotationProcessor rootProject.ext.bcfg.deps.arch_room_compiler
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    annotationProcessor rootProject.ext.bcfg.deps.butterknife_compiler
 
     // test
     testApi rootProject.ext.bcfg.deps.junit_test
@@ -55,7 +55,6 @@ dependencies {
     androidTestApi rootProject.ext.bcfg.deps.support_espresso_contrib_test
     androidTestApi rootProject.ext.bcfg.deps.support_espresso_intents_test
 
-    // other
-    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseApi rootProject.ext.bcfg.deps.leakcanary_no_op
+    debugApi rootProject.ext.bcfg.deps.leakcanary
 }
