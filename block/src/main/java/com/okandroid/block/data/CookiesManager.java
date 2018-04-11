@@ -6,8 +6,6 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
 
@@ -17,8 +15,11 @@ import java.util.List;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import timber.log.Timber;
 
-/** 共享 cookie 管理, 链接 webview cookie, okhttp3 cookie, etc. */
+/**
+ * 共享 cookie 管理, 链接 webview cookie, okhttp3 cookie, etc.
+ */
 public class CookiesManager {
 
     private static final Singleton<CookiesManager> sInstance =
@@ -41,13 +42,11 @@ public class CookiesManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
-
     private final CookieManager mCookieManager;
     private final OkHttp3CookieJar mOkHttp3CookieJar;
 
     private CookiesManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         CookieSyncManager.createInstance(ContextUtil.getContext());
         mCookieManager = CookieManager.getInstance();
         mCookieManager.setAcceptCookie(true);

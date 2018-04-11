@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
 import com.facebook.common.memory.PooledByteBuffer;
 import com.facebook.common.memory.PooledByteBufferInputStream;
 import com.facebook.common.references.CloseableReference;
@@ -19,17 +20,20 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.okandroid.block.data.FrescoManager;
 import com.okandroid.block.data.TmpFileManager;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.thread.Threads;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.concurrent.Executor;
 
-/** 使用临时文件加载缓存图 */
+import timber.log.Timber;
+
+/**
+ * 使用临时文件加载缓存图
+ */
 public class ImageCacheUtil {
 
-    private static final String TAG = "ImageCacheUtil";
     private static final String CACHE_IMAGE_PREFIX = "image_cache";
     private static final String CACHE_IMAGE_THUMB_PREFIX = "image_cache_thumb";
     private static final Executor DEFAULT_EXECUTOR =
@@ -40,9 +44,12 @@ public class ImageCacheUtil {
                 }
             };
 
-    private ImageCacheUtil() {}
+    private ImageCacheUtil() {
+    }
 
-    /** 缓存指定图片到本地磁盘 */
+    /**
+     * 缓存指定图片到本地磁盘
+     */
     public static void cacheImage(final String imageUrl, ImageCacheListener listener) {
         // init fresco if need.
         FrescoManager.getInstance();
@@ -110,7 +117,7 @@ public class ImageCacheUtil {
                             @Override
                             protected void onFailureImpl(
                                     DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                                Log.v(TAG, "cacheImage onFailureImpl");
+                                Timber.v("cacheImage onFailureImpl");
                                 onceListener.onImageCached(null);
                             }
                         },
@@ -213,21 +220,20 @@ public class ImageCacheUtil {
                                                             * 1.5f;
                                             scaleSize = Math.max(0.5f, scaleSize);
                                             scaleSize = Math.min(0.8f, scaleSize);
-                                            Log.v(
-                                                    TAG,
-                                                    "file size too large, scale size and try again",
-                                                    "fileLength:",
-                                                    HumanUtil.getHumanSizeFromByte(fileLength),
-                                                    "maxFileSize:",
-                                                    HumanUtil.getHumanSizeFromByte(maxFileSize),
-                                                    "minFileLength:",
-                                                    HumanUtil.getHumanSizeFromByte(minFileLength),
-                                                    "width:",
-                                                    resizeWidth,
-                                                    "height:",
-                                                    resizeHeight,
-                                                    "scaleSize:",
-                                                    scaleSize);
+                                            Timber.v(
+                                                    "file size too large, scale size and try again" +
+                                                            "fileLength:" +
+                                                            HumanUtil.getHumanSizeFromByte(fileLength) +
+                                                            "maxFileSize:" +
+                                                            HumanUtil.getHumanSizeFromByte(maxFileSize) +
+                                                            "minFileLength:" +
+                                                            HumanUtil.getHumanSizeFromByte(minFileLength) +
+                                                            "width:" +
+                                                            resizeWidth +
+                                                            "height:" +
+                                                            resizeHeight +
+                                                            "scaleSize:" +
+                                                            scaleSize);
                                             cacheImageThumb(
                                                     imageUrl,
                                                     (int) (resizeWidth * scaleSize),
@@ -248,7 +254,7 @@ public class ImageCacheUtil {
                             @Override
                             protected void onFailureImpl(
                                     DataSource<CloseableReference<CloseableImage>> dataSource) {
-                                Log.v(TAG, "cacheImageThumb onFailureImpl");
+                                Timber.v("cacheImageThumb onFailureImpl");
                                 onceListener.onImageCached(null);
                             }
                         },

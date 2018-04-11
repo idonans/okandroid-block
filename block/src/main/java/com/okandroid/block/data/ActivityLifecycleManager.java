@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.okandroid.block.AppEnvironment;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.lang.WeakAvailable;
 
-/** Activity 生命周期监听. 如可判断当前进程是否有正在显示的 Activity etc. */
+import timber.log.Timber;
+
+/**
+ * Activity 生命周期监听. 如可判断当前进程是否有正在显示的 Activity etc.
+ */
 public class ActivityLifecycleManager {
 
     private static final Singleton<ActivityLifecycleManager> sInstance =
@@ -32,10 +34,8 @@ public class ActivityLifecycleManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
-
     private ActivityLifecycleManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         AppEnvironment.addApplicationCallbacks(mActivityLifecycleCallbacks);
     }
 

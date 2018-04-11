@@ -13,14 +13,15 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 
 import com.okandroid.block.R;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 
-/** 辅助处理自定义 window insets, 屏蔽版本差异 {@link #onFitInsets(int, int, int, int)} */
+import timber.log.Timber;
+
+/**
+ * 辅助处理自定义 window insets, 屏蔽版本差异 {@link #onFitInsets(int, int, int, int)}
+ */
 public class FitInsetsLayout extends FrameLayout {
 
     private static final boolean DEBUG = true;
-    private final String CLASS_NAME = ClassName.valueOf(this);
 
     public FitInsetsLayout(Context context) {
         this(context, null);
@@ -99,8 +100,8 @@ public class FitInsetsLayout extends FrameLayout {
         a.recycle();
 
         if (DEBUG) {
-            Log.d(CLASS_NAME, "fit inset padding max", getFitInsetPaddingMax());
-            Log.d(CLASS_NAME, "fit inset padding min", getFitInsetPaddingMin());
+            Timber.d("fit inset padding max " + getFitInsetPaddingMax());
+            Timber.d("fit inset padding min " + getFitInsetPaddingMin());
         }
     }
 
@@ -175,7 +176,9 @@ public class FitInsetsLayout extends FrameLayout {
         return false;
     }
 
-    /** @return 返回剩余的 insets 值 */
+    /**
+     * @return 返回剩余的 insets 值
+     */
     protected Rect onFitInsets(int left, int top, int right, int bottom) {
         Rect insetsPadding = new Rect();
 
@@ -203,19 +206,18 @@ public class FitInsetsLayout extends FrameLayout {
                         bottom - insetsPadding.bottom);
 
         if (DEBUG) {
-            Log.d(
-                    CLASS_NAME,
-                    "onFitInsets",
-                    new Rect(left, top, right, bottom),
-                    "->",
-                    "consumed:",
-                    insetsPadding,
-                    "remain:",
-                    remain,
-                    "min:",
-                    getFitInsetPaddingMin(),
-                    "max:",
-                    getFitInsetPaddingMax());
+            Timber.d(
+                    "onFitInsets" +
+                            new Rect(left, top, right, bottom),
+                    "->" +
+                            "consumed:" +
+                            insetsPadding +
+                            "remain:" +
+                            remain +
+                            "min:" +
+                            getFitInsetPaddingMin() +
+                            "max:" +
+                            getFitInsetPaddingMax());
         }
 
         return remain;

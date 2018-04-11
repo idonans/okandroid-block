@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 public class GBKLengthInputFilter implements InputFilter {
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private final int mMax;
     private final boolean mSingleLine;
 
@@ -19,10 +18,7 @@ public class GBKLengthInputFilter implements InputFilter {
 
     public CharSequence filter(
             CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        Log.d(CLASS_NAME, source, start, end, dest, dstart, dend);
-
         try {
-
             int len;
             boolean more;
             do {

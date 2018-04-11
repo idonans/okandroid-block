@@ -9,13 +9,17 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.okandroid.block.thread.Threads;
 import com.okandroid.block.util.SystemUtil;
 
-/** 辅助观察软键盘的行为 */
+import timber.log.Timber;
+
+/**
+ * 辅助观察软键盘的行为
+ */
 public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener {
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private final SoftKeyboardListener mListener;
 
     private final int METHOD_NONE = 0;
@@ -35,7 +39,9 @@ public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutList
         this(true, listener);
     }
 
-    /** @param post 指定在键盘状态发生变更时，是否将事件 post 到下一个 ui 循环中回调 */
+    /**
+     * @param post 指定在键盘状态发生变更时，是否将事件 post 到下一个 ui 循环中回调
+     */
     public SoftKeyboardObserver(boolean post, @Nullable SoftKeyboardListener listener) {
         if (post) {
             mListener = new SoftKeyboardListenerPoster(listener);
@@ -61,10 +67,7 @@ public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutList
     public void register(@NonNull Fragment fragment) {
         Activity activity = fragment.getActivity();
         if (activity == null) {
-            Log.e(
-                    CLASS_NAME
-                            + " register fragment error. activity not found from fragment "
-                            + ClassName.valueOf(fragment));
+            Timber.e("register fragment error. activity not found from fragment");
             return;
         }
 
@@ -73,7 +76,7 @@ public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutList
 
     public void unregister() {
         if (mHost == null) {
-            Log.e(CLASS_NAME + " not register or already unregister");
+            Timber.e("not register or already unregister");
             return;
         }
 
@@ -109,7 +112,7 @@ public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutList
 
     @Override
     public void onGlobalLayout() {
-        Log.d(CLASS_NAME + " onGlobalLayout");
+        Timber.d("onGlobalLayout");
 
         if (isHostAvailable()) {
             if (mHost.isSoftKeyboardShown()) {
@@ -123,16 +126,17 @@ public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutList
     private void checkWindowSoftInputMode(@NonNull Activity activity) {
         if (activity.getWindow() != null) {
             if ((activity.getWindow().getAttributes().softInputMode
-                            & WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                    & WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                     != WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE) {
                 throw new IllegalArgumentException(
-                        "softInputMode is not adjustResize " + ClassName.valueOf(activity));
+                        "softInputMode is not adjustResize");
             }
         }
     }
 
     private class Host {
-        @Nullable private final View mContentView;
+        @Nullable
+        private final View mContentView;
 
         private Host(@Nullable Activity activity) {
             if (activity != null) {

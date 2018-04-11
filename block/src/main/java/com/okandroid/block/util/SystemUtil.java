@@ -15,24 +15,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
+
 import com.okandroid.block.R;
 import com.okandroid.block.data.AppIDManager;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
+
 import java.io.File;
 import java.util.Locale;
 
-/** 一些系统相关辅助类 */
+/**
+ * 一些系统相关辅助类
+ */
 public class SystemUtil {
 
-    private static final String TAG = "SystemUtil";
-
-    /** @see AppIDManager */
+    /**
+     * @see AppIDManager
+     */
     public static String getAppID() {
         return AppIDManager.getInstance().getAppID();
     }
 
-    /** 成功打开软件商店(会尝试定位到指定软件)返回true, 如果没有安装任何软件商店, 返回false. */
+    /**
+     * 成功打开软件商店(会尝试定位到指定软件)返回true, 如果没有安装任何软件商店, 返回false.
+     */
     public static boolean openMarket(String packageName) {
         String url = "market://details?id=" + packageName;
         return openView(url);
@@ -42,7 +46,9 @@ public class SystemUtil {
         return openView(url, null);
     }
 
-    /** 使用 chooser 方式打开指定 url, 处理成功返回true, 否则返回false. */
+    /**
+     * 使用 chooser 方式打开指定 url, 处理成功返回true, 否则返回false.
+     */
     public static boolean openView(String url, CharSequence chooserTitle) {
         try {
             Uri uri = Uri.parse(url);
@@ -92,7 +98,9 @@ public class SystemUtil {
         return inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
-    /** @see #isSoftKeyboardShown(View) */
+    /**
+     * @see #isSoftKeyboardShown(View)
+     */
     public static boolean isSoftKeyboardShown(Activity activity) {
         View view = null;
         if (activity != null) {
@@ -104,7 +112,9 @@ public class SystemUtil {
         return isSoftKeyboardShown(view);
     }
 
-    /** @see #isSoftKeyboardShown(View) */
+    /**
+     * @see #isSoftKeyboardShown(View)
+     */
     public static boolean isSoftKeyboardShown(Fragment fragment) {
         return isSoftKeyboardShown(fragment.getActivity());
     }
@@ -136,23 +146,6 @@ public class SystemUtil {
 
         int softKeyboardHeight = DimenUtil.dp2px(80);
 
-        // print log
-        Log.v(
-                TAG,
-                "isSoftKeyboardShown",
-                "\nrootView "
-                        + ClassName.valueOf(rootView)
-                        + ", bottom:"
-                        + rootView.getBottom()
-                        + ", padding:"
-                        + getPadding(rootView),
-                "\ncontentView "
-                        + ClassName.valueOf(contentView)
-                        + ", bottom:"
-                        + contentView.getBottom()
-                        + ", padding:"
-                        + getPadding(contentView),
-                "\nsoftKeyboardHeight:" + softKeyboardHeight);
         if (contentView.getPaddingBottom() > softKeyboardHeight) {
             return true;
         }
@@ -170,7 +163,9 @@ public class SystemUtil {
                 view.getPaddingBottom());
     }
 
-    /** 将指定文件添加到系统媒体库，如将一张图片添加到系统媒体库，使得在 Gallery 中能够显示. */
+    /**
+     * 将指定文件添加到系统媒体库，如将一张图片添加到系统媒体库，使得在 Gallery 中能够显示.
+     */
     public static void addToMediaStore(File file) {
         try {
             Uri uri = Uri.fromFile(file);
@@ -181,7 +176,9 @@ public class SystemUtil {
         }
     }
 
-    /** 调用系统安装程序安装指定 apk, 调用成功返回 true, 否则返回 false. */
+    /**
+     * 调用系统安装程序安装指定 apk, 调用成功返回 true, 否则返回 false.
+     */
     public static boolean installApk(File apkFile) {
         try {
             Uri uri = FileUtil.getFileUri(apkFile);
@@ -204,14 +201,18 @@ public class SystemUtil {
         return false;
     }
 
-    /** 获取系统默认 user-agent */
+    /**
+     * 获取系统默认 user-agent
+     */
     public static String getSystemUserAgent() {
         return System.getProperty("http.agent");
     }
 
     private static String sSystemWebViewUserAgent;
 
-    /** 获取系统 webview 默认 user-agent */
+    /**
+     * 获取系统 webview 默认 user-agent
+     */
     public static String getSystemWebViewUserAgent() {
         if (sSystemWebViewUserAgent != null) {
             return sSystemWebViewUserAgent;

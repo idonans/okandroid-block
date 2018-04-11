@@ -2,6 +2,7 @@ package com.okandroid.block.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.logging.FLogDefaultLoggingDelegate;
@@ -9,15 +10,18 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.okandroid.block.AppEnvironment;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
+import com.okandroid.block.AppInit;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.FileUtil;
 
 import java.io.File;
 
-/** fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。 */
+import timber.log.Timber;
+
+/**
+ * fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。
+ */
 public class FrescoManager {
 
     private static final Singleton<FrescoManager> sInstance =
@@ -40,10 +44,8 @@ public class FrescoManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
-
     private FrescoManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         File frescoCacheBaseDir = FileUtil.getExternalCacheDir();
         if (frescoCacheBaseDir == null) {
             frescoCacheBaseDir = FileUtil.getCacheDir();
@@ -51,9 +53,9 @@ public class FrescoManager {
 
         FLogDefaultLoggingDelegate fLogDefaultLoggingDelegate =
                 FLogDefaultLoggingDelegate.getInstance();
-        fLogDefaultLoggingDelegate.setApplicationTag(AppEnvironment.getAppProperties().getLogTag());
+        fLogDefaultLoggingDelegate.setApplicationTag("okandroid_block");
         fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
-                AppEnvironment.getAppProperties().getLogLevel());
+                AppInit.isDebug() ? Log.VERBOSE : Log.WARN);
 
         Bitmap.Config config = Bitmap.Config.ARGB_8888;
         if (AppEnvironment.getAppProperties().isFresco565Config()) {
@@ -69,7 +71,7 @@ public class FrescoManager {
                                         .setBaseDirectoryName(
                                                 "fresco_main_disk_"
                                                         + ProcessManager.getInstance()
-                                                                .getProcessTag())
+                                                        .getProcessTag())
                                         .build())
                         .setSmallImageDiskCacheConfig(
                                 DiskCacheConfig.newBuilder(context)
@@ -77,7 +79,7 @@ public class FrescoManager {
                                         .setBaseDirectoryName(
                                                 "fresco_small_disk_"
                                                         + ProcessManager.getInstance()
-                                                                .getProcessTag())
+                                                        .getProcessTag())
                                         .build())
                         .setNetworkFetcher(
                                 new OkHttpNetworkFetcher(

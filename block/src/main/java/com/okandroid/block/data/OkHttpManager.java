@@ -2,9 +2,7 @@ package com.okandroid.block.data;
 
 import android.text.TextUtils;
 
-import com.okandroid.block.AppEnvironment;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
+import com.okandroid.block.AppInit;
 import com.okandroid.block.lang.Singleton;
 
 import java.io.IOException;
@@ -14,8 +12,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import timber.log.Timber;
 
-/** okhttp3 */
+/**
+ * okhttp3
+ */
 public class OkHttpManager {
 
     private static final Singleton<OkHttpManager> sInstance =
@@ -38,13 +39,12 @@ public class OkHttpManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private final OkHttpClient mOkHttpClient;
 
     private String mDefaultUserAgent;
 
     private OkHttpManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         Interceptor defaultUserAgentInterceptor =
                 new Interceptor() {
                     @Override
@@ -66,15 +66,15 @@ public class OkHttpManager {
                     }
                 };
 
-        boolean debug = AppEnvironment.getAppProperties().getLogLevel() <= android.util.Log.DEBUG;
+        boolean debug = AppInit.isDebug();
         if (debug) {
-            Log.d(CLASS_NAME, "in debug mode, config OkHttpClient.");
+            Timber.d("in debug mode, config OkHttpClient.");
 
             Interceptor contentEncodingInterceptor =
                     new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
-                            Log.d(CLASS_NAME + " contentEncodingInterceptor intercept");
+                            Timber.d("contentEncodingInterceptor intercept");
                             Request request =
                                     chain.request()
                                             .newBuilder()

@@ -18,14 +18,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+
 import com.okandroid.block.data.CookiesManager;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 
-/** */
+import timber.log.Timber;
+
 public class FixWebView extends WebView {
-
-    protected final String CLASS_NAME = ClassName.valueOf(this);
 
     public FixWebView(Context context) {
         super(context);
@@ -85,7 +83,6 @@ public class FixWebView extends WebView {
 
     public static class WebViewClientImpl extends WebViewClient {
 
-        protected final String CLASS_NAME = ClassName.valueOf(this);
         protected final FixWebView mFixWebView;
 
         public WebViewClientImpl(FixWebView fixWebView) {
@@ -99,29 +96,28 @@ public class FixWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.v(CLASS_NAME, "shouldOverrideUrlLoading", url);
+            Timber.v("shouldOverrideUrlLoading " + url);
             return false;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Log.v(CLASS_NAME, "onPageStarted", url, "webview url", view.getUrl());
+            Timber.v("onPageStarted " + url + " webview url " + view.getUrl());
         }
 
         @Override
         public void onPageCommitVisible(WebView view, String url) {
-            Log.v(CLASS_NAME, "onPageCommitVisible", url);
+            Timber.v("onPageCommitVisible " + url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            Log.v(CLASS_NAME, "onPageFinished", url, "webview url", view.getUrl());
+            Timber.v("onPageFinished " + url, " webview url " + view.getUrl());
         }
     }
 
     public static class WebChromeClientImpl extends WebChromeClient {
 
-        protected final String CLASS_NAME = ClassName.valueOf(this);
         protected final FixWebView mFixWebView;
 
         public WebChromeClientImpl(FixWebView fixWebView) {
@@ -130,12 +126,12 @@ public class FixWebView extends WebView {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            Log.v(CLASS_NAME, "onReceivedTitle", title);
+            Timber.v("onReceivedTitle " + title);
         }
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            Log.v(CLASS_NAME, "onShowCustomView");
+            Timber.v("onShowCustomView");
             if (mFixWebView.mCustomViewer != null) {
                 mFixWebView.mCustomViewer.show(view, callback);
             }
@@ -144,13 +140,13 @@ public class FixWebView extends WebView {
         @Override
         public void onShowCustomView(
                 View view, int requestedOrientation, CustomViewCallback callback) {
-            Log.v(CLASS_NAME, "onShowCustomView requestedOrientation", requestedOrientation);
+            Timber.v("onShowCustomView requestedOrientation " + requestedOrientation);
             onShowCustomView(view, callback);
         }
 
         @Override
         public void onHideCustomView() {
-            Log.v(CLASS_NAME, "onHideCustomView");
+            Timber.v("onHideCustomView");
             if (mFixWebView.mCustomViewer != null) {
                 mFixWebView.mCustomViewer.hide();
             }
@@ -194,8 +190,6 @@ public class FixWebView extends WebView {
 
     public static class CustomViewer {
 
-        private final String CLASS_NAME = ClassName.valueOf(this);
-
         private final Activity mActivity;
         private final int mOriginalRequestOrientation;
         private final ViewGroup mParent;
@@ -214,17 +208,17 @@ public class FixWebView extends WebView {
             mParent = parent;
             mIgnoreFullscreen = ignoreFullscreen;
 
-            Log.v(CLASS_NAME, "original request orientation", mOriginalRequestOrientation);
+            Timber.v("original request orientation " + mOriginalRequestOrientation);
         }
 
         public void show(View view, WebChromeClient.CustomViewCallback callback) {
             if (view == null) {
-                Log.e(CLASS_NAME, "view is null");
+                Timber.e("view is null");
                 return;
             }
 
             if (mView != null) {
-                Log.e(CLASS_NAME, "already exist custom view", mView);
+                Timber.e("already exist custom view " + mView);
                 return;
             }
 
@@ -289,8 +283,7 @@ public class FixWebView extends WebView {
                     new OnSystemUiVisibilityChangeListener() {
                         @Override
                         public void onSystemUiVisibilityChange(int visibility) {
-                            Log.v(
-                                    CLASS_NAME,
+                            Timber.v(
                                     "requestSystemUiFullscreen onSystemUiVisibilityChange",
                                     visibility);
 

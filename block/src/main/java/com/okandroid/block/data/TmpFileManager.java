@@ -2,13 +2,13 @@ package com.okandroid.block.data;
 
 import android.support.annotation.CheckResult;
 
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.thread.Threads;
 import com.okandroid.block.util.FileUtil;
 
 import java.io.File;
+
+import timber.log.Timber;
 
 /**
  * 临时文件管理器, 当 app 启动时(非恢复的情况), 应当调用 clear 方法以清除遗留的临时文件. 通常, 在 Splash#onCreate(savedInstanceState ==
@@ -36,12 +36,11 @@ public class TmpFileManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private static final String TMP_DIR = "okandroid_tmp_file";
     private static final String TMP_DIR_REMOVED = "okandroid_tmp_file_removed";
 
     private TmpFileManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
     }
 
     @CheckResult
@@ -67,27 +66,29 @@ public class TmpFileManager {
         return new File(FileUtil.getExternalCacheDir(), TMP_DIR_REMOVED);
     }
 
-    /** 清除临时文件 */
+    /**
+     * 清除临时文件
+     */
     public void clear() {
         File tmpFileDir = getTmpFileDir();
         if (tmpFileDir == null || !tmpFileDir.exists()) {
-            Log.v(CLASS_NAME, "clear tmp file dir not found", tmpFileDir);
+            Timber.v("clear tmp file dir not found %s", tmpFileDir);
             return;
         }
 
         final File tmpFileDirRemoved = getTmpFileDirRemoved();
         if (!FileUtil.createDir(tmpFileDirRemoved)) {
-            Log.e(CLASS_NAME, "clear fail to create tmp file dir removed", tmpFileDirRemoved);
+            Timber.e("clear fail to create tmp file dir removed %s", tmpFileDirRemoved);
             return;
         }
 
         File renameTo = new File(tmpFileDirRemoved, "rename_" + System.currentTimeMillis());
         if (!tmpFileDir.renameTo(renameTo)) {
-            Log.e(CLASS_NAME, "clear rename tmp file dir fail", tmpFileDir, "->", renameTo);
+            Timber.e("clear rename tmp file dir fail %s->%s", tmpFileDir, renameTo);
             return;
         }
 
-        Log.v(CLASS_NAME, "clear rename tmp file dir success", tmpFileDir, "->", renameTo);
+        Timber.v("clear rename tmp file dir success %s->%s", tmpFileDir, renameTo);
 
         // delete async
         Threads.postBackground(
@@ -95,22 +96,18 @@ public class TmpFileManager {
                     @Override
                     public void run() {
                         long timeStart = System.currentTimeMillis();
-                        Log.v(
-                                CLASS_NAME,
-                                "clear tmp file dir removed in background start",
+                        Timber.v(
+                                "clear tmp file dir removed in background start %s",
                                 tmpFileDirRemoved);
                         if (FileUtil.deleteFileQuietly(tmpFileDirRemoved)) {
                             long timeDur = System.currentTimeMillis() - timeStart;
-                            Log.v(
-                                    CLASS_NAME,
-                                    "clear tmp file dir removed in background success in",
+                            Timber.v(
+                                    "clear tmp file dir removed in background success in %sms %s",
                                     timeDur,
-                                    "ms",
                                     tmpFileDirRemoved);
                         } else {
-                            Log.e(
-                                    CLASS_NAME,
-                                    "clear tmp file dir removed in background fail",
+                            Timber.e(
+                                    "clear tmp file dir removed in background fail %s",
                                     tmpFileDirRemoved);
                         }
                     }

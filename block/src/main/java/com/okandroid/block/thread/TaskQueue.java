@@ -1,19 +1,25 @@
 package com.okandroid.block.thread;
 
-import com.okandroid.block.lang.ClassName;
 import java.util.Deque;
 import java.util.LinkedList;
 
-/** 任务队列，所有任务都在共享的线程池中执行 */
+/**
+ * 任务队列，所有任务都在共享的线程池中执行
+ */
 public class TaskQueue {
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private final Object mLock = new Object();
-    /** 同时执行的最大任务数量 */
+    /**
+     * 同时执行的最大任务数量
+     */
     private int mMaxCount;
-    /** 当前正在执行的任务数量 */
+    /**
+     * 当前正在执行的任务数量
+     */
     private int mCurrentCount;
-    /** 当前正在等待的任务数量 */
+    /**
+     * 当前正在等待的任务数量
+     */
     private int mWaitCount;
 
     private Deque<Task> mQueue = new LinkedList<>();
@@ -109,7 +115,7 @@ public class TaskQueue {
     }
 
     public void printDetail(StringBuilder builder) {
-        String tag = CLASS_NAME;
+        String tag = "TaskQueue";
         builder.append("--" + (tag) + "--\n");
         builder.append("--max count:" + getMaxCount() + "--\n");
         builder.append("--current count:" + getCurrentCount() + "--\n");
@@ -135,6 +141,7 @@ public class TaskQueue {
             onTargetFinished();
         }
 
-        protected void onTargetFinished() {}
+        protected void onTargetFinished() {
+        }
     }
 }

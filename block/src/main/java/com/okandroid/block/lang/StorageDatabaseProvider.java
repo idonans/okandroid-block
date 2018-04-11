@@ -9,19 +9,22 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.okandroid.block.AppInit;
 import com.okandroid.block.db.SimpleDB;
 import com.okandroid.block.thread.Threads;
+
 import java.util.Arrays;
+
+import timber.log.Timber;
 
 /**
  * 提供 k-v 数据存储, 支持跨进程.
- *
+ * <p>
  * <p>提供了 setting 和 cache 两个不同的存储空间，各自独立运行
  */
 public class StorageDatabaseProvider extends ContentProvider {
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private SimpleDB mDBSetting;
     private SimpleDB mDBCache;
 
@@ -51,7 +54,7 @@ public class StorageDatabaseProvider extends ContentProvider {
     public boolean onCreate() {
         AppInit.init(getContext());
 
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         mDBSetting = new SimpleDB("_setting");
         mDBCache = new SimpleDB("_cache");
         Threads.postBackgroundAfterLooper(
@@ -88,7 +91,7 @@ public class StorageDatabaseProvider extends ContentProvider {
 
         if (selectionArgs == null || selectionArgs.length != 1) {
             new IllegalArgumentException(
-                            "error selection args " + Arrays.deepToString(selectionArgs))
+                    "error selection args " + Arrays.deepToString(selectionArgs))
                     .printStackTrace();
             return null;
         }
@@ -149,7 +152,7 @@ public class StorageDatabaseProvider extends ContentProvider {
 
         if (selectionArgs == null || selectionArgs.length != 1) {
             new IllegalArgumentException(
-                            "error selection args " + Arrays.deepToString(selectionArgs))
+                    "error selection args " + Arrays.deepToString(selectionArgs))
                     .printStackTrace();
             return 0;
         }

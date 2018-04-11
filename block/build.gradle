@@ -64,6 +64,7 @@ dependencies {
     api rootProject.ext.bcfg.deps.fresco_animated_gif
     api rootProject.ext.bcfg.deps.fresco_animated_webp
     api rootProject.ext.bcfg.deps.fresco_webp_support
+    api rootProject.ext.bcfg.deps.timber
 
     // test
     testApi rootProject.ext.bcfg.deps.junit_test

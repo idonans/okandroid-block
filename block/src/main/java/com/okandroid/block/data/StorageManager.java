@@ -8,14 +8,16 @@ import android.net.Uri;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
 
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.lang.StorageDatabaseProvider;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.IOUtil;
 
-/** 数据存储服务, 对接 {@link StorageDatabaseProvider}. 支持跨进程 */
+import timber.log.Timber;
+
+/**
+ * 数据存储服务, 对接 {@link StorageDatabaseProvider}. 支持跨进程
+ */
 public class StorageManager {
 
     private static final Singleton<StorageManager> sInstance =
@@ -38,10 +40,8 @@ public class StorageManager {
         return sInit;
     }
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
-
     private StorageManager() {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
     }
 
     public void setSetting(@Nullable String key, @Nullable String value) {
@@ -64,7 +64,7 @@ public class StorageManager {
 
         Uri uri = StorageDatabaseProvider.getSettingUri(context);
 
-        Cursor cursor = contentResolver.query(uri, null, null, new String[] {key}, null);
+        Cursor cursor = contentResolver.query(uri, null, null, new String[]{key}, null);
         try {
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -103,7 +103,7 @@ public class StorageManager {
 
         Uri uri = StorageDatabaseProvider.getCacheUri(context);
 
-        Cursor cursor = contentResolver.query(uri, null, null, new String[] {key}, null);
+        Cursor cursor = contentResolver.query(uri, null, null, new String[]{key}, null);
         try {
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -122,7 +122,9 @@ public class StorageManager {
         return null;
     }
 
-    /** 打印所有 Cache 内容， 协助调试使用 */
+    /**
+     * 打印所有 Cache 内容， 协助调试使用
+     */
     public void printCacheContent() {
         Context context = ContextUtil.getContext();
         ContentResolver contentResolver = context.getContentResolver();
@@ -132,7 +134,9 @@ public class StorageManager {
         contentResolver.update(uri, new ContentValues(), null, null);
     }
 
-    /** 打印所有 Setting 内容， 协助调试使用 */
+    /**
+     * 打印所有 Setting 内容， 协助调试使用
+     */
     public void printSettingContent() {
         Context context = ContextUtil.getContext();
         ContentResolver contentResolver = context.getContentResolver();

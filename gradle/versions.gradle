@@ -19,7 +19,7 @@ bcfg.ver.retrofit = "2.3.0"
 bcfg.ver.okhttp_logging_interceptor = "3.9.0"
 
 bcfg.ver.dexmaker = "2.2.0"
-bcfg.ver.timber = "4.5.1"
+bcfg.ver.timber = "4.7.0"
 bcfg.ver.rxjava2 = "2.1.3"
 bcfg.ver.rx_android = "2.0.1"
 bcfg.ver.rxbinding = "2.0.0"

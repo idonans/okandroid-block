@@ -8,13 +8,16 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
 import com.okandroid.block.data.ProcessManager;
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.IOUtil;
 
-/** 基于 SQLite 模拟 KV 数据库 */
+import timber.log.Timber;
+
+/**
+ * 基于 SQLite 模拟 KV 数据库
+ */
 public class SimpleDB {
 
     private static final int DB_VERSION = 1;
@@ -32,12 +35,13 @@ public class SimpleDB {
     private static final String SQL_CREATE_INDEX =
             "create index index_simple_update on t_simple(c_update)";
 
-    private final String CLASS_NAME = ClassName.valueOf(this);
     private final SQLiteOpenHelper mOpenHelper;
 
-    /** 实现中会在数据库名前附加当前进程标识 */
+    /**
+     * 实现中会在数据库名前附加当前进程标识
+     */
     public SimpleDB(@NonNull String databaseName) {
-        Log.v(CLASS_NAME, "init");
+        Timber.v("init");
         String dbName = ProcessManager.getInstance().getProcessTag() + "_" + databaseName;
         mOpenHelper =
                 new SQLiteOpenHelper(ContextUtil.getContext(), dbName, null, DB_VERSION) {
@@ -66,9 +70,9 @@ public class SimpleDB {
             cursor =
                     db.query(
                             TABLE_NAME,
-                            new String[] {COLUMN_VALUE},
+                            new String[]{COLUMN_VALUE},
                             COLUMN_KEY + "=?",
-                            new String[] {key},
+                            new String[]{key},
                             null,
                             null,
                             null);
@@ -113,13 +117,15 @@ public class SimpleDB {
             SQLiteDatabase db = this.mOpenHelper.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_UPDATE, System.currentTimeMillis());
-            db.update(TABLE_NAME, contentValues, COLUMN_KEY + "=?", new String[] {key});
+            db.update(TABLE_NAME, contentValues, COLUMN_KEY + "=?", new String[]{key});
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    /** 删除多余的旧数据(按时间倒序)，保留指定条数的数据. 返回删除的数据的条数，如果不满足删除条件返回 -1. */
+    /**
+     * 删除多余的旧数据(按时间倒序)，保留指定条数的数据. 返回删除的数据的条数，如果不满足删除条件返回 -1.
+     */
     public int trim(int maxRows) {
         if (maxRows < 1) {
             return -1;
@@ -134,7 +140,7 @@ public class SimpleDB {
                 cursor =
                         db.query(
                                 TABLE_NAME,
-                                new String[] {COLUMN_UPDATE},
+                                new String[]{COLUMN_UPDATE},
                                 null,
                                 null,
                                 null,
@@ -155,14 +161,16 @@ public class SimpleDB {
             }
 
             return db.delete(
-                    TABLE_NAME, COLUMN_UPDATE + "<?", new String[] {String.valueOf(lastUpdate)});
+                    TABLE_NAME, COLUMN_UPDATE + "<?", new String[]{String.valueOf(lastUpdate)});
         } catch (Throwable e) {
             e.printStackTrace();
         }
         return -1;
     }
 
-    /** 清空数据，返回删除数据的条数, 如果出错，返回 -1. */
+    /**
+     * 清空数据，返回删除数据的条数, 如果出错，返回 -1.
+     */
     public int clear() {
         try {
             SQLiteDatabase db = this.mOpenHelper.getWritableDatabase();
@@ -179,13 +187,15 @@ public class SimpleDB {
         }
         try {
             SQLiteDatabase db = this.mOpenHelper.getWritableDatabase();
-            db.delete(TABLE_NAME, COLUMN_KEY + "=?", new String[] {key});
+            db.delete(TABLE_NAME, COLUMN_KEY + "=?", new String[]{key});
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    /** 如果失败，返回-1。 */
+    /**
+     * 如果失败，返回-1。
+     */
     public int count() {
         Cursor cursor = null;
         try {
@@ -202,19 +212,21 @@ public class SimpleDB {
         return -1;
     }
 
-    /** only for debug */
+    /**
+     * only for debug
+     */
     public void printAllRows() {
         Cursor cursor = null;
         try {
             SQLiteDatabase db = this.mOpenHelper.getWritableDatabase();
             String dbName = this.mOpenHelper.getDatabaseName();
             String dbPath = db.getPath();
-            String tag = CLASS_NAME + dbPath + "[" + dbName + "]";
-            Log.d("--" + tag + "--");
+            String tag = dbPath + "[" + dbName + "]";
+            Timber.d("--" + tag + "--");
             cursor =
                     db.query(
                             TABLE_NAME,
-                            new String[] {COLUMN_KEY, COLUMN_VALUE, COLUMN_UPDATE},
+                            new String[]{COLUMN_KEY, COLUMN_VALUE, COLUMN_UPDATE},
                             null,
                             null,
                             null,
@@ -227,9 +239,9 @@ public class SimpleDB {
                 key = cursor.getString(0);
                 value = cursor.getString(1);
                 update = cursor.getLong(2);
-                Log.d(dbName + " " + update + ", " + key + ", " + value);
+                Timber.d(dbName + " " + update + ", " + key + ", " + value);
             }
-            Log.d("--" + tag + "-- end");
+            Timber.d("--" + tag + "-- end");
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {

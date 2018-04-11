@@ -1,4 +1,5 @@
 <resources>
+    <bool name="okandroid_block_debug">false</bool>
     <bool name="okandroid_block_fresco_enable">true</bool>
     <bool name="okandroid_block_fresco_565_config">true</bool>
 </resources>

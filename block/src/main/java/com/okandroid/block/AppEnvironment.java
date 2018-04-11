@@ -11,17 +11,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.okandroid.block.lang.ClassName;
-import com.okandroid.block.lang.Log;
 import com.okandroid.block.util.ContextUtil;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.WeakHashMap;
 
-public class AppEnvironment {
+import timber.log.Timber;
 
-    private static final String TAG = "AppEnvironment";
+public class AppEnvironment {
 
     private static boolean sInit;
 
@@ -29,7 +26,8 @@ public class AppEnvironment {
             new InternalApplicationCallbacks();
     private static final AppProperties sAppProperties = new AppProperties();
 
-    AppEnvironment() {}
+    AppEnvironment() {
+    }
 
     private static void checkInitUnsafe() {
         if (!sInit) {
@@ -43,20 +41,13 @@ public class AppEnvironment {
         }
         sInit = true;
 
-        DelayLog.v(TAG, "init");
+        Timber.v("init");
 
         Application application = (Application) ContextUtil.getContext();
         application.registerActivityLifecycleCallbacks(sInternalApplicationCallbacks);
         application.registerComponentCallbacks(sInternalApplicationCallbacks);
 
         addApplicationCallbacks(sAppProperties);
-        syncLogVariable();
-    }
-
-    private static void syncLogVariable() {
-        Log.setLogLevel(getAppProperties().getLogLevel());
-        Log.setLogTag(getAppProperties().getLogTag());
-        DelayLog.printAllDelayLog();
     }
 
     public static AppProperties getAppProperties() {
@@ -71,16 +62,12 @@ public class AppEnvironment {
 
     public static class AppProperties extends SimpleApplicationCallbacks {
 
-        private final String CLASS_NAME = ClassName.valueOf(this);
         private final HashMap<String, Object> mProperties = new HashMap<>();
 
         @Override
         public void onConfigurationChanged(Configuration newConfig) {
-            DelayLog.v(CLASS_NAME, "onConfigurationChanged", "clear properties");
+            Timber.v("onConfigurationChanged clear properties");
             mProperties.clear();
-
-            // set Log variable on configuration changed
-            syncLogVariable();
         }
 
         public String getAppLabel() {
@@ -91,54 +78,10 @@ public class AppEnvironment {
                 PackageManager pm = context.getPackageManager();
                 ApplicationInfo appInfo = context.getApplicationInfo();
                 appLabel = String.valueOf(appInfo.loadLabel(pm));
-                DelayLog.v(CLASS_NAME, "load property", key, appLabel);
+                Timber.d("load property %s=%s", key, appLabel);
                 mProperties.put(key, appLabel);
             }
             return appLabel;
-        }
-
-        public String getLogTag() {
-            final String key = "prop.logTag";
-            String logTag = (String) mProperties.get(key);
-            if (logTag == null) {
-                logTag = ContextUtil.getContext().getString(R.string.okandroid_block_log_tag);
-                if (TextUtils.isEmpty(logTag)) {
-                    logTag = ContextUtil.getContext().getPackageName();
-                }
-                DelayLog.v(CLASS_NAME, "load property", key, logTag);
-                mProperties.put(key, logTag);
-            }
-            return logTag;
-        }
-
-        public int getLogLevel() {
-            final String key = "prop.logLevel";
-            Integer logLevelInt = (Integer) mProperties.get(key);
-            if (logLevelInt == null) {
-                String logLevel =
-                        ContextUtil.getContext().getString(R.string.okandroid_block_log_level);
-                if (TextUtils.isEmpty(logLevel)) {
-                    logLevel = "WARN";
-                }
-                logLevel = logLevel.toUpperCase();
-
-                final Map<String, Integer> level = new HashMap<>(5);
-                level.put("VERBOSE", android.util.Log.VERBOSE);
-                level.put("DEBUG", android.util.Log.DEBUG);
-                level.put("INFO", android.util.Log.INFO);
-                level.put("WARN", android.util.Log.WARN);
-                level.put("ERROR", android.util.Log.ERROR);
-                logLevelInt = level.get(logLevel);
-                if (logLevelInt == null) {
-                    throw new IllegalStateException(
-                            "error log level["
-                                    + logLevel
-                                    + "], only VERBOSE DEBUG INFO WARN ERROR support");
-                }
-                DelayLog.v(CLASS_NAME, "load property", key, logLevelInt, logLevel);
-                mProperties.put(key, logLevelInt);
-            }
-            return logLevelInt;
         }
 
         public String getSubDirName() {
@@ -163,7 +106,7 @@ public class AppEnvironment {
                         ContextUtil.getContext()
                                 .getResources()
                                 .getBoolean(R.bool.okandroid_block_fresco_enable);
-                DelayLog.v(CLASS_NAME, "load property", key, frescoEnable);
+                Timber.v("load property %s=%s", key, String.valueOf(frescoEnable));
                 mProperties.put(key, frescoEnable);
             }
             return frescoEnable;
@@ -177,7 +120,7 @@ public class AppEnvironment {
                         ContextUtil.getContext()
                                 .getResources()
                                 .getBoolean(R.bool.okandroid_block_fresco_565_config);
-                DelayLog.v(CLASS_NAME, "load property", key, fresco565Config);
+                Timber.v("load property %s=%s", key, String.valueOf(fresco565Config));
                 mProperties.put(key, fresco565Config);
             }
             return fresco565Config;
@@ -186,8 +129,9 @@ public class AppEnvironment {
 
     public interface ApplicationCallbacks
             extends Application.ActivityLifecycleCallbacks,
-                    ComponentCallbacks,
-                    ComponentCallbacks2 {}
+            ComponentCallbacks,
+            ComponentCallbacks2 {
+    }
 
     private static class InternalApplicationCallbacks implements ApplicationCallbacks {
 
@@ -336,33 +280,43 @@ public class AppEnvironment {
 
     public static class SimpleApplicationCallbacks implements ApplicationCallbacks {
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        }
 
         @Override
-        public void onActivityStarted(Activity activity) {}
+        public void onActivityStarted(Activity activity) {
+        }
 
         @Override
-        public void onActivityResumed(Activity activity) {}
+        public void onActivityResumed(Activity activity) {
+        }
 
         @Override
-        public void onActivityPaused(Activity activity) {}
+        public void onActivityPaused(Activity activity) {
+        }
 
         @Override
-        public void onActivityStopped(Activity activity) {}
+        public void onActivityStopped(Activity activity) {
+        }
 
         @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        }
 
         @Override
-        public void onActivityDestroyed(Activity activity) {}
+        public void onActivityDestroyed(Activity activity) {
+        }
 
         @Override
-        public void onTrimMemory(int level) {}
+        public void onTrimMemory(int level) {
+        }
 
         @Override
-        public void onConfigurationChanged(Configuration newConfig) {}
+        public void onConfigurationChanged(Configuration newConfig) {
+        }
 
         @Override
-        public void onLowMemory() {}
+        public void onLowMemory() {
+        }
     }
 }
