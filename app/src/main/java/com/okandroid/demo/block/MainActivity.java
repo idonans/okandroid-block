@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-        mEditText.setFilters(new InputFilter[] {new GBKLengthInputFilter(10, true)});
+        mEditText.setFilters(new InputFilter[]{new GBKLengthInputFilter(10, true)});
     }
 
     private boolean mFullscreen;

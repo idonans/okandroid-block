@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.okandroid.block.util.IOUtil;
 import com.okandroid.block.widget.FixWebView;
 
-/** Created by idonans on 2017/11/9. */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class BrowserActivity extends AppCompatActivity {
 
     public static Intent startIntent(Context context) {

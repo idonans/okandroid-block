@@ -112,7 +112,7 @@ public class FixWebView extends WebView {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            Timber.v("onPageFinished " + url, " webview url " + view.getUrl());
+            Timber.v("onPageFinished " + url + " webview url " + view.getUrl());
         }
     }
 
