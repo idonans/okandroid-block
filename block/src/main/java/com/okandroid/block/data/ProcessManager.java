@@ -39,7 +39,7 @@ public class ProcessManager {
     private int mProcessId;
     private String mProcessName;
     private String mProcessTag;
-    private static final String PROCESS_TAG_MAIN = "main";
+    private boolean mMainProcess;
 
     private ProcessManager() {
         Timber.v("init");
@@ -70,8 +70,9 @@ public class ProcessManager {
             processSuffix = processName.substring(index + 1);
         }
 
-        if (TextUtils.isEmpty(processSuffix)) {
-            mProcessTag = PROCESS_TAG_MAIN;
+        mMainProcess = index >= 0;
+        if (mMainProcess) {
+            mProcessTag = "main";
         } else {
             mProcessTag = "sub_" + processSuffix;
         }
@@ -101,6 +102,6 @@ public class ProcessManager {
      * 判断当前进程是否为主进程， 主进程的进程名等于包名
      */
     public boolean isMainProcess() {
-        return PROCESS_TAG_MAIN.equals(mProcessTag);
+        return mMainProcess;
     }
 }
