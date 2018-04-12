@@ -221,17 +221,10 @@ public class FileUtil {
     @CheckResult
     public static String getFileExtensionFromUrl(String url) {
         String filename = getFilenameFromUrl(url);
+        filename = StringUtil.trim(filename, "#?/\\.");
         if (!TextUtils.isEmpty(filename)) {
-            for (; ; ) {
-                if (filename.endsWith(".")) {
-                    filename = filename.substring(0, filename.length());
-                    continue;
-                }
-                break;
-            }
-
             int dotPos = filename.lastIndexOf('.');
-            if (0 <= dotPos) {
+            if (dotPos > 0) {
                 return filename.substring(dotPos + 1);
             }
         }
@@ -244,44 +237,21 @@ public class FileUtil {
      */
     @CheckResult
     public static String getFilenameFromUrl(String url) {
-        if (url != null) {
-            url = url.trim();
-        }
-        if (!TextUtils.isEmpty(url)) {
-            if (url.startsWith("#")) {
-                return null;
-            }
-
-            if (url.startsWith("?")) {
-                return null;
-            }
-
-            int fragment = url.indexOf('#');
-            if (fragment > 0) {
-                url = url.substring(0, fragment);
-            }
-
-            int query = url.indexOf('?');
-            if (query > 0) {
-                url = url.substring(0, query);
-            }
-
-            for (; ; ) {
-                if (url.endsWith("/") || url.endsWith("\\")) {
-                    url = url.substring(0, url.length());
-                    continue;
-                }
-                break;
-            }
-            int filenamePos0 = url.lastIndexOf('/');
-            int filenamePos1 = url.lastIndexOf('\\');
-
-            int filenamePos = Math.max(filenamePos0, filenamePos1);
-            String filename = 0 <= filenamePos ? url.substring(filenamePos + 1) : url;
-            return filename;
+        url = StringUtil.trim(url, "#?/\\.");
+        if (TextUtils.isEmpty(url)) {
+            return null;
         }
 
-        return null;
+        int filenamePos0 = url.lastIndexOf('/');
+        int filenamePos1 = url.lastIndexOf('\\');
+
+        int filenamePos = Math.max(filenamePos0, filenamePos1);
+        String filename = filenamePos > 0 ? url.substring(filenamePos + 1) : url;
+
+        if (filename.length() == 0) {
+            return null;
+        }
+        return filename;
     }
 
     /**

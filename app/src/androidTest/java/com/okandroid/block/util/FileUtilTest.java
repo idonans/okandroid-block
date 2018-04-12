@@ -16,6 +16,7 @@ public class FileUtilTest {
     @Test
     public void getFilenameFromUrl() throws Exception {
         assertEquals("a.jpg", FileUtil.getFilenameFromUrl("http://abc/a.jpg"));
+        assertEquals("a.jpg", FileUtil.getFilenameFromUrl("http://abc/a.jpg/"));
     }
 
 }
