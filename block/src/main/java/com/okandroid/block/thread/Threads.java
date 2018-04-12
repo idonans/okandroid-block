@@ -2,14 +2,19 @@ package com.okandroid.block.thread;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import com.okandroid.block.data.ProcessManager;
 
-/** 线程辅助类 */
+/**
+ * 线程辅助类
+ */
 public class Threads {
 
     private static final Handler sHandlerUi = new Handler(Looper.getMainLooper());
 
-    /** 如果当前已经处于 ui 线程，则直接执行，否则 post 到 ui 线程执行。 */
+    /**
+     * 如果当前已经处于 ui 线程，则直接执行，否则 post 到 ui 线程执行。
+     */
     public static void runOnUi(Runnable runnable) {
         if (isUi()) {
             runnable.run();
@@ -18,7 +23,9 @@ public class Threads {
         }
     }
 
-    /** 总是将任务 post 到 ui 线程执行，即使当前已经处于 ui 线程。 */
+    /**
+     * 总是将任务 post 到 ui 线程执行，即使当前已经处于 ui 线程。
+     */
     public static void postUi(Runnable runnable) {
         sHandlerUi.post(runnable);
     }
@@ -28,13 +35,12 @@ public class Threads {
     }
 
     public static void postBackgroundAfterLooper(final Runnable runnable) {
-        postUi(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        postBackground(runnable);
-                    }
-                });
+        postUi(new Runnable() {
+            @Override
+            public void run() {
+                postBackground(runnable);
+            }
+        });
     }
 
     public static void postBackground(Runnable runnable) {
