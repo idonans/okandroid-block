@@ -6,18 +6,21 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.CheckResult;
 import android.text.TextUtils;
+
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.data.ProcessManager;
 import com.okandroid.block.lang.BlockFileProvider;
+
 import java.io.File;
 import java.io.IOException;
 
-/** 文件操作相关辅助类 */
+/**
+ * 文件操作相关辅助类
+ */
 public class FileUtil {
 
-    private static final String TAG = "FileUtil";
-
-    private FileUtil() {}
+    private FileUtil() {
+    }
 
     /**
      * 获得一个进程安全的缓存目录(在 private cache目录下的一个与进程名相关的目录, 如果目录不存在，会尝试创建) <br>
@@ -37,7 +40,8 @@ public class FileUtil {
     }
 
     /**
-     * 获得一个进程安全的外部缓存目录(在扩展卡的当前 app cache目录下的一个与进程名相关的目录, 如果目录不存在，会尝试创建)， 该目录可能会被用户卸载。 <br>
+     * 获得一个进程安全的外部缓存目录(在扩展卡的当前 app cache目录下的一个与进程名相关的目录,
+     * 如果目录不存在，会尝试创建)， 该目录可能会被用户卸载。 <br>
      * 不能获得这样一个目录，返回 null.
      */
     @CheckResult
@@ -53,12 +57,16 @@ public class FileUtil {
         return null;
     }
 
-    /** 判断指定的文件是否存在并且是一个文件(不是文件夹) */
+    /**
+     * 判断指定的文件是否存在并且是一个文件(不是文件夹)
+     */
     public static boolean isFile(File file) {
         return file != null && file.exists() && file.isFile();
     }
 
-    /** 判断指定的文件是否存在并且是一个文件夹 */
+    /**
+     * 判断指定的文件是否存在并且是一个文件夹
+     */
     public static boolean isDir(File file) {
         return file != null && file.exists() && file.isDirectory();
     }
@@ -126,7 +134,9 @@ public class FileUtil {
         return null;
     }
 
-    /** 创建目录，如果创建成功，或者目录已经存在，返回true. 否则返回false. */
+    /**
+     * 创建目录，如果创建成功，或者目录已经存在，返回true. 否则返回false.
+     */
     public static boolean createDir(File file) {
         if (file == null) {
             return false;
@@ -141,7 +151,9 @@ public class FileUtil {
         return true;
     }
 
-    /** 文件(文件夹)已删除或者删除成功返回true, 否则返回false */
+    /**
+     * 文件(文件夹)已删除或者删除成功返回true, 否则返回false
+     */
     public static boolean deleteFileQuietly(File file) {
         if (file == null || !file.exists()) {
             return true;
@@ -165,7 +177,9 @@ public class FileUtil {
         return false;
     }
 
-    /** 路径无效或者文件(文件夹)已删除或者删除成功返回true, 否则返回false */
+    /**
+     * 路径无效或者文件(文件夹)已删除或者删除成功返回true, 否则返回false
+     */
     public static boolean deleteFileQuietly(String path) {
         if (TextUtils.isEmpty(path)) {
             return true;
@@ -173,7 +187,9 @@ public class FileUtil {
         return deleteFileQuietly(new File(path));
     }
 
-    /** 如果文件不存在并且此次创建成功，返回true. 否则返回false. */
+    /**
+     * 如果文件不存在并且此次创建成功，返回true. 否则返回false.
+     */
     public static boolean createNewFileQuietly(File file) {
         if (file == null) {
             return false;
@@ -199,7 +215,9 @@ public class FileUtil {
         return file.exists() && file.isFile();
     }
 
-    /** 从指定 url 获取扩展名, 不包含扩展名分隔符<code>.</code>，如果获取失败，返回 null. */
+    /**
+     * 从指定 url 获取扩展名, 不包含扩展名分隔符<code>.</code>，如果获取失败，返回 null.
+     */
     @CheckResult
     public static String getFileExtensionFromUrl(String url) {
         String filename = getFilenameFromUrl(url);
@@ -221,7 +239,9 @@ public class FileUtil {
         return null;
     }
 
-    /** 从指定 url 获取文件名，包含扩展名, 如果获取失败，返回 null. */
+    /**
+     * 从指定 url 获取文件名，包含扩展名, 如果获取失败，返回 null.
+     */
     @CheckResult
     public static String getFilenameFromUrl(String url) {
         if (url != null) {
@@ -264,7 +284,9 @@ public class FileUtil {
         return null;
     }
 
-    /** 以指定的文件名前缀和后缀在指定文件夹创建一个临时文件，如果创建失败，返回 null. */
+    /**
+     * 以指定的文件名前缀和后缀在指定文件夹创建一个临时文件，如果创建失败，返回 null.
+     */
     @CheckResult
     public static File createNewTmpFileQuietly(String prefix, String suffix, File dir) {
         try {
@@ -298,7 +320,10 @@ public class FileUtil {
         return null;
     }
 
-    /** 创建一个新文件，如果指定的文件已经存在，则尝试创建一个相似的文件，返回创建成功的文件路径，如果创建失败，返回 null. */
+    /**
+     * 创建一个新文件，如果指定的文件已经存在，则尝试创建一个相似的文件，返回创建成功的文件路径，
+     * 如果创建失败，返回 null.
+     */
     @CheckResult
     public static String createSimilarFileQuietly(String path) {
         try {
@@ -346,7 +371,9 @@ public class FileUtil {
         return targetUri;
     }
 
-    /** use file content uri for Intent data, need set grant uri permission */
+    /**
+     * use file content uri for Intent data, need set grant uri permission
+     */
     public static void addGrantUriPermission(Intent intent) {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
