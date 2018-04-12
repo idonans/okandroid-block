@@ -5,7 +5,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** 共享的线程池 */
+/**
+ * 共享的线程池
+ */
 public class ThreadPool {
 
     private static class InstanceHolder {
@@ -22,9 +24,12 @@ public class ThreadPool {
     private final AtomicInteger mCount = new AtomicInteger();
     private final ThreadPoolExecutor mExecutor =
             new ThreadPoolExecutor(
-                    0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+                    0, Integer.MAX_VALUE,
+                    60L, TimeUnit.SECONDS,
+                    new SynchronousQueue<Runnable>());
 
-    private ThreadPool() {}
+    private ThreadPool() {
+    }
 
     public void post(final Runnable runnable) {
         mExecutor.execute(
@@ -44,7 +49,9 @@ public class ThreadPool {
                 });
     }
 
-    /** 获得线程池中正在运行的任务数量 (任务数量可能比当前线程池中的线程数量少) */
+    /**
+     * 获得线程池中正在运行的任务数量 (任务数量可能比当前线程池中的线程数量少)
+     */
     public int getCount() {
         return mCount.get();
     }
