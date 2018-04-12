@@ -47,7 +47,14 @@ public class AppInit {
         LocalDataInit.touch();
     }
 
+    private static void checkInitUnsafe() {
+        if (!sInit) {
+            throw new IllegalStateException("not init");
+        }
+    }
+
     public static boolean isDebug() {
+        checkInitUnsafe();
         return sDebug;
     }
 

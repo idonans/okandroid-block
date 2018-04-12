@@ -26,7 +26,7 @@ public class AppEnvironment {
             new InternalApplicationCallbacks();
     private static final AppProperties sAppProperties = new AppProperties();
 
-    AppEnvironment() {
+    private AppEnvironment() {
     }
 
     private static void checkInitUnsafe() {
