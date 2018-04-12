@@ -6,12 +6,16 @@ import android.content.pm.ResolveInfo;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+
 import java.io.File;
 import java.util.List;
 
 public class CameraUtil {
 
-    /** 尝试创建一个用来拍照的临时文件, 位于扩展卡的 app 缓存路径下. 仅用来计算这样一个可用的路径, 文件本身并没有创建. 如果没有可用的文件, 返回 null. */
+    /**
+     * 尝试创建一个用来拍照的临时文件, 位于扩展卡的 app 缓存路径下.
+     * 仅用来计算这样一个可用的路径, 文件本身并没有创建. 如果没有可用的文件, 返回 null.
+     */
     public static File createCameraTmpFile() {
         File cacheDir = FileUtil.getExternalCacheDir();
         if (cacheDir == null) {
@@ -95,5 +99,6 @@ public class CameraUtil {
         }
     }
 
-    private CameraUtil() {}
+    private CameraUtil() {
+    }
 }
