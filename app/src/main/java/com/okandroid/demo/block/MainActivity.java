@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.okandroid.block.data.TmpFileManager;
 import com.okandroid.block.lang.GBKLengthInputFilter;
 
 import java.util.concurrent.TimeUnit;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
+        if (savedInstanceState == null) {
+            TmpFileManager.getInstance().clear();
         }
 
         super.onCreate(savedInstanceState);
