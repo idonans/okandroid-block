@@ -26,22 +26,28 @@ public class StringUtil {
             tmpChar = text.charAt(start);
             if (tmpChar <= ' ') {
                 start++;
+                continue;
             }
 
             if (remove != null && remove.indexOf(tmpChar) >= 0) {
                 start++;
+                continue;
             }
+            break;
         }
 
         while (start < len) {
             tmpChar = text.charAt(len - 1);
             if (tmpChar <= ' ') {
                 len--;
+                continue;
             }
 
             if (remove != null && remove.indexOf(tmpChar) >= 0) {
                 len--;
+                continue;
             }
+            break;
         }
 
         return ((start > 0) || (len < text.length())) ? text.substring(start, len) : text;
