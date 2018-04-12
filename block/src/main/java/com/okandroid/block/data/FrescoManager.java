@@ -53,7 +53,7 @@ public class FrescoManager {
 
         FLogDefaultLoggingDelegate fLogDefaultLoggingDelegate =
                 FLogDefaultLoggingDelegate.getInstance();
-        fLogDefaultLoggingDelegate.setApplicationTag("okandroid_block");
+        fLogDefaultLoggingDelegate.setApplicationTag("okandroid");
         fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
                 AppInit.isDebug() ? Log.VERBOSE : Log.WARN);
 
