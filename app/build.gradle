@@ -20,7 +20,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            resValue("string", "okandroid_block_log_level", "VERBOSE")
+            minifyEnabled false
+            resValue("bool", "okandroid_block_debug", "true")
         }
     }
 }
