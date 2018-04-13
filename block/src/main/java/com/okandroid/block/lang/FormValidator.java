@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 public class FormValidator {
 
-    private FormValidator() {}
+    private FormValidator() {
+    }
 
     public static void bind(final InputView[] inputViews, final SubmitView[] submitViews) {
         checkFormSubmitStatus(inputViews, submitViews);
@@ -70,7 +71,8 @@ public class FormValidator {
 
     public static class InputViewFactory {
 
-        private InputViewFactory() {}
+        private InputViewFactory() {
+        }
 
         @Nullable
         public static InputView create(@Nullable CheckBox checkBox) {
@@ -100,7 +102,8 @@ public class FormValidator {
 
         public static class TextViewInputView extends BaseInputView {
 
-            @NonNull private final TextView mTextView;
+            @NonNull
+            private final TextView mTextView;
 
             public TextViewInputView(@NonNull TextView textView) {
                 mTextView = textView;
@@ -108,11 +111,13 @@ public class FormValidator {
                         new TextWatcher() {
                             @Override
                             public void beforeTextChanged(
-                                    CharSequence s, int start, int count, int after) {}
+                                    CharSequence s, int start, int count, int after) {
+                            }
 
                             @Override
                             public void onTextChanged(
-                                    CharSequence s, int start, int before, int count) {}
+                                    CharSequence s, int start, int before, int count) {
+                            }
 
                             @Override
                             public void afterTextChanged(Editable s) {
@@ -131,7 +136,8 @@ public class FormValidator {
 
         public static class CheckBoxInputView extends BaseInputView {
 
-            @NonNull private final CheckBox mCheckBox;
+            @NonNull
+            private final CheckBox mCheckBox;
 
             public CheckBoxInputView(@NonNull CheckBox checkBox) {
                 mCheckBox = checkBox;
@@ -163,7 +169,8 @@ public class FormValidator {
 
     public static class SubmitViewFactory {
 
-        private SubmitViewFactory() {}
+        private SubmitViewFactory() {
+        }
 
         @Nullable
         public static SubmitView create(@Nullable View view) {
@@ -175,7 +182,8 @@ public class FormValidator {
 
         public static class SimpleSubmitView implements SubmitView {
 
-            @NonNull private final View mView;
+            @NonNull
+            private final View mView;
 
             public SimpleSubmitView(@NonNull View view) {
                 mView = view;

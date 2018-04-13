@@ -6,7 +6,8 @@ import com.okandroid.block.lang.Charsets;
 
 public class TextUtil {
 
-    private TextUtil() {}
+    private TextUtil() {
+    }
 
     public static int getGBKLength(String input) {
         if (TextUtils.isEmpty(input)) {
@@ -22,4 +23,5 @@ public class TextUtil {
 
         return length;
     }
+
 }

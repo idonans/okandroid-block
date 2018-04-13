@@ -1,6 +1,8 @@
 package com.okandroid.block.lang;
 
-/** copy from android.util.Singleton 支持延迟初始化 */
+/**
+ * copy from android.util.Singleton 支持延迟初始化
+ */
 public abstract class Singleton<T> {
     private T mInstance;
 

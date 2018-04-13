@@ -3,7 +3,9 @@ package com.okandroid.block.util;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-/** dp,sp to px */
+/**
+ * dp,sp to px
+ */
 public class DimenUtil {
 
     public static int dp2px(float dp) {

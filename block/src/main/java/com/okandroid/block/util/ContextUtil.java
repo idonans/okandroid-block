@@ -7,7 +7,8 @@ public class ContextUtil {
 
     private static Context sContext;
 
-    private ContextUtil() {}
+    private ContextUtil() {
+    }
 
     public static Context getContext() {
         if (sContext == null) {
@@ -17,7 +18,9 @@ public class ContextUtil {
         return sContext;
     }
 
-    /** do not call this method direct, and use AppInit.init(Context) instead. */
+    /**
+     * do not call this method direct, and use AppInit.init(Context) instead.
+     */
     public static void setContext(Context context) {
         if (sContext == null) {
             Context originalContext = context;

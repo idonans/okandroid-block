@@ -1,10 +1,13 @@
 package com.okandroid.block.util;
 
 import android.text.TextUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** 常见正则表达式相关辅助类 */
+/**
+ * 常见正则表达式相关辅助类
+ */
 public class RegexUtil {
 
     private static final Pattern PATTERN_PHONE =
@@ -15,7 +18,9 @@ public class RegexUtil {
     private static final Pattern PATTERN_JSONP =
             Pattern.compile("^[a-zA-Z_$][0-9a-zA-Z_$]*[\\s]*\\(([^\\)]*)\\)[\\s]*[;]*$");
 
-    /** 国内手机号 */
+    /**
+     * 国内手机号
+     */
     public static boolean isPhoneNumber(String phoneNum) {
         if (TextUtils.isEmpty(phoneNum)) {
             return false;
@@ -45,7 +50,9 @@ public class RegexUtil {
         return m.matches();
     }
 
-    /** 如果是合法的 jsonp 格式, 转换为 json, 否则原样返回. */
+    /**
+     * 如果是合法的 jsonp 格式, 转换为 json, 否则原样返回.
+     */
     public static String jsonp2json(String jsonp) {
         if (TextUtils.isEmpty(jsonp)) {
             return jsonp;
@@ -59,4 +66,5 @@ public class RegexUtil {
             return jsonp;
         }
     }
+
 }

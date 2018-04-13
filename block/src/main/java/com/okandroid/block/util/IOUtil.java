@@ -4,9 +4,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteClosable;
 import android.graphics.BitmapRegionDecoder;
 import android.webkit.WebView;
-import com.okandroid.block.lang.Available;
+
+import com.okandroid.block.lang.AbortSignal;
 import com.okandroid.block.lang.Charsets;
 import com.okandroid.block.lang.Progress;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,10 +24,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/** IO 辅助类 */
+/**
+ * IO 辅助类
+ */
 public final class IOUtil {
 
-    private IOUtil() {}
+    private IOUtil() {
+    }
 
     public static void closeQuietly(WebView webView) {
         if (webView != null) {
@@ -39,7 +44,9 @@ public final class IOUtil {
         }
     }
 
-    /** SQLiteDatabase 不需要关闭 */
+    /**
+     * SQLiteDatabase 不需要关闭
+     */
     @Deprecated
     public static void closeQuietly(SQLiteClosable closeable) {
         // ignore
@@ -88,13 +95,13 @@ public final class IOUtil {
     }
 
     public static long copy(
-            InputStream from, OutputStream to, Available available, Progress progress)
+            InputStream from, OutputStream to, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         long copy = 0;
         byte[] step = new byte[8 * 1024];
         int read;
         while ((read = from.read(step)) != -1) {
-            AvailableUtil.mustAvailable(available);
+            AbortUtil.throwIfAbort(abortSignal);
             to.write(step, 0, read);
             copy += read;
             Progress.append(progress, read);
@@ -102,19 +109,19 @@ public final class IOUtil {
         return copy;
     }
 
-    public static long copy(byte[] from, OutputStream to, Available available, Progress progress)
+    public static long copy(byte[] from, OutputStream to, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         ByteArrayInputStream bais = null;
         try {
             bais = new ByteArrayInputStream(from);
-            return copy(bais, to, available, progress);
+            return copy(bais, to, abortSignal, progress);
         } finally {
             closeQuietly(bais);
         }
     }
 
     public static long copy(
-            InputStream from, OutputStream to, long count, Available available, Progress progress)
+            InputStream from, OutputStream to, long count, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         int stepSize = 8 * 1024;
         if (stepSize > count) {
@@ -124,7 +131,7 @@ public final class IOUtil {
         byte[] step = new byte[stepSize];
         int read;
         while ((read = from.read(step, 0, stepSize)) != -1) {
-            AvailableUtil.mustAvailable(available);
+            AbortUtil.throwIfAbort(abortSignal);
             to.write(step, 0, read);
             copy += read;
             Progress.append(progress, read);
@@ -142,54 +149,54 @@ public final class IOUtil {
         return copy;
     }
 
-    public static long copy(File from, OutputStream to, Available available, Progress progress)
+    public static long copy(File from, OutputStream to, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(from);
-            return copy(fis, to, available, progress);
+            return copy(fis, to, abortSignal, progress);
         } finally {
             closeQuietly(fis);
         }
     }
 
-    public static long copy(InputStream from, File to, Available available, Progress progress)
+    public static long copy(InputStream from, File to, AbortSignal abortSignal, Progress progress)
             throws Throwable {
-        return copy(from, to, false, available, progress);
+        return copy(from, to, false, abortSignal, progress);
     }
 
     public static long copy(
-            InputStream from, File to, boolean append, Available available, Progress progress)
+            InputStream from, File to, boolean append, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(to, append);
-            return copy(from, fos, available, progress);
+            return copy(from, fos, abortSignal, progress);
         } finally {
             closeQuietly(fos);
         }
     }
 
-    public static long copy(File from, File to, Available available, Progress progress)
+    public static long copy(File from, File to, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         FileInputStream fis = null;
         FileOutputStream fos = null;
         try {
             fis = new FileInputStream(from);
             fos = new FileOutputStream(to);
-            return copy(fis, fos, available, progress);
+            return copy(fis, fos, abortSignal, progress);
         } finally {
             closeQuietly(fis);
             closeQuietly(fos);
         }
     }
 
-    public static byte[] read(InputStream is, long count, Available available, Progress progress)
+    public static byte[] read(InputStream is, long count, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         ByteArrayOutputStream baos = null;
         try {
             baos = new ByteArrayOutputStream();
-            copy(is, baos, count, available, progress);
+            copy(is, baos, count, abortSignal, progress);
             return baos.toByteArray();
         } finally {
             closeQuietly(baos);
@@ -197,37 +204,37 @@ public final class IOUtil {
     }
 
     public static String readAsString(
-            InputStream is, long count, Available available, Progress progress) throws Throwable {
-        byte[] all = read(is, count, available, progress);
+            InputStream is, long count, AbortSignal abortSignal, Progress progress) throws Throwable {
+        byte[] all = read(is, count, abortSignal, progress);
         return new String(all, Charsets.UTF8);
     }
 
-    public static byte[] readAll(File file, Available available, Progress progress)
+    public static byte[] readAll(File file, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);
-            return readAll(fis, available, progress);
+            return readAll(fis, abortSignal, progress);
         } finally {
             IOUtil.closeQuietly(fis);
         }
     }
 
-    public static byte[] readAll(InputStream is, Available available, Progress progress)
+    public static byte[] readAll(InputStream is, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         ByteArrayOutputStream baos = null;
         try {
             baos = new ByteArrayOutputStream();
-            copy(is, baos, available, progress);
+            copy(is, baos, abortSignal, progress);
             return baos.toByteArray();
         } finally {
             closeQuietly(baos);
         }
     }
 
-    public static String readAllAsString(InputStream is, Available available, Progress progress)
+    public static String readAllAsString(InputStream is, AbortSignal abortSignal, Progress progress)
             throws Throwable {
-        byte[] all = readAll(is, available, progress);
+        byte[] all = readAll(is, abortSignal, progress);
         return new String(all, Charsets.UTF8);
     }
 
@@ -235,7 +242,7 @@ public final class IOUtil {
      * 读取所有的行并返回，注意返回的行内容不包括换行符号 '\n', '\r', "\r\n" <br>
      * 每读取一行，进度 append 1.
      */
-    public static List<String> readAllLines(InputStream is, Available available, Progress progress)
+    public static List<String> readAllLines(InputStream is, AbortSignal abortSignal, Progress progress)
             throws Throwable {
         List<String> allLines = new ArrayList<>();
         InputStreamReader isr = null;
@@ -245,7 +252,7 @@ public final class IOUtil {
             br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
-                AvailableUtil.mustAvailable(available);
+                AbortUtil.throwIfAbort(abortSignal);
                 allLines.add(line);
                 Progress.append(progress, 1);
             }

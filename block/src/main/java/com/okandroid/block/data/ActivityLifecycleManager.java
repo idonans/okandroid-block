@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.Singleton;
-import com.okandroid.block.lang.WeakAvailable;
+
+import java.lang.ref.WeakReference;
 
 import timber.log.Timber;
 
@@ -52,59 +53,59 @@ public class ActivityLifecycleManager {
 
     private class ActivityLifecycleCallbacksImpl extends AppEnvironment.SimpleApplicationCallbacks {
 
-        private WeakAvailable mCreatedActivityRef = new WeakAvailable(null);
-        private WeakAvailable mStartedActivityRef = new WeakAvailable(null);
-        private WeakAvailable mResumedActivityRef = new WeakAvailable(null);
+        private WeakReference<Activity> mCreatedActivityRef = new WeakReference<>(null);
+        private WeakReference<Activity> mStartedActivityRef = new WeakReference<>(null);
+        private WeakReference<Activity> mResumedActivityRef = new WeakReference<>(null);
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            mCreatedActivityRef.setObject(activity);
+            mCreatedActivityRef = new WeakReference<>(activity);
         }
 
         @Override
         public void onActivityStarted(Activity activity) {
-            mStartedActivityRef.setObject(activity);
+            mStartedActivityRef = new WeakReference<>(activity);
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
-            mResumedActivityRef.setObject(activity);
+            mResumedActivityRef = new WeakReference<>(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-            Activity resumedActivity = (Activity) mResumedActivityRef.getObject();
+            Activity resumedActivity = mResumedActivityRef.get();
             if (resumedActivity == activity) {
-                mResumedActivityRef.setObject(null);
+                mResumedActivityRef = new WeakReference<>(null);
             }
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            Activity startedActivity = (Activity) mStartedActivityRef.getObject();
+            Activity startedActivity = mStartedActivityRef.get();
             if (startedActivity == activity) {
-                mStartedActivityRef.setObject(null);
+                mStartedActivityRef = new WeakReference<>(null);
             }
         }
 
         @Override
         public void onActivityDestroyed(Activity activity) {
-            Activity createdActivity = (Activity) mCreatedActivityRef.getObject();
+            Activity createdActivity = mCreatedActivityRef.get();
             if (createdActivity == activity) {
-                mCreatedActivityRef.setObject(null);
+                mCreatedActivityRef = new WeakReference<>(null);
             }
         }
 
         public Activity getTopActivity() {
-            Activity activity = (Activity) mResumedActivityRef.getObject();
+            Activity activity = mResumedActivityRef.get();
             if (activity != null) {
                 return activity;
             }
-            activity = (Activity) mStartedActivityRef.getObject();
+            activity = mStartedActivityRef.get();
             if (activity != null) {
                 return activity;
             }
-            activity = (Activity) mCreatedActivityRef.getObject();
+            activity = mCreatedActivityRef.get();
             return activity;
         }
     }

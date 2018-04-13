@@ -318,4 +318,5 @@ public class FixWebView extends WebView {
             mActivity.setRequestedOrientation(mOriginalRequestOrientation);
         }
     }
+
 }

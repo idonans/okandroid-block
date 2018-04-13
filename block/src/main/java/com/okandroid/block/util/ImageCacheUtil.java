@@ -98,7 +98,7 @@ public class ImageCacheUtil {
                                     buffer = dataSource.getResult();
                                     is = new PooledByteBufferInputStream(buffer.get());
 
-                                    long copy = IOUtil.copy(is, fos, AvailableUtil.always(), null);
+                                    long copy = IOUtil.copy(is, fos, null, null);
                                     if (copy > 0) {
                                         errFile = null;
                                         onceListener.onImageCached(targetFile);
