@@ -4,7 +4,7 @@ public class SimpleAbortSignal implements AbortSignal {
 
     private boolean mAbort;
 
-    public void abort() {
+    public void setAbort() {
         if (!mAbort) {
             mAbort = true;
         }

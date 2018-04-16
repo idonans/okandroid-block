@@ -9,11 +9,11 @@ public class AbortUtil {
 
     /**
      * @param abortSignal
-     * @return true if abortSignal is null or isAbort, otherwise false.
+     * @return true if abortSignal is not null and isAbort return true, otherwise false.
      */
     public static boolean isAbort(@Nullable AbortSignal abortSignal) {
         if (abortSignal == null) {
-            return true;
+            return false;
         }
         return abortSignal.isAbort();
     }
@@ -26,15 +26,5 @@ public class AbortUtil {
             throw new AbortException();
         }
     }
-
-    /**
-     * one AbortSingle the method isAbort always return false.
-     */
-    public static final AbortSignal UNINTERRUPTED = new AbortSignal() {
-        @Override
-        public boolean isAbort() {
-            return false;
-        }
-    };
 
 }

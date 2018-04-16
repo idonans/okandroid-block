@@ -1,19 +1,19 @@
 package com.okandroid.block.lang;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * @return true, if the reference object is null.
+ * or check the object#isAbort if it's instance of AbortSignal
+ */
 public class WeakAbortSignal extends SimpleAbortSignal {
 
-    private final WeakReference<AbortSignal> mWeakReference;
+    private final WeakReference<Object> mWeakReference;
 
-    public WeakAbortSignal(@NonNull AbortSignal abortSignal) {
-        if (abortSignal.isAbort()) {
-            abort();
-        }
-
-        mWeakReference = new WeakReference<>(abortSignal);
+    public WeakAbortSignal(@Nullable Object object) {
+        mWeakReference = new WeakReference<>(object);
     }
 
     @Override
@@ -22,13 +22,21 @@ public class WeakAbortSignal extends SimpleAbortSignal {
             return true;
         }
 
-        AbortSignal abortSignal = mWeakReference.get();
-        if (abortSignal == null) {
-            // 引用的对象被回收，则 abort
+        Object object = mWeakReference.get();
+        if (object == null) {
+            setAbort();
             return true;
         }
 
-        return abortSignal.isAbort();
+        if (object instanceof AbortSignal) {
+            AbortSignal abortSignal = (AbortSignal) object;
+            if (abortSignal.isAbort()) {
+                setAbort();
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
