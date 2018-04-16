@@ -2,6 +2,7 @@ package com.okandroid.block.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.support.annotation.Nullable;
 
 import com.okandroid.block.lang.AbortSignal;
 import com.okandroid.block.lang.Progress;
@@ -14,7 +15,10 @@ import java.util.List;
  */
 public class AssetUtil {
 
-    public static String readAllAsString(String path, AbortSignal abortSignal, Progress progress)
+    public static String readAllAsString(
+            String path,
+            @Nullable AbortSignal abortSignal,
+            @Nullable Progress progress)
             throws Throwable {
         Context context = ContextUtil.getContext();
         AssetManager assetManager = context.getAssets();
@@ -27,7 +31,10 @@ public class AssetUtil {
         }
     }
 
-    public static byte[] readAll(String path, AbortSignal abortSignal, Progress progress)
+    public static byte[] readAll(
+            String path,
+            @Nullable AbortSignal abortSignal,
+            @Nullable Progress progress)
             throws Throwable {
         Context context = ContextUtil.getContext();
         AssetManager assetManager = context.getAssets();
@@ -40,7 +47,10 @@ public class AssetUtil {
         }
     }
 
-    public static List<String> readAllLines(String path, AbortSignal abortSignal, Progress progress)
+    public static List<String> readAllLines(
+            String path,
+            @Nullable AbortSignal abortSignal,
+            @Nullable Progress progress)
             throws Throwable {
         Context context = ContextUtil.getContext();
         AssetManager assetManager = context.getAssets();
