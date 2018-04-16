@@ -60,7 +60,7 @@ public class FixWebView extends WebView {
 
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAllowFileAccess(true);
         settings.setAppCacheEnabled(true);
         settings.setDomStorageEnabled(true);
