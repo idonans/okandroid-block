@@ -18,6 +18,7 @@ import timber.log.Timber;
 /**
  * 辅助观察软键盘的行为
  */
+@Deprecated
 public class SoftKeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private final SoftKeyboardListener mListener;

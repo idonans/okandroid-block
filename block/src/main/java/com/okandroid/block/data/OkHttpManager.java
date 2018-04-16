@@ -2,7 +2,7 @@ package com.okandroid.block.data;
 
 import android.text.TextUtils;
 
-import com.okandroid.block.AppInit;
+import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.Singleton;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class OkHttpManager {
                     }
                 };
 
-        boolean debug = AppInit.isDebug();
+        boolean debug = AppEnvironment.getAppProperties().isDebug();
         if (debug) {
             Timber.d("in debug mode, config OkHttpClient.");
 

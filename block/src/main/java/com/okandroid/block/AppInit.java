@@ -3,8 +3,10 @@ package com.okandroid.block;
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.okandroid.block.lang.BlockFileProvider;
+import com.okandroid.block.lang.NotInitException;
 import com.okandroid.block.util.ContextUtil;
 
 import timber.log.Timber;
@@ -23,39 +25,39 @@ public class AppInit {
     private static boolean sInit;
     private static boolean sDebug;
 
-    public static synchronized void init(Context context) {
+    public static synchronized void init(@NonNull Context context) {
         if (sInit) {
             return;
         }
         sInit = true;
 
-        if (context == null) {
-            throw new IllegalArgumentException("context is null");
-        }
+        // set global context first
+        ContextUtil.setContext(context);
 
-        sDebug = context.getResources().getBoolean(R.bool.okandroid_block_debug);
-
+        sDebug = isBuildDebug(context);
         if (sDebug) {
             Timber.plant(new Timber.DebugTree());
         }
 
         Timber.v(new Throwable());
 
-        ContextUtil.setContext(context);
         AppEnvironment.init();
-
         LocalDataInit.touch();
     }
 
-    private static void checkInitUnsafe() {
+    private static void throwIfNotInit() {
         if (!sInit) {
-            throw new IllegalStateException("not init");
+            throw new NotInitException();
         }
     }
 
     public static boolean isDebug() {
-        checkInitUnsafe();
+        throwIfNotInit();
         return sDebug;
+    }
+
+    private static boolean isBuildDebug(@NonNull Context context) {
+        return context.getResources().getBoolean(R.bool.okandroid_block_debug);
     }
 
 }

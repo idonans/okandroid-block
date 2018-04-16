@@ -9,8 +9,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.okandroid.block.lang.NotInitException;
 import com.okandroid.block.util.ContextUtil;
 
 import java.util.HashMap;
@@ -29,9 +31,9 @@ public class AppEnvironment {
     private AppEnvironment() {
     }
 
-    private static void checkInitUnsafe() {
+    private static void throwIfNotInit() {
         if (!sInit) {
-            throw new IllegalStateException("not init");
+            throw new NotInitException();
         }
     }
 
@@ -51,12 +53,12 @@ public class AppEnvironment {
     }
 
     public static AppProperties getAppProperties() {
-        checkInitUnsafe();
+        throwIfNotInit();
         return sAppProperties;
     }
 
     public static void addApplicationCallbacks(ApplicationCallbacks callbacks) {
-        checkInitUnsafe();
+        throwIfNotInit();
         sInternalApplicationCallbacks.addCallback(callbacks);
     }
 
@@ -68,6 +70,10 @@ public class AppEnvironment {
         public void onConfigurationChanged(Configuration newConfig) {
             Timber.v("onConfigurationChanged clear properties");
             mProperties.clear();
+        }
+
+        public boolean isDebug() {
+            return AppInit.isDebug();
         }
 
         public String getAppLabel() {
@@ -145,6 +151,7 @@ public class AppEnvironment {
             }
         }
 
+        @Nullable
         private Object[] getCallbacks() {
             Object[] callbacks = null;
             synchronized (mOuterCallbacks) {

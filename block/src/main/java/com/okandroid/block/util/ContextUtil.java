@@ -2,6 +2,7 @@ package com.okandroid.block.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 public class ContextUtil {
 
@@ -10,6 +11,7 @@ public class ContextUtil {
     private ContextUtil() {
     }
 
+    @NonNull
     public static Context getContext() {
         if (sContext == null) {
             throw new IllegalAccessError(
@@ -21,18 +23,18 @@ public class ContextUtil {
     /**
      * do not call this method direct, and use AppInit.init(Context) instead.
      */
-    public static void setContext(Context context) {
-        if (sContext == null) {
-            Context originalContext = context;
-
-            context = context.getApplicationContext();
-
-            if (!(context instanceof Application)) {
-                throw new IllegalArgumentException("application not found " + originalContext);
-            }
-            sContext = context;
-        } else {
-            new IllegalStateException("already set context").printStackTrace();
+    public static synchronized void setContext(@NonNull Context context) {
+        if (sContext != null) {
+            throw new IllegalAccessError("context already set");
         }
+
+        Context originalContext = context;
+
+        context = context.getApplicationContext();
+
+        if (!(context instanceof Application)) {
+            throw new IllegalArgumentException("application not found " + originalContext);
+        }
+        sContext = context;
     }
 }

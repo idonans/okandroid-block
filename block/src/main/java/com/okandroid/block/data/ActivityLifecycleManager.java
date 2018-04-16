@@ -2,6 +2,8 @@ package com.okandroid.block.data;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.okandroid.block.AppEnvironment;
 import com.okandroid.block.lang.Singleton;
@@ -40,6 +42,7 @@ public class ActivityLifecycleManager {
         AppEnvironment.addApplicationCallbacks(mActivityLifecycleCallbacks);
     }
 
+    @Nullable
     public Activity getTopActivity() {
         return mActivityLifecycleCallbacks.getTopActivity();
     }
@@ -53,8 +56,11 @@ public class ActivityLifecycleManager {
 
     private class ActivityLifecycleCallbacksImpl extends AppEnvironment.SimpleApplicationCallbacks {
 
+        @NonNull
         private WeakReference<Activity> mCreatedActivityRef = new WeakReference<>(null);
+        @NonNull
         private WeakReference<Activity> mStartedActivityRef = new WeakReference<>(null);
+        @NonNull
         private WeakReference<Activity> mResumedActivityRef = new WeakReference<>(null);
 
         @Override
@@ -96,6 +102,7 @@ public class ActivityLifecycleManager {
             }
         }
 
+        @Nullable
         public Activity getTopActivity() {
             Activity activity = mResumedActivityRef.get();
             if (activity != null) {
