@@ -20,6 +20,7 @@ import java.util.WeakHashMap;
 
 import timber.log.Timber;
 
+@Deprecated
 public class AppEnvironment {
 
     private static boolean sInit;

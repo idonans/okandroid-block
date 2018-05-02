@@ -1,15 +1,16 @@
 package com.okandroid.block;
 
+import com.okandroid.block.core.StorageManager;
 import com.okandroid.block.data.ActivityLifecycleManager;
 import com.okandroid.block.data.AppIDManager;
 import com.okandroid.block.data.CookiesManager;
 import com.okandroid.block.data.FrescoManager;
 import com.okandroid.block.data.OkHttpManager;
 import com.okandroid.block.data.ProcessManager;
-import com.okandroid.block.data.StorageManager;
 import com.okandroid.block.data.TmpFileManager;
 import com.okandroid.block.thread.Threads;
 
+@Deprecated
 public class LocalDataInit {
 
     public static void touch() {

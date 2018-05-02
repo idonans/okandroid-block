@@ -1,6 +1,7 @@
 package com.okandroid.block;
 
 import android.app.Application;
+import android.app.Service;
 import android.content.ContentProvider;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,7 +14,7 @@ import timber.log.Timber;
 
 /**
  * call {@link AppInit#init(Context)} on {@link Application#onCreate()}, {@link
- * ContentProvider#onCreate()}
+ * ContentProvider#onCreate(), {@link Service#onCreate()}}
  *
  * @see BlockFileProvider#onCreate()
  */
@@ -23,7 +24,6 @@ public class AppInit {
     }
 
     private static boolean sInit;
-    private static boolean sDebug;
 
     public static synchronized void init(@NonNull Context context) {
         if (sInit) {
@@ -34,8 +34,7 @@ public class AppInit {
         // set global context first
         ContextUtil.setContext(context);
 
-        sDebug = isBuildDebug(context);
-        if (sDebug) {
+        if (isDebug()) {
             Timber.plant(new Timber.DebugTree());
         }
 
@@ -53,11 +52,17 @@ public class AppInit {
 
     public static boolean isDebug() {
         throwIfNotInit();
-        return sDebug;
+        return ContextUtil.getContext().getResources().getBoolean(R.bool.okandroid_block_debug);
     }
 
-    private static boolean isBuildDebug(@NonNull Context context) {
-        return context.getResources().getBoolean(R.bool.okandroid_block_debug);
+    public static String getSubDirName() {
+        throwIfNotInit();
+        return ContextUtil.getContext().getString(R.string.okandroid_block_sub_dir_name);
+    }
+
+    public static long getRemoteTimeoutMs() {
+        throwIfNotInit();
+        return 20 * 1000; // 20s
     }
 
 }

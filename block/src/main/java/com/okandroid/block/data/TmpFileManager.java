@@ -14,6 +14,7 @@ import timber.log.Timber;
  * 临时文件管理器, 当 app 启动时(非恢复的情况), 应当调用 clear 方法以清除遗留的临时文件. 通常, 在 Splash#onCreate(savedInstanceState ==
  * null) 时, 调用 #clear().
  */
+@Deprecated
 public class TmpFileManager {
 
     private static final Singleton<TmpFileManager> sInstance =

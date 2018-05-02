@@ -15,6 +15,7 @@ import timber.log.Timber;
 /**
  * Activity 生命周期监听. 如可判断当前进程是否有正在显示的 Activity etc.
  */
+@Deprecated
 public class ActivityLifecycleManager {
 
     private static final Singleton<ActivityLifecycleManager> sInstance =

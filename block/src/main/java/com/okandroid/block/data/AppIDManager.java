@@ -1,7 +1,6 @@
 package com.okandroid.block.data;
 
-import android.text.TextUtils;
-
+import com.okandroid.block.core.StorageManager;
 import com.okandroid.block.lang.Singleton;
 
 import java.util.UUID;
@@ -38,11 +37,10 @@ public class AppIDManager {
 
     private AppIDManager() {
         Timber.v("init");
-        mAppID = StorageManager.getInstance().getSetting(KEY_APP_ID);
-        if (TextUtils.isEmpty(mAppID)) {
-            mAppID = UUID.randomUUID().toString();
-            StorageManager.getInstance().setSetting(KEY_APP_ID, mAppID);
-        }
+        mAppID = StorageManager.getInstance().getOrSetLock(
+                StorageManager.NAMESPACE_SETTING,
+                KEY_APP_ID,
+                UUID.randomUUID().toString());
 
         Timber.d("AppID=%s", mAppID);
     }
