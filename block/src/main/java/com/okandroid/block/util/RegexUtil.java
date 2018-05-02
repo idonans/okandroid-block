@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class RegexUtil {
 
     private static final Pattern PATTERN_PHONE =
-            Pattern.compile("^((13[0-9])|(17[0-9])|(15[0-9])|(18[0-9]))\\d{8}$");
+            Pattern.compile("^(1)\\d{10}$");
     private static final Pattern PATTERN_EMAIL =
             Pattern.compile(
                     "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");

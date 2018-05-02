@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.widget.EditText;
 
 import com.okandroid.block.R;
-import com.okandroid.block.data.AppIDManager;
 
 import java.io.File;
 import java.util.Locale;
@@ -26,13 +25,6 @@ import java.util.Locale;
  * 一些系统相关辅助类
  */
 public class SystemUtil {
-
-    /**
-     * @see AppIDManager
-     */
-    public static String getAppID() {
-        return AppIDManager.getInstance().getAppID();
-    }
 
     /**
      * 成功打开软件商店(会尝试定位到指定软件)返回true, 如果没有安装任何软件商店, 返回false.
