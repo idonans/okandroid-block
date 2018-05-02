@@ -67,26 +67,26 @@ dependencies {
     api rootProject.ext.bcfg.deps.timber
 
     // test
-    testApi rootProject.ext.bcfg.deps.junit_test
-    testApi rootProject.ext.bcfg.deps.hamcrest_test
-    testApi rootProject.ext.bcfg.deps.arch_core_test
-    testApi rootProject.ext.bcfg.deps.mockito_all_test
+    testImplementation rootProject.ext.bcfg.deps.junit_test
+    testImplementation rootProject.ext.bcfg.deps.hamcrest_test
+    testImplementation rootProject.ext.bcfg.deps.arch_core_test
+    testImplementation rootProject.ext.bcfg.deps.mockito_all_test
 
     // android test
-    androidTestApi rootProject.ext.bcfg.deps.support_test_runner_test
-    androidTestApi rootProject.ext.bcfg.deps.support_test_rules_test
-    androidTestApi rootProject.ext.bcfg.deps.arch_core_test
-    androidTestApi rootProject.ext.bcfg.deps.arch_room_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_test_runner_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_test_rules_test
+    androidTestImplementation rootProject.ext.bcfg.deps.arch_core_test
+    androidTestImplementation rootProject.ext.bcfg.deps.arch_room_test
 
-    androidTestApi rootProject.ext.bcfg.deps.junit_test
-    androidTestApi rootProject.ext.bcfg.deps.mockito_core_test, {
+    androidTestImplementation rootProject.ext.bcfg.deps.junit_test
+    androidTestImplementation rootProject.ext.bcfg.deps.mockito_core_test, {
         exclude group: 'net.bytebuddy'
     }
-    androidTestApi rootProject.ext.bcfg.deps.dexmaker_test
+    androidTestImplementation rootProject.ext.bcfg.deps.dexmaker_test
 
-    androidTestApi rootProject.ext.bcfg.deps.support_espresso_core_test
-    androidTestApi rootProject.ext.bcfg.deps.support_espresso_contrib_test
-    androidTestApi rootProject.ext.bcfg.deps.support_espresso_intents_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_core_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_contrib_test
+    androidTestImplementation rootProject.ext.bcfg.deps.support_espresso_intents_test
 }
 
 apply from: rootProject.file('gradle/jcenter.gradle')
