@@ -31,8 +31,8 @@ public class StorageManager {
 
     public void set(String namespace, String key, String value) {
         try {
-            IStorageManager storageManager = getStorageManagerService();
-            storageManager.set(namespace, key, value);
+            IStorageManager service = getService();
+            service.set(namespace, key, value);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -40,8 +40,8 @@ public class StorageManager {
 
     public String get(String namespace, String key) {
         try {
-            IStorageManager storageManager = getStorageManagerService();
-            return storageManager.get(namespace, key);
+            IStorageManager service = getService();
+            return service.get(namespace, key);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -50,8 +50,8 @@ public class StorageManager {
 
     public String getOrSetLock(String namespace, String key, String setValue) {
         try {
-            IStorageManager storageManager = getStorageManagerService();
-            return storageManager.getOrSetLock(namespace, key, setValue);
+            IStorageManager service = getService();
+            return service.getOrSetLock(namespace, key, setValue);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -60,16 +60,16 @@ public class StorageManager {
 
     public void printAllRows(String namespace) {
         try {
-            IStorageManager storageManager = getStorageManagerService();
-            storageManager.printAllRows(namespace);
+            IStorageManager service = getService();
+            service.printAllRows(namespace);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    private IStorageManager getStorageManagerService() throws RemoteException {
-        ICoreServicesManager coreServicesManager = CoreServiceManager.getInstance().fetchRemote();
-        IBinder binder = coreServicesManager.getCoreService(CoreService.CORE_SERVICE_STORAGE);
+    private IStorageManager getService() throws RemoteException {
+        ICoreServicesManager coreServices = CoreServiceManager.getInstance().fetchRemote();
+        IBinder binder = coreServices.getCoreService(CoreService.CORE_SERVICE_STORAGE);
         return IStorageManager.Stub.asInterface(binder);
     }
 

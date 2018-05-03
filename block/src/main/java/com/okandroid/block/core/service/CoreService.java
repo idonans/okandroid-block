@@ -16,6 +16,7 @@ public class CoreService extends Service {
     private static final HashMap<String, ServiceFetcher<IBinder>> CORE_SERVICE_FETCHERS = new HashMap<>();
 
     public static final String CORE_SERVICE_STORAGE = "core_service_storage";
+    public static final String CORE_SERVICE_COOKIE_STORE = "core_service_cookie_store";
 
     @Override
     public void onCreate() {
@@ -26,6 +27,12 @@ public class CoreService extends Service {
             @Override
             public IBinder createService() {
                 return new StorageManagerService();
+            }
+        });
+        CORE_SERVICE_FETCHERS.put(CORE_SERVICE_COOKIE_STORE, new StaticServiceFetcher<IBinder>() {
+            @Override
+            public IBinder createService() {
+                return new CookieStoreManagerService();
             }
         });
     }

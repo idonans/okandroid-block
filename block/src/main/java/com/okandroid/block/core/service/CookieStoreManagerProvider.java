@@ -1,6 +1,6 @@
 package com.okandroid.block.core.service;
 
-import android.os.RemoteException;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
@@ -11,11 +11,13 @@ import com.okandroid.block.db.SimpleDB;
 import com.okandroid.block.lang.Singleton;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 import timber.log.Timber;
 
 class CookieStoreManagerProvider {
@@ -38,7 +40,7 @@ class CookieStoreManagerProvider {
     private final Type mCookieStoreEntityType = new TypeToken<CookieStoreEntity>() {
     }.getType();
 
-    private Map<String, Pair<CookieStoreEntity, Cookie>> mData = new HashMap<>();
+    private final Map<String, Pair<CookieStoreEntity, Cookie>> mData = new HashMap<>();
 
     private CookieStoreManagerProvider() {
         Timber.v("init");
@@ -51,7 +53,21 @@ class CookieStoreManagerProvider {
                 try {
                     CookieStoreEntity entity = mGson.fromJson(entry.getValue(), mCookieStoreEntityType);
                     if (entity != null) {
-                        mData.put(entry.getKey(), entity);
+                        HttpUrl httpUrl = HttpUrl.parse(entity.url);
+                        Cookie cookie = null;
+                        if (httpUrl != null) {
+                            cookie = Cookie.parse(httpUrl, entity.setCookie);
+                        }
+                        if (cookie != null) {
+                            if (!ObjectsCompat.equals(entry.getKey(), entity.savedKey)) {
+                                Timber.e("key not equals %s : %s", entry.getKey(), entity.savedKey);
+                                continue;
+                            }
+
+                            synchronized (mData) {
+                                mData.put(entity.savedKey, new Pair<>(entity, cookie));
+                            }
+                        }
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -60,53 +76,146 @@ class CookieStoreManagerProvider {
         }
     }
 
-
-    @Override
-    public void save(String url, List<String> setCookies) throws RemoteException {
+    public void save(String url, List<String> setCookies) {
         if (TextUtils.isEmpty(url) || setCookies == null || setCookies.isEmpty()) {
             return;
         }
 
-        for (String setCookie : setCookies) {
-            if (TextUtils.isEmpty(setCookie)) {
-                continue;
-            }
+        HttpUrl httpUrl = HttpUrl.parse(url);
+        if (httpUrl == null) {
+            return;
+        }
 
-            CookieStoreEntity entity = new CookieStoreEntity();
-            entity.setCookie = setCookie;
-            entity.url = url;
-            entity.savedKey = buildSavedKey(setCookie);
+        for (String setCookie : setCookies) {
+            try {
+                if (TextUtils.isEmpty(setCookie)) {
+                    continue;
+                }
+
+                Cookie cookie = Cookie.parse(httpUrl, setCookie);
+                if (cookie == null) {
+                    continue;
+                }
+
+                CookieStoreEntity entity = CookieStoreEntity.valueOf(url, setCookie, cookie);
+                synchronized (mData) {
+                    mData.put(entity.savedKey, new Pair<>(entity, cookie));
+                    mStore.set(entity.savedKey, mGson.toJson(entity, mCookieStoreEntityType));
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    @Override
-    public List<String> matches(String url) throws RemoteException {
-        return null;
+    public List<String> matches(String url) {
+        List<String> setCookies = new ArrayList<>();
+        HttpUrl httpUrl = HttpUrl.parse(url);
+        if (httpUrl == null) {
+            return setCookies;
+        }
+
+        synchronized (mData) {
+            List<String> removedKeys = new ArrayList<>();
+            for (Pair<CookieStoreEntity, Cookie> pair : mData.values()) {
+                if (deleteFromDBIfExpires(pair.first, pair.second)) {
+                    removedKeys.add(pair.first.savedKey);
+                    continue;
+                }
+                if (pair.second.matches(httpUrl)) {
+                    setCookies.add(pair.first.setCookie);
+                }
+            }
+            for (String removedKey : removedKeys) {
+                mData.remove(removedKey);
+            }
+        }
+        return setCookies;
     }
 
-    @Override
-    public List<String> get(String url) throws RemoteException {
-        return null;
+    public List<String> get(String url) {
+        List<String> setCookies = new ArrayList<>();
+        HttpUrl httpUrl = HttpUrl.parse(url);
+        if (httpUrl == null) {
+            return setCookies;
+        }
+
+        synchronized (mData) {
+            List<String> removedKeys = new ArrayList<>();
+            for (Pair<CookieStoreEntity, Cookie> pair : mData.values()) {
+                if (deleteFromDBIfExpires(pair.first, pair.second)) {
+                    removedKeys.add(pair.first.savedKey);
+                    continue;
+                }
+                if (url.equals(pair.first.url)) {
+                    setCookies.add(pair.first.setCookie);
+                }
+            }
+            for (String removedKey : removedKeys) {
+                mData.remove(removedKey);
+            }
+        }
+        return setCookies;
     }
 
-    @Override
     public List<String> getUrls() {
-        return null;
+        List<String> urls = new ArrayList<>();
+        synchronized (mData) {
+            List<String> removedKeys = new ArrayList<>();
+            for (Pair<CookieStoreEntity, Cookie> pair : mData.values()) {
+                if (deleteFromDBIfExpires(pair.first, pair.second)) {
+                    removedKeys.add(pair.first.savedKey);
+                    continue;
+                }
+                urls.add(pair.first.url);
+            }
+            for (String removedKey : removedKeys) {
+                mData.remove(removedKey);
+            }
+        }
+        return urls;
     }
 
-    @Override
-    public void clear() throws RemoteException {
-
+    public void clear() {
+        synchronized (mData) {
+            mData.clear();
+            mStore.clear();
+        }
     }
 
-    @Override
-    public void clearSession() throws RemoteException {
-
+    public void clearSession() {
+        synchronized (mData) {
+            List<String> removedKeys = new ArrayList<>();
+            for (Pair<CookieStoreEntity, Cookie> pair : mData.values()) {
+                if (deleteFromDBIfExpires(pair.first, pair.second)
+                        || deleteFromDBIfSession(pair.first, pair.second)) {
+                    removedKeys.add(pair.first.savedKey);
+                }
+            }
+            for (String removedKey : removedKeys) {
+                mData.remove(removedKey);
+            }
+        }
     }
 
-    @Override
-    public void printAll() throws RemoteException {
+    public void printAll() {
+        mStore.printAllRows();
+    }
 
+    private boolean deleteFromDBIfExpires(CookieStoreEntity entity, Cookie cookie) {
+        if (cookie.expiresAt() < System.currentTimeMillis()) {
+            mStore.remove(entity.savedKey);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean deleteFromDBIfSession(CookieStoreEntity entity, Cookie cookie) {
+        if (!cookie.persistent()) {
+            mStore.remove(entity.savedKey);
+            return true;
+        }
+        return false;
     }
 
     /**
