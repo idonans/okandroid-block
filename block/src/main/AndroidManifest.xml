@@ -20,7 +20,7 @@
                 android:resource="@xml/okandroid_block_file_provider" />
         </provider>
         <service
-            android:name="com.okandroid.block.core.service.StorageManagerService"
+            android:name="com.okandroid.block.core.service.CoreService"
             android:process=":block_core" />
     </application>
 </manifest>
