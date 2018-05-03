@@ -13,6 +13,9 @@ import com.okandroid.block.data.ProcessManager;
 import com.okandroid.block.util.ContextUtil;
 import com.okandroid.block.util.IOUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import timber.log.Timber;
 
 /**
@@ -79,6 +82,33 @@ public class SimpleDB {
             if (cursor.moveToFirst()) {
                 return cursor.getString(0);
             }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            IOUtil.closeQuietly(cursor);
+        }
+        return null;
+    }
+
+    @CheckResult
+    public Map<String, String> getAll() {
+        Cursor cursor = null;
+        try {
+            Map<String, String> data = new HashMap<>();
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            cursor = db.query(TABLE_NAME,
+                    new String[]{COLUMN_KEY, COLUMN_VALUE},
+                    null,
+                    null,
+                    null,
+                    null,
+                    COLUMN_UPDATE + " desc");
+            for (; cursor.moveToNext(); ) {
+                String key = cursor.getString(0);
+                String value = cursor.getString(1);
+                data.put(key, value);
+            }
+            return data;
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
