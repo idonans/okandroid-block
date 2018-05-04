@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testCookie() {
         String url = "http://www.zcool.com.cn";
-        String setCookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/; domain=zcool.com.cn";
+        String setCookie = "username=John Doe; expires=Thu, 18 Dec 2019 12:00:00 GMT; path=/; domain=zcool.com.cn";
         CookieStoreManager.getInstance().save(url, Arrays.asList(setCookie));
 
         Intent intent = new Intent(this, TaskService.class);
