@@ -1,7 +1,6 @@
 package com.okandroid.block.data;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.facebook.cache.disk.DiskCacheConfig;
@@ -20,9 +19,8 @@ import java.io.File;
 import timber.log.Timber;
 
 /**
- * fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。
+ * fresco 图片加载. 如果有扩展卡, 则将图片换存在扩展卡上, 否则缓存在内置空间上.
  */
-@Deprecated
 public class FrescoManager {
 
     private static final Singleton<FrescoManager> sInstance =
@@ -57,7 +55,6 @@ public class FrescoManager {
         fLogDefaultLoggingDelegate.setApplicationTag(Constants.RESOURCE_PREFIX);
         fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
                 AppInit.isDebug() ? Log.VERBOSE : Log.WARN);
-        Bitmap.Config config = Bitmap.Config.RGB_565;
 
         Context context = ContextUtil.getContext();
         ImagePipelineConfig.Builder imagePipelineConfigBuilder =
@@ -81,8 +78,7 @@ public class FrescoManager {
                         .setNetworkFetcher(
                                 new OkHttpNetworkFetcher(
                                         OkHttpManager.getInstance().getOkHttpClient()))
-                        .setDownsampleEnabled(true)
-                        .setBitmapsConfig(config);
+                        .setDownsampleEnabled(true);
 
         Fresco.initialize(context, imagePipelineConfigBuilder.build());
     }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.CheckResult;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.okandroid.block.AppInit;
@@ -255,9 +256,11 @@ public class FileUtil {
     }
 
     /**
-     * 以指定的文件名前缀和后缀在指定文件夹创建一个临时文件，如果创建失败，返回 null.
+     * 以指定的文件名前缀和后缀在指定文件夹创建一个临时文件，如果创建失败，返回 null. 推荐使用 TmpFileManager 生成临时文件.
+     *
+     * @see com.okandroid.block.data.TmpFileManager
      */
-    @CheckResult
+    @Nullable
     public static File createNewTmpFileQuietly(String prefix, String suffix, File dir) {
         try {
             if (createDir(dir)) {

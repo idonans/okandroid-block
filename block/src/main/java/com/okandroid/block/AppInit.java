@@ -7,6 +7,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.okandroid.block.data.FrescoManager;
 import com.okandroid.block.lang.BlockFileProvider;
 import com.okandroid.block.lang.NotInitException;
 import com.okandroid.block.util.ContextUtil;
@@ -45,6 +46,15 @@ public class AppInit {
         Timber.v(new Throwable());
 
         sAppCallbacks = new AppCallbacks();
+
+        startPreInit();
+    }
+
+    /**
+     * 初始化必须随着进程启动优先加载的内容
+     */
+    private static void startPreInit() {
+        FrescoManager.getInstance();
     }
 
     private static void throwIfNotInit() {
