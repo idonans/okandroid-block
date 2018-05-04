@@ -52,22 +52,33 @@ class CookieStoreManagerProvider {
             for (Map.Entry<String, String> entry : rows.entrySet()) {
                 try {
                     CookieStoreEntity entity = mGson.fromJson(entry.getValue(), mCookieStoreEntityType);
-                    if (entity != null) {
-                        HttpUrl httpUrl = HttpUrl.parse(entity.url);
-                        Cookie cookie = null;
-                        if (httpUrl != null) {
-                            cookie = Cookie.parse(httpUrl, entity.setCookie);
-                        }
-                        if (cookie != null) {
-                            if (!ObjectsCompat.equals(entry.getKey(), entity.savedKey)) {
-                                Timber.e("key not equals %s : %s", entry.getKey(), entity.savedKey);
-                                continue;
-                            }
+                    if (entity == null) {
+                        Timber.w("skip null entity %s -> %s", entry.getKey(), entry.getValue());
+                        continue;
+                    }
 
-                            synchronized (mData) {
-                                mData.put(entity.savedKey, new Pair<>(entity, cookie));
-                            }
-                        }
+                    HttpUrl httpUrl = HttpUrl.parse(entity.url);
+                    if (httpUrl == null) {
+                        Timber.w("skip null httpUrl %s %s -> %s", entity.url, entry.getKey(), entry.getValue());
+                        continue;
+                    }
+
+                    Cookie cookie = Cookie.parse(httpUrl, entity.setCookie);
+                    if (cookie == null) {
+                        Timber.w("skip null cookie %s %s -> %s", entity.setCookie, entry.getKey(), entry.getValue());
+                        continue;
+                    }
+                    if (!ObjectsCompat.equals(entry.getKey(), entity.savedKey)) {
+                        Timber.w("skip key not equals %s : %s", entry.getKey(), entity.savedKey);
+                        continue;
+                    }
+                    if (deleteFromDBIfExpires(entity, cookie)) {
+                        Timber.v("skip expires cookie %s -> %s", entry.getKey(), entry.getValue());
+                        continue;
+                    }
+
+                    synchronized (mData) {
+                        mData.put(entity.savedKey, new Pair<>(entity, cookie));
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -77,23 +88,31 @@ class CookieStoreManagerProvider {
     }
 
     public void save(String url, List<String> setCookies) {
-        if (TextUtils.isEmpty(url) || setCookies == null || setCookies.isEmpty()) {
+        if (TextUtils.isEmpty(url)) {
+            Timber.w("ignore save, url is empty");
+            return;
+        }
+        if (setCookies == null || setCookies.isEmpty()) {
+            Timber.w("ignore save, setCookies is empty");
             return;
         }
 
         HttpUrl httpUrl = HttpUrl.parse(url);
         if (httpUrl == null) {
+            Timber.w("ignore save, fail to parse url %s", url);
             return;
         }
 
         for (String setCookie : setCookies) {
             try {
                 if (TextUtils.isEmpty(setCookie)) {
+                    Timber.w("ignore save, setCookie is empty");
                     continue;
                 }
 
                 Cookie cookie = Cookie.parse(httpUrl, setCookie);
                 if (cookie == null) {
+                    Timber.w("ignore save, fail to parse cookie %s -> %s", httpUrl, setCookie);
                     continue;
                 }
 
@@ -204,6 +223,7 @@ class CookieStoreManagerProvider {
 
     private boolean deleteFromDBIfExpires(CookieStoreEntity entity, Cookie cookie) {
         if (cookie.expiresAt() < System.currentTimeMillis()) {
+            Timber.v("delete expires cookie %s -> %s", entity.savedKey, entity.setCookie);
             mStore.remove(entity.savedKey);
             return true;
         }
@@ -212,6 +232,7 @@ class CookieStoreManagerProvider {
 
     private boolean deleteFromDBIfSession(CookieStoreEntity entity, Cookie cookie) {
         if (!cookie.persistent()) {
+            Timber.v("delete session cookie %s -> %s", entity.savedKey, entity.setCookie);
             mStore.remove(entity.savedKey);
             return true;
         }
