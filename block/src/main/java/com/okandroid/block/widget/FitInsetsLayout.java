@@ -54,6 +54,17 @@ public class FitInsetsLayout extends FrameLayout {
     private int mFitInsetPaddingRight = NONE;
     private int mFitInsetPaddingBottom = NONE;
 
+    public int mPrivateFlags;
+
+    /**
+     * Flag indicating that we're in the process of dispatchApplyWindowInsets.
+     */
+    private static final int FLAG_DISPATCH_APPLY_WINDOW_INSETS = 0x001;
+    /**
+     * Flag indicating that we're in the process of fitSystemWindows.
+     */
+    private static final int FLAG_FIT_SYSTEM_WINDOWS = 0x002;
+
     protected void init(
             Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         final TypedArray a =
@@ -109,30 +120,52 @@ public class FitInsetsLayout extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public WindowInsets dispatchApplyWindowInsets(WindowInsets insets) {
-        int insetLeft = insets.getSystemWindowInsetLeft();
-        int insetTop = insets.getSystemWindowInsetTop();
-        int insetRight = insets.getSystemWindowInsetRight();
-        int insetBottom = insets.getSystemWindowInsetBottom();
+        if ((mPrivateFlags & FLAG_FIT_SYSTEM_WINDOWS) != 0) {
+            // start call from #fitSystemWindows
+            return super.dispatchApplyWindowInsets(insets);
+        }
 
-        Rect remain = onFitInsets(insetLeft, insetTop, insetRight, insetBottom);
+        try {
+            mPrivateFlags |= FLAG_DISPATCH_APPLY_WINDOW_INSETS;
 
-        insets.replaceSystemWindowInsets(remain.left, remain.top, remain.right, remain.bottom);
+            int insetLeft = insets.getSystemWindowInsetLeft();
+            int insetTop = insets.getSystemWindowInsetTop();
+            int insetRight = insets.getSystemWindowInsetRight();
+            int insetBottom = insets.getSystemWindowInsetBottom();
 
-        return insets;
+            Rect remain = onFitInsets(insetLeft, insetTop, insetRight, insetBottom);
+
+            insets.replaceSystemWindowInsets(remain.left, remain.top, remain.right, remain.bottom);
+
+            return super.dispatchApplyWindowInsets(insets);
+        } finally {
+            mPrivateFlags &= ~FLAG_DISPATCH_APPLY_WINDOW_INSETS;
+        }
     }
 
     @Override
     protected boolean fitSystemWindows(Rect insets) {
-        int insetLeft = insets.left;
-        int insetTop = insets.top;
-        int insetRight = insets.right;
-        int insetBottom = insets.bottom;
+        if ((mPrivateFlags & FLAG_DISPATCH_APPLY_WINDOW_INSETS) != 0) {
+            // start call from #dispatchApplyWindowInsets
+            return super.fitSystemWindows(insets);
+        }
 
-        Rect remain = onFitInsets(insetLeft, insetTop, insetRight, insetBottom);
+        try {
+            mPrivateFlags |= FLAG_FIT_SYSTEM_WINDOWS;
 
-        insets.set(remain);
+            int insetLeft = insets.left;
+            int insetTop = insets.top;
+            int insetRight = insets.right;
+            int insetBottom = insets.bottom;
 
-        return false;
+            Rect remain = onFitInsets(insetLeft, insetTop, insetRight, insetBottom);
+
+            insets.set(remain);
+
+            return super.fitSystemWindows(insets);
+        } finally {
+            mPrivateFlags &= ~FLAG_FIT_SYSTEM_WINDOWS;
+        }
     }
 
     /**
