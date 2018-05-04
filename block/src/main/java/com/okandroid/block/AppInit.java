@@ -36,11 +36,11 @@ public class AppInit {
         // set global context first
         ContextUtil.setContext(context);
 
+        sInit = true;
+
         if (isDebug()) {
             Timber.plant(new Timber.DebugTree());
         }
-
-        sInit = true;
 
         Timber.v(new Throwable());
 
