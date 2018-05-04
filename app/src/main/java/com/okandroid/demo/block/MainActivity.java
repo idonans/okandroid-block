@@ -9,10 +9,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.okandroid.block.core.CookieStoreManager;
 import com.okandroid.block.core.StorageManager;
 import com.okandroid.block.data.TmpFileManager;
 import com.okandroid.block.lang.GBKLengthInputFilter;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.test_ipc)
     View mTestIPC;
+
+    @BindView(R.id.test_cookie)
+    View mTestCookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,17 @@ public class MainActivity extends AppCompatActivity {
                                 testIPC();
                             }
                         });
+
+        RxView.clicks(mTestCookie)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<Object>() {
+                            @Override
+                            public void accept(Object o) throws Exception {
+                                testCookie();
+                            }
+                        });
     }
 
     private boolean mFullscreen;
@@ -129,6 +145,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, TaskService.class);
         intent.putExtra("read_ipc", true);
+        startService(intent);
+    }
+
+    private void testCookie() {
+        String url = "http://www.zcool.com.cn";
+        String setCookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/; domain=zcool.com.cn";
+        CookieStoreManager.getInstance().save(url, Arrays.asList(setCookie));
+
+        Intent intent = new Intent(this, TaskService.class);
+        intent.putExtra("read_cookie", true);
         startService(intent);
     }
 
