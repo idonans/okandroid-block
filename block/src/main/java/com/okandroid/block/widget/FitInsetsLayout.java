@@ -49,14 +49,10 @@ public class FitInsetsLayout extends FrameLayout {
     public static final int NONE = -1;
     public static final int ALL = -2;
 
-    private int mFitInsetPaddingMaxLeft = NONE;
-    private int mFitInsetPaddingMinLeft = NONE;
-    private int mFitInsetPaddingMaxTop = NONE;
-    private int mFitInsetPaddingMinTop = NONE;
-    private int mFitInsetPaddingMaxRight = NONE;
-    private int mFitInsetPaddingMinRight = NONE;
-    private int mFitInsetPaddingMaxBottom = NONE;
-    private int mFitInsetPaddingMinBottom = NONE;
+    private int mFitInsetPaddingLeft = NONE;
+    private int mFitInsetPaddingTop = NONE;
+    private int mFitInsetPaddingRight = NONE;
+    private int mFitInsetPaddingBottom = NONE;
 
     protected void init(
             Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -64,87 +60,48 @@ public class FitInsetsLayout extends FrameLayout {
                 context.obtainStyledAttributes(
                         attrs, R.styleable.FitInsetsLayout, defStyleAttr, defStyleRes);
 
-        mFitInsetPaddingMaxLeft =
+        mFitInsetPaddingLeft =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxLeft,
-                        mFitInsetPaddingMaxLeft);
-        mFitInsetPaddingMinLeft =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingLeft,
+                        mFitInsetPaddingLeft);
+        mFitInsetPaddingTop =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMinLeft,
-                        mFitInsetPaddingMinLeft);
-        mFitInsetPaddingMaxTop =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingTop,
+                        mFitInsetPaddingTop);
+        mFitInsetPaddingRight =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxTop,
-                        mFitInsetPaddingMaxTop);
-        mFitInsetPaddingMinTop =
+                        R.styleable.FitInsetsLayout_systemInsetPaddingRight,
+                        mFitInsetPaddingRight);
+        mFitInsetPaddingBottom =
                 a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMinTop,
-                        mFitInsetPaddingMinTop);
-        mFitInsetPaddingMaxRight =
-                a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxRight,
-                        mFitInsetPaddingMaxRight);
-        mFitInsetPaddingMinRight =
-                a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMinRight,
-                        mFitInsetPaddingMinRight);
-        mFitInsetPaddingMaxBottom =
-                a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMaxBottom,
-                        mFitInsetPaddingMaxBottom);
-        mFitInsetPaddingMinBottom =
-                a.getLayoutDimension(
-                        R.styleable.FitInsetsLayout_systemInsetPaddingMinBottom,
-                        mFitInsetPaddingMinBottom);
+                        R.styleable.FitInsetsLayout_systemInsetPaddingBottom,
+                        mFitInsetPaddingBottom);
 
         a.recycle();
 
         if (DEBUG) {
-            Timber.d("fit inset padding max %s", getFitInsetPaddingMax());
-            Timber.d("fit inset padding min %s", getFitInsetPaddingMin());
+            Timber.d("fit inset padding %s", getFitInsetPadding());
         }
     }
 
     @NonNull
-    public Rect getFitInsetPaddingMax() {
+    public Rect getFitInsetPadding() {
         return new Rect(
-                mFitInsetPaddingMaxLeft,
-                mFitInsetPaddingMaxTop,
-                mFitInsetPaddingMaxRight,
-                mFitInsetPaddingMaxBottom);
+                mFitInsetPaddingLeft,
+                mFitInsetPaddingTop,
+                mFitInsetPaddingRight,
+                mFitInsetPaddingBottom);
     }
 
-    public void setFitInsetPaddingMax(int left, int top, int right, int bottom) {
-        if (mFitInsetPaddingMaxLeft != left
-                || mFitInsetPaddingMaxTop != top
-                || mFitInsetPaddingMaxRight != right
-                || mFitInsetPaddingMaxBottom != bottom) {
-            mFitInsetPaddingMaxLeft = left;
-            mFitInsetPaddingMaxTop = top;
-            mFitInsetPaddingMaxRight = right;
-            mFitInsetPaddingMaxBottom = bottom;
-            ViewCompat.requestApplyInsets(this);
-        }
-    }
-
-    @NonNull
-    public Rect getFitInsetPaddingMin() {
-        return new Rect(
-                mFitInsetPaddingMinLeft,
-                mFitInsetPaddingMinTop,
-                mFitInsetPaddingMinRight,
-                mFitInsetPaddingMinBottom);
-    }
-
-    public void setFitInsetPaddingMin(int left, int top, int right, int bottom) {
-        if (mFitInsetPaddingMinLeft != left
-                || mFitInsetPaddingMinTop != top
-                || mFitInsetPaddingMinRight != right
-                || mFitInsetPaddingMinBottom != bottom) {
-            mFitInsetPaddingMinLeft = left;
-            mFitInsetPaddingMinTop = top;
-            mFitInsetPaddingMinRight = right;
-            mFitInsetPaddingMinBottom = bottom;
+    public void setFitInsetPadding(int left, int top, int right, int bottom) {
+        if (mFitInsetPaddingLeft != left
+                || mFitInsetPaddingTop != top
+                || mFitInsetPaddingRight != right
+                || mFitInsetPaddingBottom != bottom) {
+            mFitInsetPaddingLeft = left;
+            mFitInsetPaddingTop = top;
+            mFitInsetPaddingRight = right;
+            mFitInsetPaddingBottom = bottom;
             ViewCompat.requestApplyInsets(this);
         }
     }
@@ -184,14 +141,10 @@ public class FitInsetsLayout extends FrameLayout {
     protected Rect onFitInsets(int left, int top, int right, int bottom) {
         Rect insetsPadding = new Rect();
 
-        insetsPadding.left = calculateInsetPaddingValueConsumed(
-                left, mFitInsetPaddingMinLeft, mFitInsetPaddingMaxLeft);
-        insetsPadding.top = calculateInsetPaddingValueConsumed(
-                top, mFitInsetPaddingMinTop, mFitInsetPaddingMaxTop);
-        insetsPadding.right = calculateInsetPaddingValueConsumed(
-                right, mFitInsetPaddingMinRight, mFitInsetPaddingMaxRight);
-        insetsPadding.bottom = calculateInsetPaddingValueConsumed(
-                bottom, mFitInsetPaddingMinBottom, mFitInsetPaddingMaxBottom);
+        insetsPadding.left = calculateInsetPaddingValueConsumed(left, mFitInsetPaddingLeft);
+        insetsPadding.top = calculateInsetPaddingValueConsumed(top, mFitInsetPaddingTop);
+        insetsPadding.right = calculateInsetPaddingValueConsumed(right, mFitInsetPaddingRight);
+        insetsPadding.bottom = calculateInsetPaddingValueConsumed(bottom, mFitInsetPaddingBottom);
 
         setPadding(
                 insetsPadding.left, insetsPadding.top, insetsPadding.right, insetsPadding.bottom);
@@ -205,55 +158,32 @@ public class FitInsetsLayout extends FrameLayout {
 
         if (DEBUG) {
             Timber.d(
-                    "onFitInsets %s -> consumed:%s remain:%s min:%s max:%s",
+                    "onFitInsets %s -> consumed:%s remain:%s target:%s",
                     new Rect(left, top, right, bottom),
                     insetsPadding,
                     remain,
-                    getFitInsetPaddingMin(),
-                    getFitInsetPaddingMax());
+                    getFitInsetPadding());
         }
 
         return remain;
     }
 
-    private int calculateInsetPaddingValueConsumed(int value, int min, int max) {
+    private int calculateInsetPaddingValueConsumed(int value, int target) {
         int consumed = 0;
-        int consumedMin = NONE;
-        int consumedMax = NONE;
+        int consumedTarget = NONE;
         if (value > 0) {
-            if (min != NONE) {
-                if (min == ALL) {
-                    consumedMin = value;
-                } else if (min >= 0) {
-                    consumedMin = min;
+            if (target != NONE) {
+                if (target == ALL) {
+                    consumedTarget = value;
+                } else if (target >= 0) {
+                    consumedTarget = target;
                 } else {
-                    throw new IllegalArgumentException("invalid min value " + min);
+                    throw new IllegalArgumentException("invalid target value " + target);
                 }
             }
 
-            if (max != NONE) {
-                if (max == ALL) {
-                    consumedMax = value;
-                } else if (max >= 0) {
-                    consumedMax = max;
-                } else {
-                    throw new IllegalArgumentException("invalid max value " + max);
-                }
-            }
-
-            if (consumedMin >= 0 && consumedMax >= 0) {
-                // 上下限同时存在
-                if (consumedMin > consumedMax) {
-                    throw new IllegalArgumentException("min value must le max value min:" + consumedMin + ", max:" + consumedMax);
-                }
-                consumed = Math.max(consumedMin, value);
-                consumed = Math.min(consumedMax, consumed);
-            } else if (consumedMin >= 0) {
-                // 仅存在下限
-                consumed = Math.max(consumedMin, value);
-            } else if (consumedMax >= 0) {
-                // 仅存在上限
-                consumed = Math.min(consumedMax, value);
+            if (consumedTarget >= 0) {
+                consumed = Math.min(consumedTarget, value);
             }
         }
 

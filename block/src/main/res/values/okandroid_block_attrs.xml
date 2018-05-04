@@ -1,44 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <attr name="systemInsetPaddingMaxLeft" format="reference|dimension|enum" tools:ignore="ResourceName">
+    <attr name="systemInsetPaddingLeft" format="reference|dimension|enum" tools:ignore="ResourceName">
         <enum name="none" value="-1" />
         <enum name="all" value="-2" />
     </attr>
-    <attr name="systemInsetPaddingMinLeft" format="reference|dimension|enum" tools:ignore="ResourceName">
+    <attr name="systemInsetPaddingTop" format="reference|dimension|enum" tools:ignore="ResourceName">
         <enum name="none" value="-1" />
         <enum name="all" value="-2" />
     </attr>
-    <attr name="systemInsetPaddingMaxTop" format="reference|dimension|enum" tools:ignore="ResourceName">
+    <attr name="systemInsetPaddingRight" format="reference|dimension|enum" tools:ignore="ResourceName">
         <enum name="none" value="-1" />
         <enum name="all" value="-2" />
     </attr>
-    <attr name="systemInsetPaddingMinTop" format="reference|dimension|enum" tools:ignore="ResourceName">
-        <enum name="none" value="-1" />
-        <enum name="all" value="-2" />
-    </attr>
-    <attr name="systemInsetPaddingMaxRight" format="reference|dimension|enum" tools:ignore="ResourceName">
-        <enum name="none" value="-1" />
-        <enum name="all" value="-2" />
-    </attr>
-    <attr name="systemInsetPaddingMinRight" format="reference|dimension|enum" tools:ignore="ResourceName">
-        <enum name="none" value="-1" />
-        <enum name="all" value="-2" />
-    </attr>
-    <attr name="systemInsetPaddingMaxBottom" format="reference|dimension|enum" tools:ignore="ResourceName">
-        <enum name="none" value="-1" />
-        <enum name="all" value="-2" />
-    </attr>
-    <attr name="systemInsetPaddingMinBottom" format="reference|dimension|enum" tools:ignore="ResourceName">
+    <attr name="systemInsetPaddingBottom" format="reference|dimension|enum" tools:ignore="ResourceName">
         <enum name="none" value="-1" />
         <enum name="all" value="-2" />
     </attr>
     <declare-styleable name="FitInsetsLayout" tools:ignore="ResourceName">
-        <attr name="systemInsetPaddingMaxLeft" />
-        <attr name="systemInsetPaddingMinLeft" />
-        <attr name="systemInsetPaddingMaxTop" />
-        <attr name="systemInsetPaddingMinTop" />
-        <attr name="systemInsetPaddingMaxRight" />
-        <attr name="systemInsetPaddingMinRight" />
-        <attr name="systemInsetPaddingMaxBottom" />
-        <attr name="systemInsetPaddingMinBottom" />
+        <attr name="systemInsetPaddingLeft" />
+        <attr name="systemInsetPaddingTop" />
+        <attr name="systemInsetPaddingRight" />
+        <attr name="systemInsetPaddingBottom" />
     </declare-styleable>
 </resources>

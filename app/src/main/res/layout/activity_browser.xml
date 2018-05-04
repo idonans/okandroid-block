@@ -4,27 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <com.okandroid.block.widget.FitInsetsLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ff00ff"
-        app:systemInsetPaddingMaxBottom="8dp"
-        app:systemInsetPaddingMaxLeft="all"
-        app:systemInsetPaddingMaxRight="6dp"
-        app:systemInsetPaddingMaxTop="20dp"
-        app:systemInsetPaddingMinBottom="7dp"
-        app:systemInsetPaddingMinLeft="1dp"
-        app:systemInsetPaddingMinRight="5dp"
-        app:systemInsetPaddingMinTop="all" />
+        app:systemInsetPaddingBottom="all"
+        app:systemInsetPaddingLeft="all"
+        app:systemInsetPaddingRight="all"
+        app:systemInsetPaddingTop="20dp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffa10000"
         android:fitsSystemWindows="true">
+
         <FrameLayout
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="45dp">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -35,6 +35,7 @@
                 android:singleLine="true" />
         </FrameLayout>
     </FrameLayout>
+
     <com.okandroid.block.widget.FixWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
