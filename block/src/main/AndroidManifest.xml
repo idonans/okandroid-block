@@ -12,7 +12,7 @@
         android:supportsRtl="true">
         <provider
             android:name="com.okandroid.block.lang.BlockFileProvider"
-            android:authorities="${applicationId}.okandroid.block.fileProvider"
+            android:authorities="okandroid_block.${applicationId}.BlockFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -21,6 +21,7 @@
         </provider>
         <service
             android:name="com.okandroid.block.core.service.CoreService"
+            android:exported="false"
             android:process=":okandroid_block_core" />
     </application>
 </manifest>
