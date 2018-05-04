@@ -117,6 +117,11 @@ class CookieStoreManagerProvider {
                 }
 
                 CookieStoreEntity entity = CookieStoreEntity.valueOf(url, setCookie, cookie);
+                if (deleteFromDBIfExpires(entity, cookie)) {
+                    Timber.w("ignore save, cookie expires %s -> %s", httpUrl, setCookie);
+                    continue;
+                }
+
                 synchronized (mData) {
                     mData.put(entity.savedKey, new Pair<>(entity, cookie));
                     mStore.set(entity.savedKey, mGson.toJson(entity, mCookieStoreEntityType));
