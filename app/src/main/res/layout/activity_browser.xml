@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.okandroid.block.widget.FitInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    app:systemInsetPaddingBottom="all"
+    app:systemInsetPaddingLeft="all"
+    app:systemInsetPaddingRight="all">
 
-    <com.okandroid.block.widget.FitInsetsLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ff00ff"
-        app:systemInsetPaddingBottom="all"
-        app:systemInsetPaddingLeft="all"
-        app:systemInsetPaddingRight="all"
-        app:systemInsetPaddingTop="20dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffa10000"
-        android:fitsSystemWindows="true">
+        <com.okandroid.block.widget.FitInsetsLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff00ff"
+            app:systemInsetPaddingTop="5dp" />
 
         <FrameLayout
-            android:id="@+id/title_bar"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="wrap_content"
+            android:background="#ffa10000"
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:id="@+id/title"
+            <FrameLayout
+                android:id="@+id/title_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </FrameLayout>
-    </FrameLayout>
+                android:layout_height="45dp"
+                android:background="#ffffff00">
 
-    <com.okandroid.block.widget.FixWebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <com.okandroid.block.widget.FixWebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</com.okandroid.block.widget.FitInsetsLayout>
