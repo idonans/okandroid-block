@@ -13,6 +13,7 @@ import com.okandroid.block.core.CookieStoreManager;
 import com.okandroid.block.core.StorageManager;
 import com.okandroid.block.data.TmpFileManager;
 import com.okandroid.block.lang.GBKLengthInputFilter;
+import com.okandroid.block.util.SystemUtil;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -34,14 +35,19 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.start_browser)
     View mStartBrowser;
 
-    @BindView(R.id.editText)
+    @BindView(R.id.editText2)
     EditText mEditText;
+    @BindView(R.id.edit_emotion)
+    View mEditEmotion;
 
     @BindView(R.id.test_ipc)
     View mTestIPC;
 
     @BindView(R.id.test_cookie)
     View mTestCookie;
+
+    @BindView(R.id.custom_keyboard_layout)
+    CustomKeyboardLayout mCustomKeyboardLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,17 @@ public class MainActivity extends AppCompatActivity {
                                 testCookie();
                             }
                         });
+
+        RxView.clicks(mEditEmotion)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<Object>() {
+                            @Override
+                            public void accept(Object o) throws Exception {
+                                showCustomKeyboard();
+                            }
+                        });
     }
 
     private boolean mFullscreen;
@@ -156,6 +173,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TaskService.class);
         intent.putExtra("read_cookie", true);
         startService(intent);
+    }
+
+    private void showCustomKeyboard() {
+        if (!mEditText.hasWindowFocus()) {
+            Timber.e("window focus not found. ignore request show custom keyboard");
+            return;
+        }
+        mEditText.requestFocus();
+        SystemUtil.hideSoftKeyboard(mEditText);
+        mCustomKeyboardLayout.setForceShowCustomKeyboard(true, mEditText);
     }
 
 }
