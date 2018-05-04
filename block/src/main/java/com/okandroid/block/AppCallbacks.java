@@ -4,134 +4,38 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.ComponentCallbacks2;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
-import com.okandroid.block.lang.NotInitException;
 import com.okandroid.block.util.ContextUtil;
 
-import java.util.HashMap;
 import java.util.WeakHashMap;
 
 import timber.log.Timber;
 
-@Deprecated
-public class AppEnvironment {
+public class AppCallbacks {
 
-    private static boolean sInit;
-
-    private static final InternalApplicationCallbacks sInternalApplicationCallbacks =
+    private final InternalApplicationCallbacks mInternalApplicationCallbacks =
             new InternalApplicationCallbacks();
-    private static final AppProperties sAppProperties = new AppProperties();
 
-    private AppEnvironment() {
-    }
-
-    private static void throwIfNotInit() {
-        if (!sInit) {
-            throw new NotInitException();
-        }
-    }
-
-    static synchronized void init() {
-        if (sInit) {
-            return;
-        }
-        sInit = true;
-
+    AppCallbacks() {
         Timber.v("init");
 
         Application application = (Application) ContextUtil.getContext();
-        application.registerActivityLifecycleCallbacks(sInternalApplicationCallbacks);
-        application.registerComponentCallbacks(sInternalApplicationCallbacks);
-
-        addApplicationCallbacks(sAppProperties);
+        application.registerActivityLifecycleCallbacks(mInternalApplicationCallbacks);
+        application.registerComponentCallbacks(mInternalApplicationCallbacks);
     }
 
-    public static AppProperties getAppProperties() {
-        throwIfNotInit();
-        return sAppProperties;
+    /**
+     * internal use weak ref to hold callbacks. so callbacks support auto remove when it's recycled
+     */
+    public void addApplicationCallbacks(ApplicationCallbacks callbacks) {
+        mInternalApplicationCallbacks.addCallback(callbacks);
     }
 
-    public static void addApplicationCallbacks(ApplicationCallbacks callbacks) {
-        throwIfNotInit();
-        sInternalApplicationCallbacks.addCallback(callbacks);
-    }
-
-    public static class AppProperties extends SimpleApplicationCallbacks {
-
-        private final HashMap<String, Object> mProperties = new HashMap<>();
-
-        @Override
-        public void onConfigurationChanged(Configuration newConfig) {
-            Timber.v("onConfigurationChanged clear properties");
-            mProperties.clear();
-        }
-
-        public boolean isDebug() {
-            return AppInit.isDebug();
-        }
-
-        public String getAppLabel() {
-            final String key = "prop.appLabel";
-            String appLabel = (String) mProperties.get(key);
-            if (appLabel == null) {
-                Context context = ContextUtil.getContext();
-                PackageManager pm = context.getPackageManager();
-                ApplicationInfo appInfo = context.getApplicationInfo();
-                appLabel = String.valueOf(appInfo.loadLabel(pm));
-                Timber.d("load property %s=%s", key, appLabel);
-                mProperties.put(key, appLabel);
-            }
-            return appLabel;
-        }
-
-        public String getSubDirName() {
-            final String key = "prop.subDirName";
-            String subDirName = (String) mProperties.get(key);
-            if (subDirName == null) {
-                subDirName =
-                        ContextUtil.getContext().getString(R.string.okandroid_block_sub_dir_name);
-                if (TextUtils.isEmpty(subDirName)) {
-                    subDirName = getAppLabel();
-                }
-                mProperties.put(key, subDirName);
-            }
-            return subDirName;
-        }
-
-        public boolean isFrescoEnable() {
-            final String key = "prop.frescoEnable";
-            Boolean frescoEnable = (Boolean) mProperties.get(key);
-            if (frescoEnable == null) {
-                frescoEnable =
-                        ContextUtil.getContext()
-                                .getResources()
-                                .getBoolean(R.bool.okandroid_block_fresco_enable);
-                Timber.v("load property %s=%s", key, String.valueOf(frescoEnable));
-                mProperties.put(key, frescoEnable);
-            }
-            return frescoEnable;
-        }
-
-        public boolean isFresco565Config() {
-            final String key = "prop.fresco565Config";
-            Boolean fresco565Config = (Boolean) mProperties.get(key);
-            if (fresco565Config == null) {
-                fresco565Config =
-                        ContextUtil.getContext()
-                                .getResources()
-                                .getBoolean(R.bool.okandroid_block_fresco_565_config);
-                Timber.v("load property %s=%s", key, String.valueOf(fresco565Config));
-                mProperties.put(key, fresco565Config);
-            }
-            return fresco565Config;
-        }
+    public void removeApplicationCallbacks(ApplicationCallbacks callbacks) {
+        mInternalApplicationCallbacks.removeCallback(callbacks);
     }
 
     public interface ApplicationCallbacks
@@ -149,6 +53,12 @@ public class AppEnvironment {
         private void addCallback(ApplicationCallbacks callback) {
             synchronized (mOuterCallbacks) {
                 mOuterCallbacks.put(callback, mEmptyObject);
+            }
+        }
+
+        private void removeCallback(ApplicationCallbacks callback) {
+            synchronized (mOuterCallbacks) {
+                mOuterCallbacks.remove(callback);
             }
         }
 
@@ -327,4 +237,5 @@ public class AppEnvironment {
         public void onLowMemory() {
         }
     }
+
 }

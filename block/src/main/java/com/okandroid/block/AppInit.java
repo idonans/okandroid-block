@@ -24,12 +24,12 @@ public class AppInit {
     }
 
     private static boolean sInit;
+    private static AppCallbacks sAppCallbacks;
 
     public static synchronized void init(@NonNull Context context) {
         if (sInit) {
             return;
         }
-        sInit = true;
 
         // set global context first
         ContextUtil.setContext(context);
@@ -38,10 +38,11 @@ public class AppInit {
             Timber.plant(new Timber.DebugTree());
         }
 
+        sInit = true;
+
         Timber.v(new Throwable());
 
-        AppEnvironment.init();
-        LocalDataInit.touch();
+        sAppCallbacks = new AppCallbacks();
     }
 
     private static void throwIfNotInit() {
@@ -63,6 +64,11 @@ public class AppInit {
     public static long getRemoteTimeoutMs() {
         throwIfNotInit();
         return 20 * 1000; // 20s
+    }
+
+    public static AppCallbacks getAppCallbacks() {
+        throwIfNotInit();
+        return sAppCallbacks;
     }
 
 }

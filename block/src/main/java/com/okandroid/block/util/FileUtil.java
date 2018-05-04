@@ -7,7 +7,7 @@ import android.os.Environment;
 import android.support.annotation.CheckResult;
 import android.text.TextUtils;
 
-import com.okandroid.block.AppEnvironment;
+import com.okandroid.block.AppInit;
 import com.okandroid.block.data.ProcessManager;
 import com.okandroid.block.lang.BlockFileProvider;
 
@@ -127,7 +127,7 @@ public class FileUtil {
             return null;
         }
 
-        File appEnvDir = new File(envDir, AppEnvironment.getAppProperties().getSubDirName());
+        File appEnvDir = new File(envDir, AppInit.getSubDirName());
         if (createDir(appEnvDir)) {
             return appEnvDir;
         }

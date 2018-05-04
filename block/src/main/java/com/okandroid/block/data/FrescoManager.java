@@ -9,7 +9,7 @@ import com.facebook.common.logging.FLogDefaultLoggingDelegate;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.okandroid.block.AppEnvironment;
+import com.okandroid.block.AppInit;
 import com.okandroid.block.Constants;
 import com.okandroid.block.lang.Singleton;
 import com.okandroid.block.util.ContextUtil;
@@ -22,6 +22,7 @@ import timber.log.Timber;
 /**
  * fresco 图片加载. 如果有扩展卡，则将图片换存在扩展卡上，否则缓存在内置空间上。
  */
+@Deprecated
 public class FrescoManager {
 
     private static final Singleton<FrescoManager> sInstance =
@@ -55,11 +56,8 @@ public class FrescoManager {
                 FLogDefaultLoggingDelegate.getInstance();
         fLogDefaultLoggingDelegate.setApplicationTag(Constants.RESOURCE_PREFIX);
         fLogDefaultLoggingDelegate.setMinimumLoggingLevel(
-                AppEnvironment.getAppProperties().isDebug() ? Log.VERBOSE : Log.WARN);
-        Bitmap.Config config = Bitmap.Config.ARGB_8888;
-        if (AppEnvironment.getAppProperties().isFresco565Config()) {
-            config = Bitmap.Config.RGB_565;
-        }
+                AppInit.isDebug() ? Log.VERBOSE : Log.WARN);
+        Bitmap.Config config = Bitmap.Config.RGB_565;
 
         Context context = ContextUtil.getContext();
         ImagePipelineConfig.Builder imagePipelineConfigBuilder =

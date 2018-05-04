@@ -2,7 +2,7 @@ package com.okandroid.block.data;
 
 import android.text.TextUtils;
 
-import com.okandroid.block.AppEnvironment;
+import com.okandroid.block.AppInit;
 import com.okandroid.block.lang.Singleton;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class OkHttpManager {
                     }
                 };
 
-        boolean debug = AppEnvironment.getAppProperties().isDebug();
+        boolean debug = AppInit.isDebug();
         if (debug) {
             Timber.d("in debug mode, config OkHttpClient.");
 
@@ -84,7 +84,12 @@ public class OkHttpManager {
                         }
                     };
 
-            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    Timber.d(message);
+                }
+            });
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             mOkHttpClient =
