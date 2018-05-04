@@ -3,10 +3,17 @@ package com.okandroid.block.data;
 import android.text.TextUtils;
 
 import com.okandroid.block.AppInit;
+import com.okandroid.block.core.CookieStoreManager;
 import com.okandroid.block.lang.Singleton;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,8 +48,6 @@ public class OkHttpManager {
 
     private final OkHttpClient mOkHttpClient;
 
-    private String mDefaultUserAgent;
-
     private OkHttpManager() {
         Timber.v("init");
         Interceptor defaultUserAgentInterceptor =
@@ -53,7 +58,7 @@ public class OkHttpManager {
                             return chain.proceed(chain.request());
                         }
 
-                        String defaultUserAgent = mDefaultUserAgent;
+                        String defaultUserAgent = AppInit.getDefaultUserAgent();
                         if (TextUtils.isEmpty(defaultUserAgent)) {
                             return chain.proceed(chain.request());
                         }
@@ -97,13 +102,13 @@ public class OkHttpManager {
                             .addInterceptor(defaultUserAgentInterceptor)
                             .addInterceptor(contentEncodingInterceptor)
                             .addInterceptor(httpLoggingInterceptor)
-                            .cookieJar(CookiesManager.getInstance().getOkHttp3CookieJar())
+                            .cookieJar(new OkHttp3CookieJar())
                             .build();
         } else {
             mOkHttpClient =
                     new OkHttpClient.Builder()
                             .addInterceptor(defaultUserAgentInterceptor)
-                            .cookieJar(CookiesManager.getInstance().getOkHttp3CookieJar())
+                            .cookieJar(new OkHttp3CookieJar())
                             .build();
         }
     }
@@ -112,11 +117,43 @@ public class OkHttpManager {
         return mOkHttpClient;
     }
 
-    public void setDefaultUserAgent(String defaultUserAgent) {
-        mDefaultUserAgent = defaultUserAgent;
+    private static class OkHttp3CookieJar implements CookieJar {
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            if (url == null) {
+                return;
+            }
+
+            if (cookies != null && !cookies.isEmpty()) {
+                for (Cookie cookie : cookies) {
+                    if (cookie != null) {
+                        CookieStoreManager.getInstance().save(url.toString(), Arrays.asList(cookie.toString()));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            List<Cookie> cookieList = new ArrayList<>();
+
+            if (url == null) {
+                return cookieList;
+            }
+
+            List<String> cookies = CookieStoreManager.getInstance().matches(url.toString());
+            if (cookies != null && !cookies.isEmpty()) {
+                for (String cookieString : cookies) {
+                    Cookie cookie = Cookie.parse(url, cookieString);
+                    if (cookie != null) {
+                        cookieList.add(cookie);
+                    }
+                }
+            }
+
+            return cookieList;
+        }
     }
 
-    public String getDefaultUserAgent() {
-        return mDefaultUserAgent;
-    }
 }

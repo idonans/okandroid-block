@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ContentProvider;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.okandroid.block.lang.BlockFileProvider;
 import com.okandroid.block.lang.NotInitException;
@@ -25,6 +26,7 @@ public class AppInit {
 
     private static boolean sInit;
     private static AppCallbacks sAppCallbacks;
+    private static String sDefaultUserAgent;
 
     public static synchronized void init(@NonNull Context context) {
         if (sInit) {
@@ -69,6 +71,17 @@ public class AppInit {
     public static AppCallbacks getAppCallbacks() {
         throwIfNotInit();
         return sAppCallbacks;
+    }
+
+    public static void setDefaultUserAgent(@Nullable String userAgent) {
+        throwIfNotInit();
+        sDefaultUserAgent = userAgent;
+    }
+
+    @Nullable
+    public static String getDefaultUserAgent() {
+        throwIfNotInit();
+        return sDefaultUserAgent;
     }
 
 }
