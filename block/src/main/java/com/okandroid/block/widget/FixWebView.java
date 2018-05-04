@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -18,8 +19,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-
-import com.okandroid.block.data.CookiesManager;
 
 import timber.log.Timber;
 
@@ -46,18 +45,9 @@ public class FixWebView extends WebView {
         init();
     }
 
-    @SuppressWarnings("deprecation")
-    public FixWebView(
-            Context context, AttributeSet attrs, int defStyleAttr, boolean privateBrowsing) {
-        super(context, attrs, defStyleAttr, privateBrowsing);
-        init();
-    }
-
     private CustomViewer mCustomViewer;
 
-    private void init() {
-        CookiesManager.getInstance().enableCookie(this);
-
+    protected void init() {
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -75,6 +65,7 @@ public class FixWebView extends WebView {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
         }
 
         setWebViewClient(new WebViewClientImpl(this));

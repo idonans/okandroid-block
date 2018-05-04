@@ -10,6 +10,7 @@ import timber.log.Timber;
 /**
  * 在 app 运行期间的唯一标识，即使程序重启，也不会丢失。该标识在程序第一次运行时初始化。 支持跨进程.
  */
+@Deprecated
 public class AppIDManager {
 
     private static final Singleton<AppIDManager> sInstance =

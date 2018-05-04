@@ -20,6 +20,7 @@ import timber.log.Timber;
 /**
  * 共享 cookie 管理, 链接 webview cookie, okhttp3 cookie, etc.
  */
+@Deprecated
 public class CookiesManager {
 
     private static final Singleton<CookiesManager> sInstance =
