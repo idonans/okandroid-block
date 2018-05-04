@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.okandroid.block.Constants;
 import com.okandroid.block.core.service.internal.CookieStoreEntity;
 import com.okandroid.block.db.SimpleDB;
 import com.okandroid.block.lang.Singleton;
@@ -44,7 +45,7 @@ class CookieStoreManagerProvider {
 
     private CookieStoreManagerProvider() {
         Timber.v("init");
-        mStore = new SimpleDB("block_core_cookie_store");
+        mStore = new SimpleDB(Constants.RESOURCE_PREFIX + "_core_cookie_store");
         mStore.trim(MAX_SIZE);
 
         Map<String, String> rows = mStore.getAll();

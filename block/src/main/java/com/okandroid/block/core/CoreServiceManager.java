@@ -20,6 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import timber.log.Timber;
 
+/**
+ * 支持跨进程
+ */
 public class CoreServiceManager {
 
     private final Lock mLock = new ReentrantLock();

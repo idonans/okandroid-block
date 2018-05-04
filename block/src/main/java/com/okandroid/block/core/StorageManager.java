@@ -3,15 +3,19 @@ package com.okandroid.block.core;
 import android.os.IBinder;
 import android.os.RemoteException;
 
+import com.okandroid.block.Constants;
 import com.okandroid.block.core.service.CoreService;
 import com.okandroid.block.lang.Singleton;
 
 import timber.log.Timber;
 
+/**
+ * 支持跨进程
+ */
 public class StorageManager {
 
-    public static final String NAMESPACE_SETTING = "block_core_storage_setting";
-    public static final String NAMESPACE_CACHE = "block_core_storage_cache";
+    public static final String NAMESPACE_SETTING = Constants.RESOURCE_PREFIX +  "_core_storage_setting";
+    public static final String NAMESPACE_CACHE = Constants.RESOURCE_PREFIX +  "_core_storage_cache";
 
     private static final Singleton<StorageManager> sInstance =
             new Singleton<StorageManager>() {

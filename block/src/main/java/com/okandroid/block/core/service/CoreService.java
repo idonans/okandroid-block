@@ -15,8 +15,8 @@ public class CoreService extends Service {
 
     private static final HashMap<String, ServiceFetcher<IBinder>> CORE_SERVICE_FETCHERS = new HashMap<>();
 
-    public static final String CORE_SERVICE_STORAGE = "core_service_storage";
-    public static final String CORE_SERVICE_COOKIE_STORE = "core_service_cookie_store";
+    public static final String CORE_SERVICE_STORAGE = "storage";
+    public static final String CORE_SERVICE_COOKIE_STORE = "cookie_store";
 
     @Override
     public void onCreate() {

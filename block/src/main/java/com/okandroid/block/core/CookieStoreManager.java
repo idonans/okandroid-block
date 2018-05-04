@@ -11,6 +11,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * 支持跨进程
+ */
 public class CookieStoreManager {
 
     private static final Singleton<CookieStoreManager> sInstance =

@@ -21,6 +21,6 @@
         </provider>
         <service
             android:name="com.okandroid.block.core.service.CoreService"
-            android:process=":block_core" />
+            android:process=":okandroid_block_core" />
     </application>
 </manifest>
