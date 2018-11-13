@@ -1,2 +1,2 @@
-# @Deprecated
+# ~~Deprecated~~
 # okandroid-block
